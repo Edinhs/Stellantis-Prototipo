@@ -188,7 +188,7 @@
                     </div>
 
                     <div class="profile-card-footer" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-                        <button class="btn-primary" id="btnGoToProfile" style="width: 100%; justify-content: center; padding: 10px 16px; font-size: 14px; border-radius: 12px;"><i data-lucide="user"></i> Ver Meu Perfil Completo</button>
+                        <button class="btn-primary" id="btnGoToProfile" style="width: 100%; justify-content: center; padding: 10px 16px; font-size: 14px; border-radius: 12px;"><i data-lucide="user"></i> Meu Perfil</button>
                         <button class="btn-logout" id="btnLogout" style="width: 100%; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444;"><i data-lucide="log-out"></i> Sair da Conta</button>
                     </div>
                 </div>
@@ -1993,8 +1993,22 @@
                         </div>
 
                         <div class="profile-form-group">
-                            <label for="inputProfileRole">Cargo / Setor</label>
+                            <label for="inputProfileRole">Cargo de Exibição</label>
                             <input type="text" id="inputProfileRole" placeholder="Ex: Engenheiro de Produto Júnior">
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label for="selectProfileArea">Setor / Time de Liderança</label>
+                            <select id="selectProfileArea" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px 16px; color: var(--text-main); font-size: 14px; outline: none; transition: all 0.3s ease; width: 100%; cursor: pointer;">
+                                <option value="">Selecione seu Setor...</option>
+                                <option value="audio">Projection, Legacy IVI & Audio (Saulo Carvalho)</option>
+                                <option value="core">Core Module & Project Execution (Breno Teixeira)</option>
+                                <option value="requirements">RT/Low & Requirements Mgmt (Heber Santos)</option>
+                                <option value="displays">Cluster and Displays & SWF (Gabriel Esteves)</option>
+                                <option value="compliance">Operations, VO & Compliance (Arthur Lott)</option>
+                                <option value="hardware">HW, MEC & Legacy IVI (Alexandre Prates)</option>
+                                <option value="china">China Partners Dev Mgmt (Yu Tian)</option>
+                            </select>
                         </div>
 
                         <button class="btn-primary" id="btnSaveProfileSettings" style="width: 100%; justify-content: center; margin-top: 8px;">
@@ -2004,27 +2018,54 @@
 
                     <!-- Insígnias Adquiridas -->
                     <div class="glass-card profile-badges-card">
-                        <h4>Suas Insígnias de Engenharia</h4>
-                        <div class="profile-badges-detail-grid">
-                            <div class="badge-detail-item active" id="profileBadgeDetailBio">
-                                <div class="badge-detail-icon"><i data-lucide="leaf"></i></div>
+                        <!-- 1. Patente de Nível (Evolutiva) -->
+                        <div class="profile-badge-section" style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 16px;">
+                            <h4 style="margin-bottom: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: #60a5fa;">Patente de Nível (Rank)</h4>
+                            <div class="badge-detail-item active rank-badge" id="profileBadgeDetailRank" style="background: rgba(59, 130, 246, 0.06); border-color: rgba(59, 130, 246, 0.15); opacity: 1;">
+                                <div class="badge-detail-icon" id="profileBadgeRankIcon"><i data-lucide="shield"></i></div>
                                 <div class="badge-detail-info">
-                                    <h5>Bio-Hybrid</h5>
-                                    <p>Concluído • Tecnologia de hibridização Flex da Stellantis.</p>
+                                    <h5 id="profileBadgeRankName">Engenheiro Pleno (Stellantis)</h5>
+                                    <p id="profileBadgeRankDesc">Suba de nível contribuindo com a plataforma.</p>
                                 </div>
                             </div>
-                            <div class="badge-detail-item" id="profileBadgeDetailAdas">
-                                <div class="badge-detail-icon"><i data-lucide="eye"></i></div>
+                        </div>
+
+                        <!-- 2. Setor Corporativo -->
+                        <div class="profile-badge-section" style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 16px 0;">
+                            <h4 style="margin-bottom: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: #34d399;">Sua Divisão / Setor</h4>
+                            <div class="badge-detail-item" id="profileBadgeDetailSector" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.03);">
+                                <div class="badge-detail-icon" id="profileBadgeSectorIcon"><i data-lucide="briefcase"></i></div>
                                 <div class="badge-detail-info">
-                                    <h5>ADAS Expert</h5>
-                                    <p>Pendente • Sistemas avançados de assistência ao condutor.</p>
+                                    <h5 id="profileBadgeSectorName">Nenhum Setor Selecionado</h5>
+                                    <p id="profileBadgeSectorDesc">Selecione seu setor no menu de edição para ganhar a insígnia.</p>
                                 </div>
                             </div>
-                            <div class="badge-detail-item" id="profileBadgeDetailMotores">
-                                <div class="badge-detail-icon"><i data-lucide="cpu"></i></div>
-                                <div class="badge-detail-info">
-                                    <h5>MultiAir Master</h5>
-                                    <p>Pendente • Calibração e mecânica de motores Stellantis.</p>
+                        </div>
+
+                        <!-- 3. Cursos de Treinamento -->
+                        <div class="profile-badge-section" style="padding-top: 16px;">
+                            <h4 style="margin-bottom: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: #a78bfa;">Conquistas de Treinamento</h4>
+                            <div class="profile-badges-detail-grid">
+                                <div class="badge-detail-item active" id="profileBadgeDetailBio">
+                                    <div class="badge-detail-icon"><i data-lucide="leaf"></i></div>
+                                    <div class="badge-detail-info">
+                                        <h5>Bio-Hybrid</h5>
+                                        <p>Concluído • Tecnologia de hibridização Flex da Stellantis.</p>
+                                    </div>
+                                </div>
+                                <div class="badge-detail-item" id="profileBadgeDetailAdas">
+                                    <div class="badge-detail-icon"><i data-lucide="eye"></i></div>
+                                    <div class="badge-detail-info">
+                                        <h5>ADAS Expert</h5>
+                                        <p>Pendente • Sistemas avançados de assistência ao condutor.</p>
+                                    </div>
+                                </div>
+                                <div class="badge-detail-item" id="profileBadgeDetailMotores">
+                                    <div class="badge-detail-icon"><i data-lucide="cpu"></i></div>
+                                    <div class="badge-detail-info">
+                                        <h5>MultiAir Master</h5>
+                                        <p>Pendente • Calibração e mecânica de motores Stellantis.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

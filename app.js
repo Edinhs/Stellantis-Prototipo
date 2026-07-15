@@ -1550,10 +1550,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnGoToProfile = document.getElementById('btnGoToProfile');
     const btnSaveProfileSettings = document.getElementById('btnSaveProfileSettings');
 
+    // Dicionário de informações de setores Stellantis (Lideranças)
+    const sectorsData = {
+        audio: {
+            name: "Áudio & Projeção",
+            leader: "Saulo Carvalho",
+            area: "Projection, Legacy IVI & SA Audio",
+            icon: "music",
+            class: "sector-audio",
+            desc: "Time liderado por Saulo Carvalho. Focado em espelhamento, conectividade e sistemas de áudio legados/SA."
+        },
+        core: {
+            name: "Execução Core & Projetos",
+            leader: "Breno Teixeira",
+            area: "Core Module & SA Vehicle Project Execution",
+            icon: "settings",
+            class: "sector-core",
+            desc: "Time liderado por Breno Teixeira. Coordena a engenharia de módulos base e integração de projetos de veículos."
+        },
+        requirements: {
+            name: "Gestão de Requisitos",
+            leader: "Heber Santos",
+            area: "RT/Low & Entry Info. Requirements Mgmt",
+            icon: "clipboard-list",
+            class: "sector-requirements",
+            desc: "Time liderado por Heber Santos. Focado em documentação de especificações e requisitos de info-entretenimento de entrada."
+        },
+        displays: {
+            name: "Displays & Software",
+            leader: "Gabriel Esteves",
+            area: "Cluster and Displays & SA SWF",
+            icon: "layout",
+            class: "sector-displays",
+            desc: "Time liderado por Gabriel Esteves. Desenvolve layouts de painéis (clusters), telas centrais e framework de software."
+        },
+        compliance: {
+            name: "Operações & Compliance",
+            leader: "Arthur Lott",
+            area: "Operations, VO & Compliance Lead",
+            icon: "shield-check",
+            class: "sector-compliance",
+            desc: "Time liderado por Arthur Lott. Controla testes de validação, operações em veículos físicos e conformidade de software."
+        },
+        hardware: {
+            name: "Hardware & Mecânica",
+            leader: "Alexandre Prates",
+            area: "HW, MEC & Legacy IVI Lead",
+            icon: "cpu",
+            class: "sector-hardware",
+            desc: "Time liderado por Alexandre Prates. Responsável pelo empacotamento físico do hardware, cablagem, e suporte mecânico de centrais."
+        },
+        china: {
+            name: "Parcerias Globais",
+            leader: "Yu Tian",
+            area: "China Partners Development Mgmt Lead",
+            icon: "globe",
+            class: "sector-china",
+            desc: "Time liderado por Yu Tian. Alinhamento técnico, importação e desenvolvimento com fornecedores e parceiros asiáticos."
+        }
+    };
+
     // Carregar Estado de Gamificação e Cadastro do LocalStorage
     let userName = localStorage.getItem('stellantis_user_name') || 'Eduardo Henrique';
     let userRole = localStorage.getItem('stellantis_user_role') || 'Engenheiro de Produto Júnior';
     let userAvatarUrl = localStorage.getItem('stellantis_user_avatar_url') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+    let userSector = localStorage.getItem('stellantis_user_sector') || '';
 
     let userXp = parseInt(localStorage.getItem('stellantis_user_xp')) || 850;
     let userLevel = parseInt(localStorage.getItem('stellantis_user_level')) || 3;
@@ -1579,7 +1640,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             xpText.textContent = `${userXp} / ${maxXp} XP`;
             xpBar.style.width = `${Math.min((userXp / maxXp) * 100, 100)}%`;
-            xpLevel.textContent = userLevel === 3 ? "Nível 3 (Pleno)" : "Nível 4 (Sênior)";
+            
+            // Atualizar o texto de exibição do nível
+            let levelTitle = "Nível 3 (Pleno)";
+            if (userLevel === 1) levelTitle = "Nível 1 (Novato)";
+            else if (userLevel === 2) levelTitle = "Nível 2 (Júnior)";
+            else if (userLevel === 3) levelTitle = "Nível 3 (Pleno)";
+            else if (userLevel === 4) levelTitle = "Nível 4 (Sênior)";
+            xpLevel.textContent = levelTitle;
         }
 
         // Ativar/Inativar classes no Dropdown
@@ -1623,43 +1691,106 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputName = document.getElementById('inputProfileName');
         const inputRole = document.getElementById('inputProfileRole');
         const inputAvatar = document.getElementById('inputProfileAvatarUrl');
+        const selectArea = document.getElementById('selectProfileArea');
 
         if (inputName) inputName.value = userName;
         if (inputRole) inputRole.value = userRole;
         if (inputAvatar) inputAvatar.value = userAvatarUrl;
+        if (selectArea) selectArea.value = userSector;
 
-        // 4. Insígnias Detalhadas na Seção Perfil
+        // 4. Insígnias Detalhes na Seção Perfil
+        // A) Módulos de Treinamento
         const detailBio = document.getElementById('profileBadgeDetailBio');
         const detailAdas = document.getElementById('profileBadgeDetailAdas');
         const detailMotores = document.getElementById('profileBadgeDetailMotores');
 
         if (detailBio) {
+            const p = detailBio.querySelector('p');
             if (userBadges.biohybrid) {
                 detailBio.classList.add('active');
-                detailBio.querySelector('p').textContent = "Concluído • Tecnologia de hibridização Flex da Stellantis.";
+                if (p) p.textContent = "Concluído • Tecnologia de hibridização Flex da Stellantis.";
             } else {
                 detailBio.classList.remove('active');
-                detailBio.querySelector('p').textContent = "Pendente • Conclua o curso de hibridização na aba Treinamento.";
+                if (p) p.textContent = "Pendente • Conclua o curso de hibridização na aba Treinamento.";
             }
         }
         if (detailAdas) {
+            const p = detailAdas.querySelector('p');
             if (userBadges.adas) {
                 detailAdas.classList.add('active');
-                detailAdas.querySelector('p').textContent = "Concluído • Sistemas avançados de assistência ao condutor.";
+                if (p) p.textContent = "Concluído • Sistemas avançados de assistência ao condutor.";
             } else {
                 detailAdas.classList.remove('active');
-                detailAdas.querySelector('p').textContent = "Pendente • Conclua o curso ADAS na aba Treinamento.";
+                if (p) p.textContent = "Pendente • Conclua o curso ADAS na aba Treinamento.";
             }
         }
         if (detailMotores) {
+            const p = detailMotores.querySelector('p');
             if (userBadges.motores) {
                 detailMotores.classList.add('active');
-                detailMotores.querySelector('p').textContent = "Concluído • Calibração e mecânica de motores Stellantis.";
+                if (p) p.textContent = "Concluído • Calibração e mecânica de motores Stellantis.";
             } else {
                 detailMotores.classList.remove('active');
-                detailMotores.querySelector('p').textContent = "Pendente • Conclua o curso de motores na aba Treinamento.";
+                if (p) p.textContent = "Pendente • Conclua o curso de motores na aba Treinamento.";
             }
         }
+
+        // B) Setor Selecionado (Saulo, Breno, Heber, Gabriel, Arthur, Alexandre, Yu)
+        const detailSector = document.getElementById('profileBadgeDetailSector');
+        const detailSectorName = document.getElementById('profileBadgeSectorName');
+        const detailSectorDesc = document.getElementById('profileBadgeSectorDesc');
+        const detailSectorIcon = document.getElementById('profileBadgeSectorIcon');
+
+        if (detailSector && detailSectorName && detailSectorDesc && detailSectorIcon) {
+            detailSector.className = "badge-detail-item"; // Reset class
+            
+            if (userSector && sectorsData[userSector]) {
+                const sec = sectorsData[userSector];
+                detailSector.classList.add('active', sec.class);
+                detailSectorName.textContent = sec.name;
+                detailSectorDesc.textContent = `${sec.area} • Líder: ${sec.leader}. ${sec.desc}`;
+                detailSectorIcon.innerHTML = `<i data-lucide="${sec.icon}"></i>`;
+            } else {
+                detailSectorName.textContent = "Nenhum Setor Selecionado";
+                detailSectorDesc.textContent = "Selecione seu setor no menu de edição para ganhar a insígnia.";
+                detailSectorIcon.innerHTML = `<i data-lucide="briefcase"></i>`;
+            }
+        }
+
+        // C) Patente de Nível (Evolutiva)
+        const detailRank = document.getElementById('profileBadgeDetailRank');
+        const detailRankName = document.getElementById('profileBadgeRankName');
+        const detailRankDesc = document.getElementById('profileBadgeRankDesc');
+        const detailRankIcon = document.getElementById('profileBadgeRankIcon');
+
+        if (detailRank && detailRankName && detailRankDesc && detailRankIcon) {
+            detailRank.className = "badge-detail-item active rank-badge"; // Reset class
+            
+            if (userLevel === 1) {
+                detailRank.classList.add('level-1');
+                detailRankName.textContent = "Novato de Engenharia (Rank 1)";
+                detailRankDesc.textContent = "Começando a desbravar os sistemas e termos da Stellantis.";
+                detailRankIcon.innerHTML = `<i data-lucide="user-check"></i>`;
+            } else if (userLevel === 2) {
+                detailRank.classList.add('level-2');
+                detailRankName.textContent = "Júnior de Chassis/Software (Rank 2)";
+                detailRankDesc.textContent = "Possui conhecimento técnico intermediário e já colabora ativamente.";
+                detailRankIcon.innerHTML = `<i data-lucide="award"></i>`;
+            } else if (userLevel === 3) {
+                detailRank.classList.add('level-3');
+                detailRankName.textContent = "Engenheiro Pleno (Rank 3)";
+                detailRankDesc.textContent = "Calibrador experiente e profundo conhecedor da infraestrutura de software.";
+                detailRankIcon.innerHTML = `<i data-lucide="shield"></i>`;
+            } else {
+                detailRank.classList.add('level-4');
+                detailRankName.textContent = "Engenheiro Sênior Elite (Rank 4)";
+                detailRankDesc.textContent = "Autoridade técnica na Stellantis. Mestre absoluto em arquitetura e integração.";
+                detailRankIcon.innerHTML = `<i data-lucide="crown"></i>`;
+            }
+        }
+
+        // Recarregar ícones dinâmicos do Lucide
+        lucide.createIcons();
     }
 
     // Toggle do dropdown de perfil
@@ -1730,7 +1861,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     alert(`🎉 PARABÉNS! Você subiu de nível no Stellantis Dictionary!\nAgora seu cargo foi atualizado para: Engenheiro de Produto Sênior (Nível 4)`);
                     
-                    // Outer cargo no Header
                     updateProfileUI();
                 }, 800);
             } else {
@@ -1765,6 +1895,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const inputName = document.getElementById('inputProfileName');
             const inputRole = document.getElementById('inputProfileRole');
             const inputAvatar = document.getElementById('inputProfileAvatarUrl');
+            const selectArea = document.getElementById('selectProfileArea');
+
+            let updatedSector = false;
 
             if (inputName && inputName.value.trim() !== '') {
                 userName = inputName.value.trim();
@@ -1778,9 +1911,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 userAvatarUrl = inputAvatar.value.trim();
                 localStorage.setItem('stellantis_user_avatar_url', userAvatarUrl);
             }
+            if (selectArea) {
+                const oldSector = userSector;
+                userSector = selectArea.value;
+                localStorage.setItem('stellantis_user_sector', userSector);
+                if (userSector !== oldSector) {
+                    updatedSector = true;
+                }
+            }
 
             updateProfileUI();
-            alert('Perfil atualizado com sucesso no banco de dados local!');
+
+            if (updatedSector && userSector && sectorsData[userSector]) {
+                const sec = sectorsData[userSector];
+                alert(`🎉 PARABÉNS!\nVocê ingressou na divisão de ${sec.name} (Liderança: ${sec.leader})!\nA insígnia corporativa oficial correspondente foi desbloqueada no seu painel.`);
+            } else {
+                alert('Perfil atualizado com sucesso no banco de dados local!');
+            }
         });
     }
 
@@ -1793,10 +1940,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!timelineTrack) return;
 
-        // 1. Carregar dados atuais
-        const currentTerms = JSON.parse(localStorage.getItem('stellantis_terms')) || [];
-        const currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
-        const currentFlashcards = JSON.parse(localStorage.getItem('stellantis_custom_flashcards')) || [];
+        // 1. Carregar dados atuais com segurança try-catch
+        let currentTerms = [];
+        let currentIdeas = [];
+        let currentFlashcards = [];
+
+        try {
+            currentTerms = JSON.parse(localStorage.getItem('stellantis_terms')) || [];
+        } catch(e) {
+            currentTerms = [];
+        }
+
+        try {
+            currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+        } catch(e) {
+            currentIdeas = [];
+        }
+
+        try {
+            currentFlashcards = JSON.parse(localStorage.getItem('stellantis_custom_flashcards')) || [];
+        } catch(e) {
+            currentFlashcards = [];
+        }
 
         // 2. Calcular estatísticas
         const customTerms = currentTerms.filter(t => t.id && t.id.toString().startsWith('custom-'));
@@ -1813,50 +1978,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Adicionar termos
         customTerms.forEach(t => {
-            const ts = parseInt(t.id.split('-')[1]) || Date.now();
-            activities.push({
-                type: 'term',
-                title: `Verbete Adicionado: ${t.title}`,
-                desc: t.def,
-                time: new Date(ts).toLocaleString('pt-BR'),
-                timestamp: ts
-            });
+            try {
+                const ts = parseInt(t.id.split('-')[1]) || Date.now();
+                activities.push({
+                    type: 'term',
+                    title: `Verbete Adicionado: ${t.title}`,
+                    desc: t.def,
+                    time: new Date(ts).toLocaleString('pt-BR'),
+                    timestamp: ts
+                });
+            } catch(err) {
+                console.error("Erro ao carregar termo na timeline:", err);
+            }
         });
 
-        // Adicionar ideias
+        // Adicionar ideias (com parsing ISO seguro)
         currentIdeas.forEach(id => {
-            let ts = Date.now();
-            if (id.date) {
-                const parts = id.date.split(', ');
-                if (parts[0]) {
-                    const dateParts = parts[0].split('/');
-                    if (dateParts.length === 3) {
-                        ts = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${parts[1] || '12:00:00'}`).getTime() || Date.now();
-                    }
+            try {
+                let ts = Date.now();
+                if (id.date) {
+                    const formatted = id.date.replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$2-$1').replace(', ', 'T');
+                    const parseTs = Date.parse(formatted);
+                    if (!isNaN(parseTs)) ts = parseTs;
                 }
+                activities.push({
+                    type: 'idea',
+                    title: `Ideia Registrada (${id.type === 'termo' ? 'Dicionário' : id.type === 'hotspot' ? 'Hotspot 3D' : 'Geral'}): ${id.title}`,
+                    desc: id.desc,
+                    time: id.date || 'Data Indisponível',
+                    timestamp: ts
+                });
+            } catch(err) {
+                console.error("Erro ao carregar ideia na timeline:", err);
             }
-            activities.push({
-                type: 'idea',
-                title: `Ideia Registrada (${id.type === 'termo' ? 'Dicionário' : id.type === 'hotspot' ? 'Hotspot 3D' : 'Geral'}): ${id.title}`,
-                desc: id.desc,
-                time: id.date || 'Data Indisponível',
-                timestamp: ts
-            });
         });
 
         // Adicionar flashcards
         currentFlashcards.forEach(fc => {
-            const ts = fc.timestamp || Date.now();
-            activities.push({
-                type: 'flashcard',
-                title: `Flashcard de Estudos Criado`,
-                desc: `<strong>Tema:</strong> ${fc.title} (${fc.watermark})<br><strong>Pergunta:</strong> ${fc.question}<br><strong>Resposta:</strong> ${fc.answer}`,
-                time: fc.date || new Date(ts).toLocaleString('pt-BR'),
-                timestamp: ts
-            });
+            try {
+                const ts = fc.timestamp || Date.now();
+                activities.push({
+                    type: 'flashcard',
+                    title: `Flashcard de Estudos Criado`,
+                    desc: `<strong>Tema:</strong> ${fc.title} (${fc.watermark})<br><strong>Pergunta:</strong> ${fc.question}<br><strong>Resposta:</strong> ${fc.answer}`,
+                    time: fc.date || new Date(ts).toLocaleString('pt-BR'),
+                    timestamp: ts
+                });
+            } catch(err) {
+                console.error("Erro ao carregar flashcard na timeline:", err);
+            }
         });
 
-        // Ordenar por data decrescente
+        // Ordenar por data decrescente (mais recente primeiro)
         activities.sort((a, b) => b.timestamp - a.timestamp);
 
         // 4. Renderizar

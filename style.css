@@ -5433,3 +5433,124 @@ body::before {
     }
 }
 
+/* Estilos das Insígnias de Ranks e Setores (Gamificação) */
+.rank-badge {
+    transition: all 0.4s ease;
+}
+
+/* Nível 1 - Novato (Bronze) */
+.rank-badge.level-1 {
+    background: rgba(205, 127, 50, 0.05) !important;
+    border-color: rgba(205, 127, 50, 0.2) !important;
+}
+.rank-badge.level-1 .badge-detail-icon {
+    color: #cd7f32 !important;
+    border-color: rgba(205, 127, 50, 0.3) !important;
+}
+
+/* Nível 2 - Júnior (Prata) */
+.rank-badge.level-2 {
+    background: rgba(192, 192, 192, 0.05) !important;
+    border-color: rgba(192, 192, 192, 0.2) !important;
+}
+.rank-badge.level-2 .badge-detail-icon {
+    color: #c0c0c0 !important;
+    border-color: rgba(192, 192, 192, 0.3) !important;
+}
+
+/* Nível 3 - Pleno (Ouro) */
+.rank-badge.level-3 {
+    background: rgba(250, 204, 21, 0.05) !important;
+    border-color: rgba(250, 204, 21, 0.2) !important;
+}
+.rank-badge.level-3 .badge-detail-icon {
+    color: #facc15 !important;
+    border-color: rgba(250, 204, 21, 0.3) !important;
+}
+
+/* Nível 4 - Sênior Elite (Diamante / Ciano Brilhante) */
+.rank-badge.level-4 {
+    background: rgba(6, 182, 212, 0.08) !important;
+    border-color: rgba(6, 182, 212, 0.3) !important;
+    animation: rankElitePulse 2s infinite ease-in-out;
+}
+.rank-badge.level-4 .badge-detail-icon {
+    color: var(--secondary) !important;
+    border-color: rgba(6, 182, 212, 0.45) !important;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4) !important;
+}
+
+@keyframes rankElitePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 15px 2px rgba(6, 182, 212, 0.25);
+        border-color: rgba(6, 182, 212, 0.45);
+    }
+}
+
+/* Cores Estilizadas das Insígnias de Setores Stellantis */
+.badge-detail-item.active.sector-audio {
+    background: rgba(59, 130, 246, 0.05) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+.badge-detail-item.active.sector-audio .badge-detail-icon {
+    color: #60a5fa !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+}
+
+.badge-detail-item.active.sector-core {
+    background: rgba(249, 115, 22, 0.05) !important;
+    border-color: rgba(249, 115, 22, 0.2) !important;
+}
+.badge-detail-item.active.sector-core .badge-detail-icon {
+    color: #f97316 !important;
+    border-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+.badge-detail-item.active.sector-requirements {
+    background: rgba(16, 185, 129, 0.05) !important;
+    border-color: rgba(16, 185, 129, 0.2) !important;
+}
+.badge-detail-item.active.sector-requirements .badge-detail-icon {
+    color: #10b981 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.badge-detail-item.active.sector-displays {
+    background: rgba(6, 182, 212, 0.05) !important;
+    border-color: rgba(6, 182, 212, 0.2) !important;
+}
+.badge-detail-item.active.sector-displays .badge-detail-icon {
+    color: var(--secondary) !important;
+    border-color: rgba(6, 182, 212, 0.3) !important;
+}
+
+.badge-detail-item.active.sector-compliance {
+    background: rgba(251, 191, 36, 0.05) !important;
+    border-color: rgba(251, 191, 36, 0.2) !important;
+}
+.badge-detail-item.active.sector-compliance .badge-detail-icon {
+    color: #fbbf24 !important;
+    border-color: rgba(251, 191, 36, 0.3) !important;
+}
+
+.badge-detail-item.active.sector-hardware {
+    background: rgba(239, 68, 68, 0.05) !important;
+    border-color: rgba(239, 68, 68, 0.2) !important;
+}
+.badge-detail-item.active.sector-hardware .badge-detail-icon {
+    color: #ef4444 !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.badge-detail-item.active.sector-china {
+    background: rgba(168, 85, 247, 0.05) !important;
+    border-color: rgba(168, 85, 247, 0.2) !important;
+}
+.badge-detail-item.active.sector-china .badge-detail-icon {
+    color: #a855f7 !important;
+    border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
