@@ -186,6 +186,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let homeSceneData = null;
     let isWireframeMode = false; // Começa sólido/realista por padrão
 
+    // Injetar estilo de animação de rotação infinita para o spinner de carregamento
+    if (!document.getElementById('style-spin-animation')) {
+        const style = document.createElement('style');
+        style.id = 'style-spin-animation';
+        style.innerHTML = `
+            @keyframes spin-loader {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     // Componentes e suas definições para exibição
     const componentData = {
         chassi: {
@@ -213,8 +226,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetScene = new THREE.Scene();
         targetScene.fog = new THREE.FogExp2(0x02050c, 0.015);
 
+        // Prevenir canvas de 0px de dimensão na Home/Explorador
+        const width = container.clientWidth || 600;
+        const height = container.clientHeight || 400;
+
         // Câmera
-        const targetCamera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+        const targetCamera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
         if (isHome) {
             targetCamera.position.set(4, 2, 4);
         } else {
@@ -223,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Renderizador com canal alfa (transparente) para fundir com o fundo glassmorphic do site
         const targetRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        targetRenderer.setSize(container.clientWidth, container.clientHeight);
+        targetRenderer.setSize(width, height);
         targetRenderer.setClearColor(0x000000, 0);
         targetRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         targetRenderer.shadowMap.enabled = true;
@@ -282,61 +299,100 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetCarGroup = new THREE.Group();
         targetScene.add(targetCarGroup);
 
-        // Carregar o modelo real Jeep GLTF
-        const loader = new THREE.GLTFLoader();
-        loader.load(
-            'Carro 3D/2021_jeep_grand_commander_k8.glb',
-            function(gltf) {
-                const model = gltf.scene;
+        // Criar indicador de carregamento dinâmico e ocultar imagem estática de imediato
+        let loadingIndicator = document.createElement('div');
+        loadingIndicator.style.position = 'absolute';
+        loadingIndicator.style.top = '50%';
+        loadingIndicator.style.left = '50%';
+        loadingIndicator.style.transform = 'translate(-50%, -50%)';
+        loadingIndicator.style.zIndex = '20';
+        loadingIndicator.style.display = 'flex';
+        loadingIndicator.style.flexDirection = 'column';
+        loadingIndicator.style.alignItems = 'center';
+        loadingIndicator.style.gap = '12px';
+        loadingIndicator.innerHTML = `
+            <div style="width: 32px; height: 32px; border: 3px solid rgba(6,182,212,0.15); border-top-color: var(--secondary); border-radius: 50%; animation: spin-loader 1s linear infinite;"></div>
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary);">Carregando Modelo 3D...</span>
+        `;
+        container.appendChild(loadingIndicator);
 
-                // Centralizar e escalonar perfeitamente baseado no Bounding Box
-                const box = new THREE.Box3().setFromObject(model);
-                const size = box.getSize(new THREE.Vector3());
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = (isHome ? 2.5 : 2.8) / maxDim;
-                model.scale.set(scale, scale, scale);
+        if (isHome) {
+            const carImage = document.getElementById('carImage');
+            if (carImage) carImage.style.display = 'none';
+            const toggleBtn = document.getElementById('btn-toggle-3d-mode');
+            if (toggleBtn) toggleBtn.style.display = 'none';
+        }
 
-                const center = box.getCenter(new THREE.Vector3());
-                model.position.set(
-                    -center.x * scale, 
-                    -center.y * scale + (isHome ? 0.2 : 0.3), 
-                    -center.z * scale
-                );
+        // Carregar o modelo real Jeep GLTF de forma segura
+        let loader = null;
+        if (typeof THREE.GLTFLoader === 'function') {
+            loader = new THREE.GLTFLoader();
+        } else if (typeof GLTFLoader === 'function') {
+            loader = new GLTFLoader();
+        }
 
-                model.traverse(node => {
-                    if (node.isMesh) {
-                        node.castShadow = true;
-                        node.receiveShadow = true;
-                        if (node.material) {
-                            node.material.wireframe = isWireframeMode;
-                            if (!isWireframeMode) {
-                                node.material.metalness = 0.85;
-                                node.material.roughness = 0.15;
-                                if (node.name.toLowerCase().includes('glass') || node.name.toLowerCase().includes('window')) {
-                                    node.material.transparent = true;
-                                    node.material.opacity = 0.4;
+        if (loader) {
+            // Escapar espaços no caminho da pasta ('Carro 3D' -> 'Carro%203D')
+            loader.load(
+                'Carro%203D/2021_jeep_grand_commander_k8.glb',
+                function(gltf) {
+                    // Remover o indicador de carregamento
+                    if (loadingIndicator && loadingIndicator.parentNode) {
+                        loadingIndicator.parentNode.removeChild(loadingIndicator);
+                    }
+
+                    const model = gltf.scene;
+
+                    // Centralizar e escalonar perfeitamente baseado no Bounding Box
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = (isHome ? 2.5 : 2.8) / maxDim;
+                    model.scale.set(scale, scale, scale);
+
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.set(
+                        -center.x * scale, 
+                        -center.y * scale + (isHome ? 0.2 : 0.3), 
+                        -center.z * scale
+                    );
+
+                    model.traverse(node => {
+                        if (node.isMesh) {
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                            if (node.material) {
+                                node.material.wireframe = isWireframeMode;
+                                if (!isWireframeMode) {
+                                    node.material.metalness = 0.85;
+                                    node.material.roughness = 0.15;
+                                    if (node.name.toLowerCase().includes('glass') || node.name.toLowerCase().includes('window')) {
+                                        node.material.transparent = true;
+                                        node.material.opacity = 0.4;
+                                    }
                                 }
                             }
                         }
+                    });
+
+                    targetCarGroup.add(model);
+                },
+                undefined,
+                function(error) {
+                    console.warn('Erro ou CORS ao carregar o carro GLTF (.glb), aplicando fallback procedural:', error);
+                    if (loadingIndicator && loadingIndicator.parentNode) {
+                        loadingIndicator.parentNode.removeChild(loadingIndicator);
                     }
-                });
-
-                targetCarGroup.add(model);
-
-                // Remover elementos estáticos de carregamento da Home
-                if (isHome) {
-                    const carImage = document.getElementById('carImage');
-                    if (carImage) carImage.style.display = 'none';
-                    const toggleBtn = document.getElementById('btn-toggle-3d-mode');
-                    if (toggleBtn) toggleBtn.style.display = 'none';
+                    buildFallbackCar(targetCarGroup);
                 }
-            },
-            undefined,
-            function(error) {
-                console.error('Erro ao carregar o carro GLTF (.glb), aplicando fallback procedural:', error);
-                buildFallbackCar(targetCarGroup);
+            );
+        } else {
+            console.warn('GLTFLoader não encontrado, aplicando fallback de imediato.');
+            if (loadingIndicator && loadingIndicator.parentNode) {
+                loadingIndicator.parentNode.removeChild(loadingIndicator);
             }
-        );
+            buildFallbackCar(targetCarGroup);
+        }
 
         // Adicionar partículas flutuantes
         buildSceneParticles(targetScene);
@@ -356,9 +412,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Escutador de redimensionamento
         window.addEventListener('resize', () => {
-            targetCamera.aspect = container.clientWidth / container.clientHeight;
+            const newWidth = container.clientWidth || 600;
+            const newHeight = container.clientHeight || 400;
+            targetCamera.aspect = newWidth / newHeight;
             targetCamera.updateProjectionMatrix();
-            targetRenderer.setSize(container.clientWidth, container.clientHeight);
+            targetRenderer.setSize(newWidth, newHeight);
         });
 
         return { scene: targetScene, camera: targetCamera, renderer: targetRenderer, carGroup: targetCarGroup, controls: targetControls };
