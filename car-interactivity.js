@@ -178,11 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ========================================================
-    // 3. RENDERIZADOR 3D PROCEDURAL REAL (THREE.JS)
+    // 3. RENDERIZADOR 3D REAL COM CARREGAMENTO GLTF (THREE.JS)
     // ========================================================
     const canvas3dContainer = document.getElementById('canvas3dContainer');
     let scene, camera, renderer, carGroup, controls;
-    let isWireframeMode = true;
+    let exploradorSceneData = null;
+    let homeSceneData = null;
+    let isWireframeMode = false; // Começa sólido/realista por padrão
 
     // Componentes e suas definições para exibição
     const componentData = {
@@ -204,60 +206,189 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function init3D() {
-        if (!canvas3dContainer) return;
+    // Inicializador genérico de cenários Three.js (Home e Explorador)
+    function initCarScene(container, isHome) {
+        if (!container) return null;
 
-        // Criar Cena
-        scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x02050c, 0.015);
+        const targetScene = new THREE.Scene();
+        targetScene.fog = new THREE.FogExp2(0x02050c, 0.015);
 
-        // Criar Câmera
-        camera = new THREE.PerspectiveCamera(60, canvas3dContainer.clientWidth / canvas3dContainer.clientHeight, 0.1, 100);
-        camera.position.set(5, 3, 5);
+        // Câmera
+        const targetCamera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+        if (isHome) {
+            targetCamera.position.set(4, 2, 4);
+        } else {
+            targetCamera.position.set(5, 3, 5);
+        }
 
-        // Criar Renderizador
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-        renderer.setSize(canvas3dContainer.clientWidth, canvas3dContainer.clientHeight);
-        renderer.setClearColor(0x02050c, 1);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        canvas3dContainer.appendChild(renderer.domElement);
+        // Renderizador com canal alfa (transparente) para fundir com o fundo glassmorphic do site
+        const targetRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        targetRenderer.setSize(container.clientWidth, container.clientHeight);
+        targetRenderer.setClearColor(0x000000, 0);
+        targetRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        targetRenderer.shadowMap.enabled = true;
+        targetRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        // Orbit Controls
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.maxPolarAngle = Math.PI / 2 - 0.05; // Evita ir abaixo do solo
-        controls.minDistance = 3;
-        controls.maxDistance = 12;
+        // Injetar Canvas no container de forma absoluta no fundo
+        const canvasElement = targetRenderer.domElement;
+        canvasElement.style.position = 'absolute';
+        canvasElement.style.top = '0';
+        canvasElement.style.left = '0';
+        canvasElement.style.width = '100%';
+        canvasElement.style.height = '100%';
+        canvasElement.style.zIndex = '1';
+        container.appendChild(canvasElement);
 
-        // Luzes
-        const ambientLight = new THREE.AmbientLight(0x0a1e3f, 1.5);
-        scene.add(ambientLight);
+        // Subir z-index de outros elementos irmãos no container (hotspots, etc.)
+        const siblings = container.children;
+        for (let i = 0; i < siblings.length; i++) {
+            if (siblings[i] !== canvasElement) {
+                siblings[i].style.position = 'absolute';
+                siblings[i].style.zIndex = '10';
+            }
+        }
 
-        const dirLight1 = new THREE.DirectionalLight(0x3b82f6, 2.5); // Azul
+        // Controles de câmera (OrbitControls)
+        const targetControls = new THREE.OrbitControls(targetCamera, targetRenderer.domElement);
+        targetControls.enableDamping = true;
+        targetControls.dampingFactor = 0.05;
+        targetControls.maxPolarAngle = Math.PI / 2 - 0.05;
+        targetControls.minDistance = 3;
+        targetControls.maxDistance = 12;
+        if (isHome) {
+            targetControls.enableZoom = false; // Evita interferência no scroll na Home
+        }
+
+        // Luzes ambientais e direcionais premium
+        const ambientLight = new THREE.AmbientLight(0x0a1e3f, 2.0);
+        targetScene.add(ambientLight);
+
+        const dirLight1 = new THREE.DirectionalLight(0x3b82f6, 3.0); // Azul
         dirLight1.position.set(5, 5, 2);
-        scene.add(dirLight1);
+        dirLight1.castShadow = true;
+        targetScene.add(dirLight1);
 
-        const dirLight2 = new THREE.DirectionalLight(0x06b6d4, 2); // Ciano
+        const dirLight2 = new THREE.DirectionalLight(0x06b6d4, 2.5); // Ciano
         dirLight2.position.set(-5, 3, -2);
-        scene.add(dirLight2);
+        targetScene.add(dirLight2);
 
-        // Criar Grupo do Carro
-        carGroup = new THREE.Group();
-        scene.add(carGroup);
+        const spotLight = new THREE.SpotLight(0xffffff, 4); // Destaque de teto
+        spotLight.position.set(0, 8, 0);
+        spotLight.angle = Math.PI / 4;
+        spotLight.penumbra = 0.5;
+        targetScene.add(spotLight);
 
-        // CONSTRUÇÃO PROCEDURAL DO CARRO CONCEITUAL 3D
-        buildProceduralCar();
+        // Grupo do carro
+        const targetCarGroup = new THREE.Group();
+        targetScene.add(targetCarGroup);
 
-        // Sistema de Partículas Flutuantes (Fundo)
-        buildParticles();
+        // Carregar o modelo real Jeep GLTF
+        const loader = new THREE.GLTFLoader();
+        loader.load(
+            'Carro 3D/2021_jeep_grand_commander_k8.glb',
+            function(gltf) {
+                const model = gltf.scene;
 
-        // Animação Loop
-        animate();
+                // Centralizar e escalonar perfeitamente baseado no Bounding Box
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = (isHome ? 2.5 : 2.8) / maxDim;
+                model.scale.set(scale, scale, scale);
+
+                const center = box.getCenter(new THREE.Vector3());
+                model.position.set(
+                    -center.x * scale, 
+                    -center.y * scale + (isHome ? 0.2 : 0.3), 
+                    -center.z * scale
+                );
+
+                model.traverse(node => {
+                    if (node.isMesh) {
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                        if (node.material) {
+                            node.material.wireframe = isWireframeMode;
+                            if (!isWireframeMode) {
+                                node.material.metalness = 0.85;
+                                node.material.roughness = 0.15;
+                                if (node.name.toLowerCase().includes('glass') || node.name.toLowerCase().includes('window')) {
+                                    node.material.transparent = true;
+                                    node.material.opacity = 0.4;
+                                }
+                            }
+                        }
+                    }
+                });
+
+                targetCarGroup.add(model);
+
+                // Remover elementos estáticos de carregamento da Home
+                if (isHome) {
+                    const carImage = document.getElementById('carImage');
+                    if (carImage) carImage.style.display = 'none';
+                    const toggleBtn = document.getElementById('btn-toggle-3d-mode');
+                    if (toggleBtn) toggleBtn.style.display = 'none';
+                }
+            },
+            undefined,
+            function(error) {
+                console.error('Erro ao carregar o carro GLTF (.glb), aplicando fallback procedural:', error);
+                buildFallbackCar(targetCarGroup);
+            }
+        );
+
+        // Adicionar partículas flutuantes
+        buildSceneParticles(targetScene);
+
+        // Loop de renderização local
+        function animateScene() {
+            requestAnimationFrame(animateScene);
+
+            if (targetCarGroup && !targetControls.state === -1) {
+                targetCarGroup.rotation.y += 0.003;
+            }
+
+            targetControls.update();
+            targetRenderer.render(targetScene, targetCamera);
+        }
+        animateScene();
+
+        // Escutador de redimensionamento
+        window.addEventListener('resize', () => {
+            targetCamera.aspect = container.clientWidth / container.clientHeight;
+            targetCamera.updateProjectionMatrix();
+            targetRenderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        return { scene: targetScene, camera: targetCamera, renderer: targetRenderer, carGroup: targetCarGroup, controls: targetControls };
     }
 
-    function buildProceduralCar() {
-        // Material do Chassi
+    function buildSceneParticles(targetScene) {
+        const particleCount = 150;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 15;
+            positions[i + 1] = Math.random() * 5;
+            positions[i + 2] = (Math.random() - 0.5) * 15;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: 0x06b6d4,
+            size: 0.04,
+            transparent: true,
+            opacity: 0.5
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        targetScene.add(particles);
+    }
+
+    function buildFallbackCar(group) {
         const chassiMat = new THREE.MeshStandardMaterial({
             color: 0x1e3a8a,
             wireframe: isWireframeMode,
@@ -267,7 +398,6 @@ document.addEventListener('DOMContentLoaded', () => {
             metalness: 0.9
         });
 
-        // Material Detalhes Ciano
         const detailMat = new THREE.MeshStandardMaterial({
             color: 0x06b6d4,
             wireframe: isWireframeMode,
@@ -275,13 +405,11 @@ document.addEventListener('DOMContentLoaded', () => {
             emissiveIntensity: 0.5
         });
 
-        // 1. Corpo Central (Cabine/Chassi)
         const bodyGeom = new THREE.BoxGeometry(3, 0.8, 1.4);
         const bodyMesh = new THREE.Mesh(bodyGeom, chassiMat);
         bodyMesh.position.y = 0.5;
-        carGroup.add(bodyMesh);
+        group.add(bodyMesh);
 
-        // 2. Cabine Superior (Janelas)
         const cabGeom = new THREE.BoxGeometry(1.6, 0.6, 1.2);
         const cabMesh = new THREE.Mesh(cabGeom, new THREE.MeshStandardMaterial({
             color: 0x3b82f6,
@@ -290,9 +418,8 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: 0.4
         }));
         cabMesh.position.set(-0.2, 1.1, 0);
-        carGroup.add(cabMesh);
+        group.add(cabMesh);
 
-        // 3. Rodas (4 Cilindros)
         const wheelGeom = new THREE.CylinderGeometry(0.4, 0.4, 0.3, 16);
         const wheelMat = new THREE.MeshStandardMaterial({
             color: 0x111827,
@@ -301,98 +428,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const wheelPositions = [
-            { x: 1, y: 0.4, z: 0.75 },   // Dianteira Esquerda
-            { x: 1, y: 0.4, z: -0.75 },  // Dianteira Direita
-            { x: -1, y: 0.4, z: 0.75 },  // Traseira Esquerda
-            { x: -1, y: 0.4, z: -0.75 }  // Traseira Direita
+            { x: 1, y: 0.4, z: 0.75 },
+            { x: 1, y: 0.4, z: -0.75 },
+            { x: -1, y: 0.4, z: 0.75 },
+            { x: -1, y: 0.4, z: -0.75 }
         ];
 
-        wheelPositions.forEach((pos, idx) => {
+        wheelPositions.forEach((pos) => {
             const wheel = new THREE.Mesh(wheelGeom, wheelMat);
             wheel.position.set(pos.x, pos.y, pos.z);
             wheel.rotation.x = Math.PI / 2;
             
-            // Adicionar aro brilhante ciano na roda
             const rimGeom = new THREE.RingGeometry(0.2, 0.35, 16);
             const rimMesh = new THREE.Mesh(rimGeom, detailMat);
-            rimMesh.position.y = 0.16; // desloca um pouco para fora
+            rimMesh.position.y = 0.16;
             rimMesh.rotation.x = -Math.PI / 2;
             wheel.add(rimMesh);
 
-            carGroup.add(wheel);
+            group.add(wheel);
         });
 
-        // 4. Grade Frontal Brilhante
         const gridGeom = new THREE.BoxGeometry(0.1, 0.4, 1.2);
         const gridMesh = new THREE.Mesh(gridGeom, detailMat);
         gridMesh.position.set(1.5, 0.5, 0);
-        carGroup.add(gridMesh);
-
-        // 5. Bateria Elétrica Central (Sob o veículo)
-        const batGeom = new THREE.BoxGeometry(1.8, 0.2, 1.1);
-        const batMat = new THREE.MeshStandardMaterial({
-            color: 0x10b981,
-            emissive: 0x059669,
-            emissiveIntensity: 0.6,
-            wireframe: isWireframeMode
-        });
-        const batMesh = new THREE.Mesh(batGeom, batMat);
-        batMesh.position.y = 0.15;
-        carGroup.add(batMesh);
-
-        // 6. Sensor LiDAR (Teto)
-        const sensorGeom = new THREE.SphereGeometry(0.1, 8, 8);
-        const sensorMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
-        const sensorMesh = new THREE.Mesh(sensorGeom, sensorMat);
-        sensorMesh.position.set(0.2, 1.45, 0);
-        carGroup.add(sensorMesh);
+        group.add(gridMesh);
     }
-
-    function buildParticles() {
-        const particleCount = 200;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-
-        for (let i = 0; i < particleCount * 3; i += 3) {
-            positions[i] = (Math.random() - 0.5) * 15;     // X
-            positions[i + 1] = Math.random() * 5;         // Y
-            positions[i + 2] = (Math.random() - 0.5) * 15; // Z
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-        const material = new THREE.PointsMaterial({
-            color: 0x3b82f6,
-            size: 0.05,
-            transparent: true,
-            opacity: 0.6
-        });
-
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-
-        // Rotação automática suave
-        if (carGroup && !controls.state === -1) {
-            carGroup.rotation.y += 0.003;
-        }
-
-        controls.update();
-        renderer.render(scene, camera);
-    }
-
-    // Redimensionamento do canvas 3D
-    window.addEventListener('resize', () => {
-        if (!camera || !renderer || !canvas3dContainer) return;
-        
-        camera.aspect = canvas3dContainer.clientWidth / canvas3dContainer.clientHeight;
-        camera.updateProjectionMatrix();
-        
-        renderer.setSize(canvas3dContainer.clientWidth, canvas3dContainer.clientHeight);
-    });
 
     // 4. INTERATIVIDADE DA UI DO CANVAS 3D
     const btn3dWireframe = document.getElementById('btn-3d-wireframe');
@@ -401,16 +461,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const inspectedInfo = document.getElementById('inspectedInfo');
 
     if (btn3dWireframe) {
+        // Inicializar texto do botão conforme modo
+        btn3dWireframe.innerHTML = isWireframeMode 
+            ? '<i data-lucide="layout-grid"></i> Estilo Digital' 
+            : '<i data-lucide="box"></i> Estilo Sólido';
+        lucide.createIcons();
+
         btn3dWireframe.addEventListener('click', () => {
             isWireframeMode = !isWireframeMode;
             
-            // Limpar grupo do carro
-            while(carGroup.children.length > 0){ 
-                carGroup.remove(carGroup.children[0]); 
-            }
-            
-            // Reconstruir com o novo modo
-            buildProceduralCar();
+            const toggleWireframe = (targetCarGroup) => {
+                if (!targetCarGroup) return;
+                targetCarGroup.traverse(node => {
+                    if (node.isMesh && node.material) {
+                        node.material.wireframe = isWireframeMode;
+                        if (!isWireframeMode) {
+                            node.material.metalness = 0.85;
+                            node.material.roughness = 0.15;
+                        }
+                    }
+                });
+            };
+
+            // Alternar wireframe nas duas instâncias se estiverem ativas
+            if (exploradorSceneData) toggleWireframe(exploradorSceneData.carGroup);
+            if (homeSceneData) toggleWireframe(homeSceneData.carGroup);
             
             // Trocar estilo do botão
             btn3dWireframe.innerHTML = isWireframeMode 
@@ -422,9 +497,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btn3dReset) {
         btn3dReset.addEventListener('click', () => {
-            if (controls) {
-                controls.reset();
-                camera.position.set(5, 3, 5);
+            if (exploradorSceneData && exploradorSceneData.controls) {
+                exploradorSceneData.controls.reset();
+                exploradorSceneData.camera.position.set(5, 3, 5);
+            }
+            if (homeSceneData && homeSceneData.controls) {
+                homeSceneData.controls.reset();
+                homeSceneData.camera.position.set(4, 2, 4);
             }
         });
     }
@@ -447,16 +526,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            // Piscar luz direcional em resposta ao clique
-            if (carGroup) {
-                carGroup.rotation.y = 0; // reset
-                // Focar ângulo da câmera
+            // Mover a câmera do Explorador para inspecionar a parte clicada
+            if (exploradorSceneData && exploradorSceneData.carGroup) {
+                exploradorSceneData.carGroup.rotation.y = 0;
                 if (componentKey === 'bateria') {
-                    camera.position.set(0, 1.5, 4);
+                    exploradorSceneData.camera.position.set(0, 1.5, 4);
                 } else if (componentKey === 'sensores') {
-                    camera.position.set(0, 3, 3);
+                    exploradorSceneData.camera.position.set(0, 3, 3);
                 } else {
-                    camera.position.set(3, 2, 3);
+                    exploradorSceneData.camera.position.set(3, 2, 3);
                 }
             }
         });
@@ -466,12 +544,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const linkExplorador = document.querySelector('.nav-link[data-target="explorador"]');
     if (linkExplorador) {
         linkExplorador.addEventListener('click', () => {
-            // Pequeno delay para garantir que o contêiner já esteja visível
             setTimeout(() => {
-                if (!renderer) {
-                    init3D();
+                if (!exploradorSceneData) {
+                    exploradorSceneData = initCarScene(canvas3dContainer, false);
+                    
+                    // Sincronizar variáveis globais legado para compatibilidade eventual
+                    if (exploradorSceneData) {
+                        scene = exploradorSceneData.scene;
+                        camera = exploradorSceneData.camera;
+                        renderer = exploradorSceneData.renderer;
+                        carGroup = exploradorSceneData.carGroup;
+                        controls = exploradorSceneData.controls;
+                    }
                 }
             }, 100);
         });
+    }
+
+    // Inicializar visualizador 3D do Jeep automaticamente no carregamento da página inicial (Home)
+    const carViewBox = document.getElementById('carViewBox');
+    if (carViewBox) {
+        // Inicializa com um pequeno delay sutil
+        setTimeout(() => {
+            if (!homeSceneData) {
+                homeSceneData = initCarScene(carViewBox, true);
+            }
+        }, 300);
     }
 });
