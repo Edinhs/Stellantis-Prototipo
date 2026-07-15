@@ -1328,7 +1328,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 watermark: watermark,
                 title: title,
                 question: question,
-                answer: answer
+                answer: answer,
+                date: new Date().toLocaleString('pt-BR'),
+                timestamp: Date.now()
             };
 
             // Salvar no array e persistir no LocalStorage
@@ -1538,15 +1540,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 8. SISTEMA DE AUTENTICAÇÃO E GAMIFICAÇÃO (XP & BADGES)
+    // 8. SISTEMA DE AUTENTICAÇÃO, PERFIL DE USUÁRIO & GAMIFICAÇÃO
     // ========================================================
     const btnProfileToggle = document.getElementById('btnProfileToggle');
     const profileDropdownCard = document.getElementById('profileDropdownCard');
     const btnLogin = document.getElementById('btnLogin');
     const btnLogout = document.getElementById('btnLogout');
     const userProfileMenuContainer = document.getElementById('userProfileMenuContainer');
+    const btnGoToProfile = document.getElementById('btnGoToProfile');
+    const btnSaveProfileSettings = document.getElementById('btnSaveProfileSettings');
 
-    // Carregar Estado de Gamificação do LocalStorage
+    // Carregar Estado de Gamificação e Cadastro do LocalStorage
+    let userName = localStorage.getItem('stellantis_user_name') || 'Eduardo Henrique';
+    let userRole = localStorage.getItem('stellantis_user_role') || 'Engenheiro de Produto Júnior';
+    let userAvatarUrl = localStorage.getItem('stellantis_user_avatar_url') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+
     let userXp = parseInt(localStorage.getItem('stellantis_user_xp')) || 850;
     let userLevel = parseInt(localStorage.getItem('stellantis_user_level')) || 3;
     let userBadges = JSON.parse(localStorage.getItem('stellantis_user_badges')) || {
@@ -1574,7 +1582,7 @@ document.addEventListener('DOMContentLoaded', () => {
             xpLevel.textContent = userLevel === 3 ? "Nível 3 (Pleno)" : "Nível 4 (Sênior)";
         }
 
-        // Ativar/Inativar classes
+        // Ativar/Inativar classes no Dropdown
         if (badgeBio) {
             if (userBadges.biohybrid) badgeBio.classList.add('active');
             else badgeBio.classList.remove('active');
@@ -1586,6 +1594,71 @@ document.addEventListener('DOMContentLoaded', () => {
         if (badgeMot) {
             if (userBadges.motores) badgeMot.classList.add('active');
             else badgeMot.classList.remove('active');
+        }
+
+        // --- Sincronizar Dados do Perfil ---
+        // 1. Header (Nome Abreviado e Fotos)
+        const userNameAbbrEls = document.querySelectorAll('.user-name-abbr');
+        userNameAbbrEls.forEach(el => {
+            const parts = userName.trim().split(/\s+/);
+            const abbr = parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1][0]}.` : parts[0];
+            el.textContent = abbr;
+        });
+
+        const userAvatarImgEls = document.querySelectorAll('.user-avatar-img, .profile-avatar-large, #editProfileAvatarPreview');
+        userAvatarImgEls.forEach(el => {
+            el.src = userAvatarUrl;
+        });
+
+        // 2. Dropdown Header
+        const profileHeaderInfoName = document.querySelector('.profile-card-header h4');
+        if (profileHeaderInfoName) profileHeaderInfoName.textContent = userName;
+
+        const profileCargoEls = document.querySelectorAll('.profile-cargo');
+        profileCargoEls.forEach(el => {
+            el.textContent = userRole;
+        });
+
+        // 3. Inputs na Seção Perfil
+        const inputName = document.getElementById('inputProfileName');
+        const inputRole = document.getElementById('inputProfileRole');
+        const inputAvatar = document.getElementById('inputProfileAvatarUrl');
+
+        if (inputName) inputName.value = userName;
+        if (inputRole) inputRole.value = userRole;
+        if (inputAvatar) inputAvatar.value = userAvatarUrl;
+
+        // 4. Insígnias Detalhadas na Seção Perfil
+        const detailBio = document.getElementById('profileBadgeDetailBio');
+        const detailAdas = document.getElementById('profileBadgeDetailAdas');
+        const detailMotores = document.getElementById('profileBadgeDetailMotores');
+
+        if (detailBio) {
+            if (userBadges.biohybrid) {
+                detailBio.classList.add('active');
+                detailBio.querySelector('p').textContent = "Concluído • Tecnologia de hibridização Flex da Stellantis.";
+            } else {
+                detailBio.classList.remove('active');
+                detailBio.querySelector('p').textContent = "Pendente • Conclua o curso de hibridização na aba Treinamento.";
+            }
+        }
+        if (detailAdas) {
+            if (userBadges.adas) {
+                detailAdas.classList.add('active');
+                detailAdas.querySelector('p').textContent = "Concluído • Sistemas avançados de assistência ao condutor.";
+            } else {
+                detailAdas.classList.remove('active');
+                detailAdas.querySelector('p').textContent = "Pendente • Conclua o curso ADAS na aba Treinamento.";
+            }
+        }
+        if (detailMotores) {
+            if (userBadges.motores) {
+                detailMotores.classList.add('active');
+                detailMotores.querySelector('p').textContent = "Concluído • Calibração e mecânica de motores Stellantis.";
+            } else {
+                detailMotores.classList.remove('active');
+                detailMotores.querySelector('p').textContent = "Pendente • Conclua o curso de motores na aba Treinamento.";
+            }
         }
     }
 
@@ -1623,7 +1696,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             
             // Mensagem de boas-vindas sutil
-            alert('Bem-vindo de volta, Eduardo Henrique!');
+            alert(`Bem-vindo de volta, ${userName}!`);
         });
     }
 
@@ -1655,11 +1728,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 userLevel = 4;
                 userXp = userXp - maxXp; // Transfere o restante
                 setTimeout(() => {
-                    alert('🎉 PARABÉNS! Você subiu de nível no Stellantis Dictionary!\nAgora seu cargo foi atualizado para: Engenheiro de Produto Sênior (Nível 4)');
+                    alert(`🎉 PARABÉNS! Você subiu de nível no Stellantis Dictionary!\nAgora seu cargo foi atualizado para: Engenheiro de Produto Sênior (Nível 4)`);
                     
-                    // Atualizar cargo no Header do dropdown
-                    const cargoLabel = document.querySelector('.profile-cargo');
-                    if (cargoLabel) cargoLabel.textContent = "Engenheiro de Produto Sênior";
+                    // Outer cargo no Header
+                    updateProfileUI();
                 }, 800);
             } else {
                 setTimeout(() => {
@@ -1675,6 +1747,148 @@ document.addEventListener('DOMContentLoaded', () => {
             updateProfileUI();
         }
     };
+
+    // Navegar para a seção do Perfil completo ao clicar em "Ver Meu Perfil Completo"
+    if (btnGoToProfile) {
+        btnGoToProfile.addEventListener('click', () => {
+            if (profileDropdownCard) {
+                profileDropdownCard.classList.remove('open');
+            }
+            switchSection('perfil');
+            loadProfileTimelineAndStats();
+        });
+    }
+
+    // Salvar Dados Editados no Perfil
+    if (btnSaveProfileSettings) {
+        btnSaveProfileSettings.addEventListener('click', () => {
+            const inputName = document.getElementById('inputProfileName');
+            const inputRole = document.getElementById('inputProfileRole');
+            const inputAvatar = document.getElementById('inputProfileAvatarUrl');
+
+            if (inputName && inputName.value.trim() !== '') {
+                userName = inputName.value.trim();
+                localStorage.setItem('stellantis_user_name', userName);
+            }
+            if (inputRole && inputRole.value.trim() !== '') {
+                userRole = inputRole.value.trim();
+                localStorage.setItem('stellantis_user_role', userRole);
+            }
+            if (inputAvatar && inputAvatar.value.trim() !== '') {
+                userAvatarUrl = inputAvatar.value.trim();
+                localStorage.setItem('stellantis_user_avatar_url', userAvatarUrl);
+            }
+
+            updateProfileUI();
+            alert('Perfil atualizado com sucesso no banco de dados local!');
+        });
+    }
+
+    // Compila e renderiza a Timeline de Atividades e Estatísticas do Perfil
+    function loadProfileTimelineAndStats() {
+        const statTerms = document.getElementById('statCreatedTerms');
+        const statIdeas = document.getElementById('statCreatedIdeas');
+        const statFlashcards = document.getElementById('statCreatedFlashcards');
+        const timelineTrack = document.getElementById('profileActivityTimeline');
+
+        if (!timelineTrack) return;
+
+        // 1. Carregar dados atuais
+        const currentTerms = JSON.parse(localStorage.getItem('stellantis_terms')) || [];
+        const currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+        const currentFlashcards = JSON.parse(localStorage.getItem('stellantis_custom_flashcards')) || [];
+
+        // 2. Calcular estatísticas
+        const customTerms = currentTerms.filter(t => t.id && t.id.toString().startsWith('custom-'));
+        const totalTerms = customTerms.length;
+        const totalIdeas = currentIdeas.length;
+        const totalFlashcards = currentFlashcards.length;
+
+        if (statTerms) statTerms.textContent = totalTerms;
+        if (statIdeas) statIdeas.textContent = totalIdeas;
+        if (statFlashcards) statFlashcards.textContent = totalFlashcards;
+
+        // 3. Compilar Atividades para a Timeline
+        const activities = [];
+
+        // Adicionar termos
+        customTerms.forEach(t => {
+            const ts = parseInt(t.id.split('-')[1]) || Date.now();
+            activities.push({
+                type: 'term',
+                title: `Verbete Adicionado: ${t.title}`,
+                desc: t.def,
+                time: new Date(ts).toLocaleString('pt-BR'),
+                timestamp: ts
+            });
+        });
+
+        // Adicionar ideias
+        currentIdeas.forEach(id => {
+            let ts = Date.now();
+            if (id.date) {
+                const parts = id.date.split(', ');
+                if (parts[0]) {
+                    const dateParts = parts[0].split('/');
+                    if (dateParts.length === 3) {
+                        ts = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${parts[1] || '12:00:00'}`).getTime() || Date.now();
+                    }
+                }
+            }
+            activities.push({
+                type: 'idea',
+                title: `Ideia Registrada (${id.type === 'termo' ? 'Dicionário' : id.type === 'hotspot' ? 'Hotspot 3D' : 'Geral'}): ${id.title}`,
+                desc: id.desc,
+                time: id.date || 'Data Indisponível',
+                timestamp: ts
+            });
+        });
+
+        // Adicionar flashcards
+        currentFlashcards.forEach(fc => {
+            const ts = fc.timestamp || Date.now();
+            activities.push({
+                type: 'flashcard',
+                title: `Flashcard de Estudos Criado`,
+                desc: `<strong>Tema:</strong> ${fc.title} (${fc.watermark})<br><strong>Pergunta:</strong> ${fc.question}<br><strong>Resposta:</strong> ${fc.answer}`,
+                time: fc.date || new Date(ts).toLocaleString('pt-BR'),
+                timestamp: ts
+            });
+        });
+
+        // Ordenar por data decrescente
+        activities.sort((a, b) => b.timestamp - a.timestamp);
+
+        // 4. Renderizar
+        timelineTrack.innerHTML = '';
+
+        if (activities.length === 0) {
+            timelineTrack.innerHTML = `
+                <div class="timeline-empty-state">
+                    <i data-lucide="calendar-days"></i>
+                    <p>Nenhuma atividade registrada ainda. Colabore no Dicionário, crie Ideias ou crie Flashcards para ver seu histórico!</p>
+                </div>
+            `;
+            lucide.createIcons();
+            return;
+        }
+
+        activities.forEach(act => {
+            const item = document.createElement('div');
+            item.className = `profile-activity-item type-${act.type}`;
+            item.innerHTML = `
+                <span class="activity-dot"></span>
+                <div class="activity-header">
+                    <span class="activity-title">${act.title}</span>
+                    <span class="activity-time">${act.time}</span>
+                </div>
+                <p class="activity-description">${act.desc}</p>
+            `;
+            timelineTrack.appendChild(item);
+        });
+
+        lucide.createIcons();
+    }
 
     // Inicializar interface de perfil de usuário
     updateProfileUI();

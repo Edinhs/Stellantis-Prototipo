@@ -187,8 +187,9 @@
                         </div>
                     </div>
 
-                    <div class="profile-card-footer">
-                        <button class="btn-logout" id="btnLogout"><i data-lucide="log-out"></i> Sair da Conta</button>
+                    <div class="profile-card-footer" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                        <button class="btn-primary" id="btnGoToProfile" style="width: 100%; justify-content: center; padding: 10px 16px; font-size: 14px; border-radius: 12px;"><i data-lucide="user"></i> Ver Meu Perfil Completo</button>
+                        <button class="btn-logout" id="btnLogout" style="width: 100%; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444;"><i data-lucide="log-out"></i> Sair da Conta</button>
                     </div>
                 </div>
             </div>
@@ -1965,6 +1966,110 @@
                             <span>Vanilla Javascript ES6+</span>
                             <span>Three.js (Visualização 3D)</span>
                             <span>Lucide Icons</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO MEU PERFIL ================= -->
+        <section id="sec-perfil" class="app-section">
+            <div class="profile-view-container">
+                <!-- Coluna Esquerda: Edição de Perfil & Conquistas -->
+                <div class="profile-left-panel">
+                    <div class="glass-card profile-details-card">
+                        <h3>Editar Perfil</h3>
+                        <div class="profile-edit-avatar-container">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Foto do Perfil" class="profile-large-img" id="editProfileAvatarPreview">
+                            <div class="profile-avatar-input-wrapper">
+                                <label for="inputProfileAvatarUrl">URL do Avatar</label>
+                                <input type="text" id="inputProfileAvatarUrl" placeholder="https://exemplo.com/foto.jpg">
+                            </div>
+                        </div>
+                        
+                        <div class="profile-form-group">
+                            <label for="inputProfileName">Nome Completo</label>
+                            <input type="text" id="inputProfileName" placeholder="Seu Nome">
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label for="inputProfileRole">Cargo / Setor</label>
+                            <input type="text" id="inputProfileRole" placeholder="Ex: Engenheiro de Produto Júnior">
+                        </div>
+
+                        <button class="btn-primary" id="btnSaveProfileSettings" style="width: 100%; justify-content: center; margin-top: 8px;">
+                            <i data-lucide="save"></i> Salvar Alterações
+                        </button>
+                    </div>
+
+                    <!-- Insígnias Adquiridas -->
+                    <div class="glass-card profile-badges-card">
+                        <h4>Suas Insígnias de Engenharia</h4>
+                        <div class="profile-badges-detail-grid">
+                            <div class="badge-detail-item active" id="profileBadgeDetailBio">
+                                <div class="badge-detail-icon"><i data-lucide="leaf"></i></div>
+                                <div class="badge-detail-info">
+                                    <h5>Bio-Hybrid</h5>
+                                    <p>Concluído • Tecnologia de hibridização Flex da Stellantis.</p>
+                                </div>
+                            </div>
+                            <div class="badge-detail-item" id="profileBadgeDetailAdas">
+                                <div class="badge-detail-icon"><i data-lucide="eye"></i></div>
+                                <div class="badge-detail-info">
+                                    <h5>ADAS Expert</h5>
+                                    <p>Pendente • Sistemas avançados de assistência ao condutor.</p>
+                                </div>
+                            </div>
+                            <div class="badge-detail-item" id="profileBadgeDetailMotores">
+                                <div class="badge-detail-icon"><i data-lucide="cpu"></i></div>
+                                <div class="badge-detail-info">
+                                    <h5>MultiAir Master</h5>
+                                    <p>Pendente • Calibração e mecânica de motores Stellantis.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Estatísticas & Histórico de Criação (Timeline) -->
+                <div class="profile-right-panel">
+                    <!-- Estatísticas de Impacto -->
+                    <div class="profile-stats-grid">
+                        <div class="glass-card p-stat-box">
+                            <div class="p-stat-icon bg-gradient-cyan"><i data-lucide="book-open"></i></div>
+                            <div class="p-stat-data">
+                                <span class="p-stat-num" id="statCreatedTerms">0</span>
+                                <span class="p-stat-title">Verbetes Criados</span>
+                            </div>
+                        </div>
+                        <div class="glass-card p-stat-box">
+                            <div class="p-stat-icon bg-gradient-teal"><i data-lucide="lightbulb"></i></div>
+                            <div class="p-stat-data">
+                                <span class="p-stat-num" id="statCreatedIdeas">0</span>
+                                <span class="p-stat-title">Ideias de Automação</span>
+                            </div>
+                        </div>
+                        <div class="glass-card p-stat-box">
+                            <div class="p-stat-icon bg-gradient-purple"><i data-lucide="award"></i></div>
+                            <div class="p-stat-data">
+                                <span class="p-stat-num" id="statCreatedFlashcards">0</span>
+                                <span class="p-stat-title">Flashcards Criados</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linha do Tempo do Histórico de Criação -->
+                    <div class="glass-card profile-history-card">
+                        <div class="profile-history-header">
+                            <h3><i data-lucide="history"></i> Histórico de Contribuições</h3>
+                            <span class="activity-subtitle">Linha do tempo de atividades locais do usuário</span>
+                        </div>
+                        <div class="profile-timeline-track" id="profileActivityTimeline">
+                            <!-- Injetado via JS -->
+                            <div class="timeline-empty-state">
+                                <i data-lucide="calendar-days"></i>
+                                <p>Nenhuma atividade registrada ainda. Colabore no Dicionário, Treinamento ou crie Ideias para ver seu histórico!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
