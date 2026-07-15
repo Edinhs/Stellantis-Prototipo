@@ -3213,4 +3213,48 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('open');
         }
     };
+
+    // ========================================================
+    // 7. SUAVIZADOR E DESACELERADOR DE SCROLL DA PÁGINA (SMOOTH SCROLL INERTIA)
+    // ========================================================
+    let currentScroll = window.scrollY;
+    let targetScroll = window.scrollY;
+    let isScrolling = false;
+
+    window.addEventListener('wheel', (e) => {
+        // Ignorar se o evento vier de áreas com scroll nativo próprio (textarea, chats, modals)
+        if (e.target.closest('textarea') || 
+            e.target.closest('.chat-messages-scroll') || 
+            e.target.closest('.modal-card') ||
+            e.target.closest('.stellantis-gpt-sidebar-scroll-area') ||
+            e.target.closest('.notebook-note-textarea')) {
+            return;
+        }
+        
+        e.preventDefault();
+        
+        // Multiplicador menor diminui a velocidade da rolagem (deixando-a mais lenta e controlada)
+        const scrollSpeedMultiplier = 0.35; 
+        targetScroll += e.deltaY * scrollSpeedMultiplier;
+        
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+        
+        if (!isScrolling) {
+            isScrolling = true;
+            smoothScrollLoop();
+        }
+    }, { passive: false });
+
+    function smoothScrollLoop() {
+        if (Math.abs(targetScroll - currentScroll) > 0.5) {
+            currentScroll += (targetScroll - currentScroll) * 0.07; // Fator de suavização de movimento
+            window.scrollTo(0, currentScroll);
+            requestAnimationFrame(smoothScrollLoop);
+        } else {
+            isScrolling = false;
+            currentScroll = targetScroll;
+            window.scrollTo(0, currentScroll);
+        }
+    }
 });
