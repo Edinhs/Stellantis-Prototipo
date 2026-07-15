@@ -853,62 +853,18 @@
 
             <!-- SUBABA 1: ESPECIALISTAS -->
             <div id="info-sec-especialistas" class="info-sub-section active">
-                <div class="sub-section-intro">
-                    <h3>Corpo Técnico de Engenharia</h3>
-                    <p>Entre em contato direto com os especialistas responsáveis pelas principais tecnologias do grupo Stellantis.</p>
+                <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Corpo Técnico de Engenharia</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Entre em contato direto com os especialistas responsáveis pelas principais tecnologias do grupo Stellantis.</p>
+                    </div>
+                    <button class="btn-primary" id="btnOpenAddSpecialistModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);">
+                        <i data-lucide="plus-circle"></i> Adicionar Especialista
+                    </button>
                 </div>
 
-                <div class="specialists-grid">
-                    <!-- Especialista 1 -->
-                    <div class="specialist-card">
-                        <div class="specialist-avatar-container">
-                            <div class="specialist-avatar blue">EN</div>
-                            <span class="specialist-status active" title="Disponível"></span>
-                        </div>
-                        <div class="specialist-info">
-                            <h4>Dr. Enzo Nogueira</h4>
-                            <span class="specialist-role">Diretor de Propulsão Híbrida</span>
-                            <span class="specialist-dept"><i data-lucide="cpu"></i> Divisão Bio-Hybrid Flex</span>
-                            <p class="specialist-bio">Especialista em calibração de motores flex associados a motores de assistência leve de 48V.</p>
-                            <button class="btn-contact-specialist" data-name="Dr. Enzo Nogueira" data-dept="Bio-Hybrid">
-                                <i data-lucide="message-square"></i> Contatar Especialista
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Especialista 2 -->
-                    <div class="specialist-card">
-                        <div class="specialist-avatar-container">
-                            <div class="specialist-avatar cian">AM</div>
-                            <span class="specialist-status active" title="Disponível"></span>
-                        </div>
-                        <div class="specialist-info">
-                            <h4>Engª Ana Martins</h4>
-                            <span class="specialist-role">Especialista Sênior em ADAS</span>
-                            <span class="specialist-dept"><i data-lucide="eye"></i> Sistemas Inteligentes</span>
-                            <p class="specialist-bio">Responsável pela calibração de frenagem de emergência autônoma e fusão de dados radar/câmera.</p>
-                            <button class="btn-contact-specialist" data-name="Engª Ana Martins" data-dept="Sistemas ADAS">
-                                <i data-lucide="message-square"></i> Contatar Especialista
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Especialista 3 -->
-                    <div class="specialist-card">
-                        <div class="specialist-avatar-container">
-                            <div class="specialist-avatar green">CS</div>
-                            <span class="specialist-status active" title="Disponível"></span>
-                        </div>
-                        <div class="specialist-info">
-                            <h4>Carlos Silva</h4>
-                            <span class="specialist-role">Arquiteto de Plataformas Elétricas</span>
-                            <span class="specialist-dept"><i data-lucide="battery-charging"></i> Engenharia STLA</span>
-                            <p class="specialist-bio">Arquiteto estrutural das plataformas BEV STLA Medium e Large para o mercado latino-americano.</p>
-                            <button class="btn-contact-specialist" data-name="Carlos Silva" data-dept="Plataformas STLA">
-                                <i data-lucide="message-square"></i> Contatar Especialista
-                            </button>
-                        </div>
-                    </div>
+                <div class="specialists-grid" id="specialistsGridContainer">
+                    <!-- Injetado dinamicamente via JS -->
                 </div>
             </div>
 
@@ -1002,121 +958,29 @@
 
             <!-- SUBABA 3: INFOTAINMENT (COMPONENTES DO SETOR DE TECNOLOGIA E FILTRO) -->
             <div id="info-sec-infotainment" class="info-sub-section">
-                <div class="sub-section-intro">
-                    <h3>Componentes de Infotainment</h3>
-                    <p>Filtre e explore as principais tecnologias de infotretenimento, telas e conectividade do ecossistema Stellantis.</p>
+                <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Componentes de Infotainment</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Filtre e explore as principais tecnologias de infotretenimento, telas e conectividade do ecossistema Stellantis. Clique em qualquer card para ver a imagem e informações.</p>
+                    </div>
+                    <button class="btn-primary" id="btnOpenAddInfotainmentModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);">
+                        <i data-lucide="plus-circle"></i> Adicionar Componente
+                    </button>
                 </div>
 
-                <!-- Barra de Filtros Duplos de Infotainment -->
-                <div class="infotainment-filters-container" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
-                    <!-- Tipo 1: Por Componente -->
+                <!-- Barra de Filtros de Infotainment (Simplificada para 2 botões) -->
+                <div class="infotainment-filters-container" style="margin-bottom: 24px;">
                     <div class="filter-group">
-                        <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Filtrar por Componente:</span>
-                        <div class="infotainment-filter-bar" id="filterBarComponent" style="margin-bottom: 0;">
-                            <button class="infotainment-filter-btn active" data-infocategory="all">Todos</button>
-                            <button class="infotainment-filter-btn" data-infocategory="audio-tela"><i data-lucide="tv"></i> Telas & Som</button>
-                            <button class="infotainment-filter-btn" data-infocategory="conectividade"><i data-lucide="wifi"></i> Conectividade & Carga</button>
-                            <button class="infotainment-filter-btn" data-infocategory="auxilio"><i data-lucide="compass"></i> Câmeras & Auxílio</button>
-                        </div>
-                    </div>
-
-                    <!-- Tipo 2: Por Fornecedor -->
-                    <div class="filter-group">
-                        <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Filtrar por Fornecedor (Tier 1):</span>
-                        <div class="infotainment-filter-bar" id="filterBarSupplier" style="margin-bottom: 0; display: flex; flex-wrap: wrap; gap: 8px;">
-                            <button class="infotainment-filter-btn active" data-infosupplier="all">Todos</button>
-                            <button class="infotainment-filter-btn" data-infosupplier="aptiv"><i data-lucide="cpu"></i> Aptiv</button>
-                            <button class="infotainment-filter-btn" data-infosupplier="marelli"><i data-lucide="settings"></i> Magneti Marelli</button>
-                            <button class="infotainment-filter-btn" data-infosupplier="harman"><i data-lucide="music"></i> Harman Kardon</button>
-                            <button class="infotainment-filter-btn" data-infosupplier="bosch"><i data-lucide="eye"></i> Bosch</button>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 8px; letter-spacing: 0.5px;">Filtrar por Categoria:</span>
+                        <div class="infotainment-filter-bar" id="filterBarComponent" style="margin-bottom: 0; display: flex; gap: 10px;">
+                            <button class="infotainment-filter-btn active" data-infocategory="audio-tela" style="flex: 1; justify-content: center;"><i data-lucide="tv"></i> Telas & Áudio</button>
+                            <button class="infotainment-filter-btn" data-infocategory="conectividade-auxilio" style="flex: 1; justify-content: center;"><i data-lucide="wifi"></i> Conectividade & Auxílio</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="infotainment-grid">
-                    <!-- Componente 1: Multimídia Uconnect -->
-                    <div class="infotainment-card" data-infocategory="audio-tela" data-infosupplier="aptiv">
-                        <div class="infotainment-card-icon blue"><i data-lucide="tablet"></i></div>
-                        <div class="infotainment-card-content" style="width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                <span class="info-cat-badge">Telas & Som</span>
-                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Aptiv</span>
-                            </div>
-                            <h4>Central Uconnect Touch 10.1"</h4>
-                            <p>Tela de alta definição de 10.1 polegadas com personalização em estilo widget, espelhamento sem fio de celular e múltiplos perfis de usuário.</p>
-                            <span class="info-applied">Disponível em: <strong>Compass, Commander, Rampage</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Componente 2: Painel Digital -->
-                    <div class="infotainment-card" data-infocategory="audio-tela" data-infosupplier="marelli">
-                        <div class="infotainment-card-icon blue"><i data-lucide="layout-dashboard"></i></div>
-                        <div class="infotainment-card-content" style="width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                <span class="info-cat-badge">Telas & Som</span>
-                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Marelli</span>
-                            </div>
-                            <h4>Full Digital Cluster 10.25"</h4>
-                            <p>Painel de instrumentos de alta resolução com visualização configurável em 3D, integração de mapa de navegação nativo e leitura ADAS.</p>
-                            <span class="info-applied">Disponível em: <strong>Compass, Commander, Rampage</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Componente 3: Som Harman Kardon -->
-                    <div class="infotainment-card" data-infocategory="audio-tela" data-infosupplier="harman">
-                        <div class="infotainment-card-icon blue"><i data-lucide="volume-2"></i></div>
-                        <div class="infotainment-card-content" style="width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                <span class="info-cat-badge">Telas & Som</span>
-                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Harman</span>
-                            </div>
-                            <h4>Som Premium Harman Kardon</h4>
-                            <p>Sistema de som premium de 9 alto-falantes com Subwoofer e amplificador de 360 Watts com tecnologia de áudio surround virtualizado.</p>
-                            <span class="info-applied">Disponível em: <strong>Rampage, Commander</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Componente 4: Adventure Intelligence -->
-                    <div class="infotainment-card" data-infocategory="conectividade" data-infosupplier="aptiv">
-                        <div class="infotainment-card-icon green"><i data-lucide="shield-alert"></i></div>
-                        <div class="infotainment-card-content" style="width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                <span class="info-cat-badge">Conectividade & Carga</span>
-                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Aptiv</span>
-                            </div>
-                            <h4>Adventure Intelligence</h4>
-                            <p>Plataforma conectada que possibilita controle remoto de portas, localização, alertas rápidos de pânico automáticos e Wi-Fi nativo a bordo.</p>
-                            <span class="info-applied">Disponível em: <strong>Pulse, Fastback, Compass, Commander</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Componente 5: Carregador Indução -->
-                    <div class="infotainment-card" data-infocategory="conectividade" data-infosupplier="marelli">
-                        <div class="infotainment-card-icon green"><i data-lucide="zap"></i></div>
-                        <div class="infotainment-card-content" style="width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                <span class="info-cat-badge">Conectividade & Carga</span>
-                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Marelli</span>
-                            </div>
-                            <h4>Wireless Charger com Refrigeração</h4>
-                            <p>Carregador de celular sem fio com sistema de refrigeração de ar ativo para evitar o superaquecimento do smartphone durante a indução.</p>
-                            <span class="info-applied">Disponível em: <strong>Rampage, Compass, Commander</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Componente 6: Câmeras 360 -->
-                    <div class="infotainment-card" data-infocategory="auxilio" data-infosupplier="bosch">
-                        <div class="infotainment-card-icon cian"><i data-lucide="video"></i></div>
-                        <div class="infotainment-card-content" style="width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                <span class="info-cat-badge">Câmeras & Auxílio</span>
-                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Bosch</span>
-                            </div>
-                            <h4>Câmeras Multivisão 360°</h4>
-                            <p>Fusão de imagem de quatro câmeras externas simulando uma visão aérea tridimensional para manobras seguras e detecção de obstáculos próximos.</p>
-                            <span class="info-applied">Disponível em: <strong>Commander, Rampage (Overland/RT)</strong></span>
-                        </div>
-                    </div>
+                <div class="infotainment-grid" id="infotainmentGridContainer">
+                    <!-- Injetado dinamicamente via JS -->
                 </div>
             </div>
 
@@ -2419,6 +2283,131 @@
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddChannelModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveNewChannel">Adicionar Canal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Especialista -->
+    <div class="modal-overlay" id="addSpecialistModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Especialista Técnico</h3>
+                <button class="btn-close-modal" id="btnCloseAddSpecialistModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputSpecName" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Nome Completo / Título</label>
+                    <input type="text" id="inputSpecName" placeholder="Ex: Dr. Enzo Nogueira ou Engª Ana Martins" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputSpecRole" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Cargo / Especialidade</label>
+                        <input type="text" id="inputSpecRole" placeholder="Ex: Diretor de Propulsão Híbrida" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectSpecDept" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Departamento / Divisão</label>
+                        <select id="selectSpecDept" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="Bio-Hybrid Flex">Divisão Bio-Hybrid Flex</option>
+                            <option value="Sistemas Inteligentes">Sistemas Inteligentes (ADAS)</option>
+                            <option value="Engenharia STLA">Engenharia STLA</option>
+                            <option value="Digital Cockpit">Digital Cockpit & Multimídia</option>
+                            <option value="Áudio & Acústica">Áudio & Acústica Premium</option>
+                            <option value="Conectividade & Antenas">Conectividade & Telemática</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputSpecBio" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Biografia Técnica Curta</label>
+                    <input type="text" id="inputSpecBio" placeholder="Ex: Especialista em calibração de motores flex e assistência de 48V." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddSpecialistModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewSpecialist">Adicionar Especialista</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Componente Infotainment -->
+    <div class="modal-overlay" id="addInfotainmentModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Componente de Infotainment</h3>
+                <button class="btn-close-modal" id="btnCloseAddInfotainmentModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputInfoTitle" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Nome do Componente / Tecnologia</label>
+                    <input type="text" id="inputInfoTitle" placeholder="Ex: Central Uconnect Touch 10.1&quot;" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectInfoCategory" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Categoria do Componente</label>
+                        <select id="selectInfoCategory" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="audio-tela">Telas & Áudio</option>
+                            <option value="conectividade-auxilio">Conectividade & Auxílio</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectInfoSupplier" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Fornecedor Tier-1</label>
+                        <select id="selectInfoSupplier" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="aptiv">Aptiv</option>
+                            <option value="marelli">Magneti Marelli</option>
+                            <option value="harman">Harman Kardon</option>
+                            <option value="bosch">Bosch</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputInfoApplied" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Modelos de Veículos Aplicados</label>
+                        <input type="text" id="inputInfoApplied" placeholder="Ex: Compass, Commander, Rampage" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputInfoImageUrl" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">URL da Imagem do Componente</label>
+                        <input type="text" id="inputInfoImageUrl" placeholder="Ex: https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaInfoDesc" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Descrição Curta & Informações</label>
+                    <textarea id="textareaInfoDesc" rows="3" placeholder="Descreva o funcionamento do componente, resoluções ou frequências..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 60px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddInfotainmentModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewInfotainment">Adicionar Componente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Componente Infotainment -->
+    <div class="modal-overlay" id="infotainmentDetailsModal">
+        <div class="modal-card" style="max-width: 580px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div id="infoDetailsIconContainer" style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="tablet"></i>
+                    </div>
+                    <div>
+                        <h3 id="infoDetailsTitle" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Detalhes do Componente</h3>
+                        <span id="infoDetailsSubtitle" style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Telas & Som | Aptiv</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseInfoDetailsModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 15px 0 20px 0; display: flex; flex-direction: column; gap: 16px;">
+                <div id="infoDetailsImageWrapper" style="width: 100%; height: 220px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;">
+                    <img id="imgInfoDetails" src="" alt="Imagem do Componente" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div id="infoDetailsContent" style="font-size: 13.5px; color: var(--text-muted); line-height: 1.7;">
+                    <!-- Preenchido via JS -->
+                </div>
+                <div id="infoDetailsAppliedContainer" style="font-size: 12px; color: var(--text-main); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 8px;">
+                    <!-- Preenchido via JS -->
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelInfoDetailsModal" style="width: 100%;">Fechar</button>
             </div>
         </div>
     </div>

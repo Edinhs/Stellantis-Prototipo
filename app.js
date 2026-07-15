@@ -2291,42 +2291,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 10. FILTRO DE COMPONENTES DE INFOTAINMENT (DUPLO FILTRO)
+    // 10. FILTRO DE COMPONENTES DE INFOTAINMENT (2 BOTÕES)
     // ========================================================
     const componentFilterBtns = document.querySelectorAll('#filterBarComponent .infotainment-filter-btn');
-    const supplierFilterBtns = document.querySelectorAll('#filterBarSupplier .infotainment-filter-btn');
-    const infotainmentCards = document.querySelectorAll('.infotainment-card');
-
-    let activeCategory = 'all';
-    let activeSupplier = 'all';
-
-    function applyInfotainmentFilters() {
-        if (!infotainmentCards) return;
-
-        infotainmentCards.forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(10px)';
-            card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-            
-            setTimeout(() => {
-                const cardCategory = card.getAttribute('data-infocategory');
-                const cardSupplier = card.getAttribute('data-infosupplier');
-
-                const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
-                const matchesSupplier = activeSupplier === 'all' || cardSupplier === activeSupplier;
-
-                if (matchesCategory && matchesSupplier) {
-                    card.style.display = 'flex';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 50);
-                } else {
-                    card.style.display = 'none';
-                }
-            }, 200);
-        });
-    }
+    let activeCategory = 'audio-tela'; // Categoria ativa padrão (primeiro botão)
 
     if (componentFilterBtns) {
         componentFilterBtns.forEach(btn => {
@@ -2334,18 +2302,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 componentFilterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 activeCategory = btn.getAttribute('data-infocategory');
-                applyInfotainmentFilters();
-            });
-        });
-    }
-
-    if (supplierFilterBtns) {
-        supplierFilterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                supplierFilterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeSupplier = btn.getAttribute('data-infosupplier');
-                applyInfotainmentFilters();
+                if (typeof renderInfotainment === 'function') {
+                    renderInfotainment();
+                }
             });
         });
     }
@@ -4200,4 +4159,494 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicializar renderização dos canais
     renderChannels();
+
+    // ========================================================
+    // 19. CORPO TÉCNICO DE ESPECIALISTAS (DINÂMICO)
+    // ========================================================
+    const defaultSpecialists = [
+        {
+            id: 'spec-1',
+            name: "Dr. Enzo Nogueira",
+            role: "Diretor de Propulsão Híbrida",
+            dept: "Bio-Hybrid Flex",
+            icon: "cpu",
+            avatarColor: "blue",
+            initials: "EN",
+            bio: "Especialista em calibração de motores flex associados a motores de assistência leve de 48V."
+        },
+        {
+            id: 'spec-2',
+            name: "Engª Ana Martins",
+            role: "Especialista Sênior em ADAS",
+            dept: "Sistemas Inteligentes",
+            icon: "eye",
+            avatarColor: "cian",
+            initials: "AM",
+            bio: "Responsável pela calibração de frenagem de emergência autônoma e fusão de dados radar/câmera."
+        },
+        {
+            id: 'spec-3',
+            name: "Carlos Silva",
+            role: "Arquiteto de Plataformas Elétricas",
+            dept: "Engenharia STLA",
+            icon: "battery-charging",
+            avatarColor: "green",
+            initials: "CS",
+            bio: "Arquiteto estrutural das plataformas BEV STLA Medium e Large para o mercado latino-americano."
+        }
+    ];
+
+    let specialists = [];
+    try {
+        specialists = JSON.parse(localStorage.getItem('stellantis_specialists')) || defaultSpecialists;
+    } catch(e) {
+        specialists = [...defaultSpecialists];
+    }
+
+    const specialistsGridContainer = document.getElementById('specialistsGridContainer');
+    const btnOpenAddSpecialistModal = document.getElementById('btnOpenAddSpecialistModal');
+    const addSpecialistModal = document.getElementById('addSpecialistModal');
+    const btnCancelAddSpecialistModal = document.getElementById('btnCancelAddSpecialistModal');
+    const btnSaveNewSpecialist = document.getElementById('btnSaveNewSpecialist');
+    const btnCloseAddSpecialistModal = document.getElementById('btnCloseAddSpecialistModal');
+
+    function renderSpecialists() {
+        if (!specialistsGridContainer) return;
+        specialistsGridContainer.innerHTML = '';
+
+        specialists.forEach(spec => {
+            const card = document.createElement('div');
+            card.className = 'specialist-card';
+            card.setAttribute('data-id', spec.id);
+
+            card.innerHTML = `
+                <div class="specialist-avatar-container">
+                    <div class="specialist-avatar ${spec.avatarColor || 'blue'}">${spec.initials || 'ST'}</div>
+                    <span class="specialist-status active" title="Disponível"></span>
+                </div>
+                <div class="specialist-info">
+                    <h4>${spec.name}</h4>
+                    <span class="specialist-role">${spec.role}</span>
+                    <span class="specialist-dept"><i data-lucide="${spec.icon || 'user'}"></i> ${spec.dept}</span>
+                    <p class="specialist-bio">${spec.bio}</p>
+                    <button class="btn-contact-specialist" data-name="${spec.name}" data-dept="${spec.dept}">
+                        <i data-lucide="message-square"></i> Contatar Especialista
+                    </button>
+                </div>
+            `;
+
+            // Vincular redirecionamento para o Chat IA
+            const btnContact = card.querySelector('.btn-contact-specialist');
+            if (btnContact) {
+                btnContact.addEventListener('click', () => {
+                    const chatInput = document.getElementById('chatInput');
+                    const mainNavBtns = document.querySelectorAll('.nav-btn');
+                    
+                    // Simular troca para aba de chat
+                    const chatNavBtn = Array.from(mainNavBtns).find(btn => btn.getAttribute('data-target') === 'chat');
+                    if (chatNavBtn) {
+                        chatNavBtn.click();
+                        if (chatInput) {
+                            chatInput.value = `Olá, gostaria de falar com o especialista ${spec.name} sobre ${spec.dept}.`;
+                            chatInput.focus();
+                        }
+                    }
+                });
+            }
+
+            specialistsGridContainer.appendChild(card);
+        });
+
+        lucide.createIcons();
+    }
+
+    // Controle dos modais de especialistas
+    if (btnOpenAddSpecialistModal && addSpecialistModal) {
+        btnOpenAddSpecialistModal.addEventListener('click', () => {
+            document.getElementById('inputSpecName').value = '';
+            document.getElementById('inputSpecRole').value = '';
+            document.getElementById('selectSpecDept').value = 'Bio-Hybrid Flex';
+            document.getElementById('inputSpecBio').value = '';
+            addSpecialistModal.classList.add('open');
+        });
+    }
+
+    function closeAddSpecialistModal() {
+        if (addSpecialistModal) addSpecialistModal.classList.remove('open');
+    }
+
+    if (btnCancelAddSpecialistModal) btnCancelAddSpecialistModal.addEventListener('click', closeAddSpecialistModal);
+    if (btnCloseAddSpecialistModal) btnCloseAddSpecialistModal.addEventListener('click', closeAddSpecialistModal);
+
+    if (addSpecialistModal) {
+        addSpecialistModal.addEventListener('click', (e) => {
+            if (e.target === addSpecialistModal) closeAddSpecialistModal();
+        });
+    }
+
+    if (btnSaveNewSpecialist) {
+        btnSaveNewSpecialist.addEventListener('click', () => {
+            const name = document.getElementById('inputSpecName').value.trim();
+            const role = document.getElementById('inputSpecRole').value.trim();
+            const dept = document.getElementById('selectSpecDept').value;
+            const bio = document.getElementById('inputSpecBio').value.trim();
+
+            if (!name || !role || !bio) {
+                alert('Por favor, preencha todos os campos do especialista!');
+                return;
+            }
+
+            // Cores do avatar com base no departamento
+            let avatarColor = 'blue';
+            let icon = 'user';
+            if (dept.includes('Bio-Hybrid')) {
+                avatarColor = 'blue';
+                icon = 'cpu';
+            } else if (dept.includes('Inteligentes')) {
+                avatarColor = 'cian';
+                icon = 'eye';
+            } else if (dept.includes('STLA')) {
+                avatarColor = 'green';
+                icon = 'battery-charging';
+            } else if (dept.includes('Cockpit')) {
+                avatarColor = 'purple';
+                icon = 'tv';
+            } else if (dept.includes('Acústica')) {
+                avatarColor = 'orange';
+                icon = 'volume-2';
+            } else if (dept.includes('Conectividade')) {
+                avatarColor = 'teal';
+                icon = 'wifi';
+            }
+
+            // Obter iniciais do especialista
+            const nameParts = name.split(' ').filter(part => part.toLowerCase() !== 'dr.' && part.toLowerCase() !== 'dr' && part.toLowerCase() !== 'engª' && part.toLowerCase() !== 'eng');
+            let initials = 'ST';
+            if (nameParts.length >= 2) {
+                initials = (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+            } else if (nameParts.length === 1) {
+                initials = nameParts[0].substring(0, 2).toUpperCase();
+            }
+
+            const newSpec = {
+                id: `spec-${Date.now()}`,
+                name: name,
+                role: role,
+                dept: dept,
+                icon: icon,
+                avatarColor: avatarColor,
+                initials: initials,
+                bio: bio
+            };
+
+            specialists.push(newSpec);
+            localStorage.setItem('stellantis_specialists', JSON.stringify(specialists));
+
+            closeAddSpecialistModal();
+            renderSpecialists();
+
+            // Gamificação de XP
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: name,
+                type: 'geral',
+                desc: `Adicionou o especialista "${name}" (${role}) ao corpo técnico de engenharia.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Especialista "${name}" adicionado com sucesso!\nVocê ganhou +50 XP por contribuir com a equipe!`);
+        });
+    }
+
+
+    // ========================================================
+    // 20. COMPONENTES DE INFOTAINMENT (DINÂMICO & POPUPS COM IMAGENS)
+    // ========================================================
+    const defaultInfotainmentComponents = [
+        {
+            id: 'info-1',
+            title: "Central Uconnect Touch 10.1\"",
+            category: "audio-tela",
+            supplier: "aptiv",
+            desc: "Tela de alta definição de 10.1 polegadas com personalização em estilo widget, espelhamento sem fio de celular e múltiplos perfis de usuário.",
+            applied: "Compass, Commander, Rampage",
+            imageUrl: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600"
+        },
+        {
+            id: 'info-2',
+            title: "Full Digital Cluster 10.25\"",
+            category: "audio-tela",
+            supplier: "marelli",
+            desc: "Painel de instrumentos de alta resolução com visualização configurável em 3D, integração de mapa de navegação nativo e leitura ADAS.",
+            applied: "Compass, Commander, Rampage",
+            imageUrl: "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600"
+        },
+        {
+            id: 'info-3',
+            title: "Som Premium Harman Kardon",
+            category: "audio-tela",
+            supplier: "harman",
+            desc: "Sistema de som premium de 9 alto-falantes com Subwoofer e amplificador de 360 Watts com tecnologia de áudio surround virtualizado.",
+            applied: "Rampage, Commander",
+            imageUrl: "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600"
+        },
+        {
+            id: 'info-4',
+            title: "Adventure Intelligence",
+            category: "conectividade-auxilio",
+            supplier: "aptiv",
+            desc: "Plataforma conectada que possibilita controle remoto de portas, localização, alertas rápidos de pânico automáticos e Wi-Fi nativo a bordo.",
+            applied: "Pulse, Fastback, Compass, Commander",
+            imageUrl: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=600"
+        },
+        {
+            id: 'info-5',
+            title: "Wireless Charger com Refrigeração",
+            category: "conectividade-auxilio",
+            supplier: "marelli",
+            desc: "Carregador de celular sem fio com sistema de refrigeração de ar ativo para evitar o superaquecimento do smartphone durante a indução.",
+            applied: "Rampage, Compass, Commander",
+            imageUrl: "https://images.unsplash.com/photo-1584438784894-089d6a128f3e?w=600"
+        },
+        {
+            id: 'info-6',
+            title: "Câmeras Multivisão 360°",
+            category: "conectividade-auxilio",
+            supplier: "bosch",
+            desc: "Fusão de imagem de quatro câmeras externas simulando uma visão aérea tridimensional para manobras seguras e detecção de obstáculos próximos.",
+            applied: "Commander, Rampage (Overland/RT)",
+            imageUrl: "https://images.unsplash.com/photo-1508974239320-0a029497e820?w=600"
+        }
+    ];
+
+    let infotainmentComponents = [];
+    try {
+        infotainmentComponents = JSON.parse(localStorage.getItem('stellantis_infotainment')) || defaultInfotainmentComponents;
+    } catch(e) {
+        infotainmentComponents = [...defaultInfotainmentComponents];
+    }
+
+    const infotainmentGridContainer = document.getElementById('infotainmentGridContainer');
+    const btnOpenAddInfotainmentModal = document.getElementById('btnOpenAddInfotainmentModal');
+    const addInfotainmentModal = document.getElementById('addInfotainmentModal');
+    const btnCancelAddInfotainmentModal = document.getElementById('btnCancelAddInfotainmentModal');
+    const btnSaveNewInfotainment = document.getElementById('btnSaveNewInfotainment');
+    const btnCloseAddInfotainmentModal = document.getElementById('btnCloseAddInfotainmentModal');
+
+    const infotainmentDetailsModal = document.getElementById('infotainmentDetailsModal');
+    const btnCloseInfoDetailsModal = document.getElementById('btnCloseInfoDetailsModal');
+    const btnCancelInfoDetailsModal = document.getElementById('btnCancelInfoDetailsModal');
+    const infoDetailsTitle = document.getElementById('infoDetailsTitle');
+    const infoDetailsSubtitle = document.getElementById('infoDetailsSubtitle');
+    const imgInfoDetails = document.getElementById('imgInfoDetails');
+    const infoDetailsContent = document.getElementById('infoDetailsContent');
+    const infoDetailsAppliedContainer = document.getElementById('infoDetailsAppliedContainer');
+    const infoDetailsIconContainer = document.getElementById('infoDetailsIconContainer');
+
+    window.renderInfotainment = function() {
+        if (!infotainmentGridContainer) return;
+        infotainmentGridContainer.innerHTML = '';
+
+        // Filtrar com base no activeCategory (que armazena 'audio-tela' ou 'conectividade-auxilio')
+        const filtered = infotainmentComponents.filter(item => {
+            if (activeCategory === 'audio-tela') {
+                return item.category === 'audio-tela';
+            } else {
+                return item.category === 'conectividade-auxilio' || item.category === 'conectividade' || item.category === 'auxilio';
+            }
+        });
+
+        filtered.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'infotainment-card';
+            card.setAttribute('data-id', item.id);
+            card.setAttribute('data-infocategory', item.category);
+            card.setAttribute('data-infosupplier', item.supplier);
+
+            // Ícone representativo
+            let icon = 'tablet';
+            let iconClass = 'blue';
+            if (item.category === 'conectividade-auxilio' || item.category === 'conectividade') {
+                icon = 'wifi';
+                iconClass = 'green';
+            } else if (item.category === 'auxilio') {
+                icon = 'compass';
+                iconClass = 'cian';
+            }
+
+            card.innerHTML = `
+                <div class="infotainment-card-icon ${iconClass}"><i data-lucide="${icon}"></i></div>
+                <div class="infotainment-card-content" style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <span class="info-cat-badge">${item.category === 'audio-tela' ? 'Telas & Áudio' : 'Conectividade & Auxílio'}</span>
+                        <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">${item.supplier}</span>
+                    </div>
+                    <h4>${item.title}</h4>
+                    <p>${item.desc.substring(0, 140)}${item.desc.length > 140 ? '...' : ''}</p>
+                    <span class="info-applied">Disponível em: <strong>${item.applied}</strong></span>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                openInfotainmentDetailsModal(item);
+            });
+
+            infotainmentGridContainer.appendChild(card);
+        });
+
+        lucide.createIcons();
+    };
+
+    function openInfotainmentDetailsModal(item) {
+        if (!infotainmentDetailsModal || !infoDetailsTitle || !infoDetailsSubtitle || !imgInfoDetails || !infoDetailsContent || !infoDetailsAppliedContainer) return;
+
+        infoDetailsTitle.textContent = item.title;
+        infoDetailsSubtitle.textContent = `${item.category === 'audio-tela' ? 'Telas & Áudio' : 'Conectividade & Auxílio'} | Fornecedor: ${item.supplier.toUpperCase()}`;
+        
+        // Tratar imagem
+        imgInfoDetails.src = item.imageUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600';
+        imgInfoDetails.alt = item.title;
+
+        infoDetailsContent.innerHTML = `<p style="margin: 0; line-height: 1.7;">${item.desc}</p>`;
+        infoDetailsAppliedContainer.innerHTML = `<strong>Aplicações veiculares homologadas:</strong><br><span style="color: var(--secondary); font-weight: 600;">${item.applied}</span>`;
+
+        // Tratar ícone
+        let icon = 'tablet';
+        let color = 'var(--secondary)';
+        let bgColor = 'rgba(6, 182, 212, 0.1)';
+        let borderColor = 'rgba(6, 182, 212, 0.2)';
+
+        if (item.category === 'audio-tela') {
+            icon = 'tablet';
+            color = '#3b82f6';
+            bgColor = 'rgba(59, 130, 246, 0.1)';
+            borderColor = 'rgba(59, 130, 246, 0.2)';
+        } else {
+            icon = 'wifi';
+            color = '#10b981';
+            bgColor = 'rgba(16, 185, 129, 0.1)';
+            borderColor = 'rgba(16, 185, 129, 0.2)';
+        }
+
+        if (infoDetailsIconContainer) {
+            infoDetailsIconContainer.style.background = bgColor;
+            infoDetailsIconContainer.style.borderColor = borderColor;
+            infoDetailsIconContainer.style.color = color;
+            infoDetailsIconContainer.innerHTML = `<i data-lucide="${icon}"></i>`;
+        }
+
+        infotainmentDetailsModal.classList.add('open');
+        lucide.createIcons();
+    }
+
+    function closeInfotainmentDetailsModal() {
+        if (infotainmentDetailsModal) infotainmentDetailsModal.classList.remove('open');
+    }
+
+    // Modal de Cadastro
+    if (btnOpenAddInfotainmentModal && addInfotainmentModal) {
+        btnOpenAddInfotainmentModal.addEventListener('click', () => {
+            document.getElementById('inputInfoTitle').value = '';
+            document.getElementById('selectInfoCategory').value = 'audio-tela';
+            document.getElementById('selectInfoSupplier').value = 'aptiv';
+            document.getElementById('inputInfoApplied').value = '';
+            document.getElementById('inputInfoImageUrl').value = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600';
+            document.getElementById('textareaInfoDesc').value = '';
+            addInfotainmentModal.classList.add('open');
+        });
+    }
+
+    function closeAddInfotainmentModal() {
+        if (addInfotainmentModal) addInfotainmentModal.classList.remove('open');
+    }
+
+    if (btnCancelAddInfotainmentModal) btnCancelAddInfotainmentModal.addEventListener('click', closeAddInfotainmentModal);
+    if (btnCloseAddInfotainmentModal) btnCloseAddInfotainmentModal.addEventListener('click', closeAddInfotainmentModal);
+    
+    if (btnCloseInfoDetailsModal) btnCloseInfoDetailsModal.addEventListener('click', closeInfotainmentDetailsModal);
+    if (btnCancelInfoDetailsModal) btnCancelInfoDetailsModal.addEventListener('click', closeInfotainmentDetailsModal);
+
+    if (addInfotainmentModal) {
+        addInfotainmentModal.addEventListener('click', (e) => {
+            if (e.target === addInfotainmentModal) closeAddInfotainmentModal();
+        });
+    }
+    if (infotainmentDetailsModal) {
+        infotainmentDetailsModal.addEventListener('click', (e) => {
+            if (e.target === infotainmentDetailsModal) closeInfotainmentDetailsModal();
+        });
+    }
+
+    if (btnSaveNewInfotainment) {
+        btnSaveNewInfotainment.addEventListener('click', () => {
+            const title = document.getElementById('inputInfoTitle').value.trim();
+            const category = document.getElementById('selectInfoCategory').value;
+            const supplier = document.getElementById('selectInfoSupplier').value;
+            const applied = document.getElementById('inputInfoApplied').value.trim();
+            const imageUrl = document.getElementById('inputInfoImageUrl').value.trim();
+            const desc = document.getElementById('textareaInfoDesc').value.trim();
+
+            if (!title || !applied || !desc) {
+                alert('Por favor, preencha todos os campos obrigatórios (Nome, Aplicações e Descrição)!');
+                return;
+            }
+
+            const newInfo = {
+                id: `info-${Date.now()}`,
+                title: title,
+                category: category,
+                supplier: supplier,
+                applied: applied,
+                imageUrl: imageUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600',
+                desc: desc
+            };
+
+            infotainmentComponents.push(newInfo);
+            localStorage.setItem('stellantis_infotainment', JSON.stringify(infotainmentComponents));
+
+            closeAddInfotainmentModal();
+            renderInfotainment();
+
+            // Gamificação de XP
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: title,
+                type: 'geral',
+                desc: `Adicionou o componente de infotainment "${title}" com imagem na base de tecnologias.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Componente "${title}" adicionado com sucesso!\nVocê ganhou +50 XP por contribuir com a base de tecnologias!`);
+        });
+    }
+
+    // Inicializar renderizações de Informações
+    renderSpecialists();
+    renderInfotainment();
 });
