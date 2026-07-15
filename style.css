@@ -5773,3 +5773,65 @@ body::before {
     z-index: 110;
 }
 
+/* ========================================================
+   MODO DE ORGANIZAR HIERARQUIA
+   ======================================================== */
+.node-actions-bar {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    gap: 4px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3px 6px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.org-manage-active .node-actions-bar {
+    display: flex !important;
+}
+
+.btn-node-action {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-node-action:hover {
+    color: var(--text-main);
+}
+
+.btn-node-action.edit:hover {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.btn-node-action.add:hover {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.btn-node-action.delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+/* Esconder os outros botões do card quando gerenciando para evitar clique acidental */
+.org-manage-active .btn-node-locate {
+    display: none !important;
+}
+.org-manage-active .btn-node-hide {
+    display: none !important;
+}
+

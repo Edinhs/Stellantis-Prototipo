@@ -2410,7 +2410,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const orgBreadcrumbs = document.getElementById('orgBreadcrumbs');
 
     // Estrutura de dados completa da hierarquia (Slide 1, 2, 3 e 5)
-    const orgHierarchy = {
+    const orgHierarchy = JSON.parse(localStorage.getItem('stellantis_hierarchy')) || {
         id: "heiko",
         name: "Heiko SCHILLING",
         role: "Software Engineering Director (Global)",
@@ -3114,16 +3114,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // Renderizar Árvore Organizacional Drill-down
     function renderTree() {
         if (!orgTreeWrapper) return;
         orgTreeWrapper.innerHTML = '';
+
+        // Togglar classe de gerenciamento ativo
+        if (typeof isOrgManagementActive !== 'undefined' && isOrgManagementActive) {
+            orgTreeWrapper.classList.add('org-manage-active');
+        } else {
+            orgTreeWrapper.classList.remove('org-manage-active');
+        }
 
         const focusedNode = findNodeById(orgHierarchy, currentFocusedNodeId);
         if (!focusedNode) return;
 
         let parentNode = findParentNode(orgHierarchy, currentFocusedNodeId);
-        // Se o pai estiver ocultado, não mostra ele no topo superior
         if (parentNode && hiddenNodeIds.has(parentNode.id)) {
             parentNode = null;
         }
@@ -3140,6 +3145,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4>${parentNode.name}</h4>
                         <span>${parentNode.role}</span>
                     </div>
+                    <div class="node-actions-bar">
+                        <button class="btn-node-action edit" data-nodeid="${parentNode.id}" title="Editar Integrante"><i data-lucide="edit-2"></i></button>
+                        <button class="btn-node-action add" data-nodeid="${parentNode.id}" title="Adicionar Subordinado"><i data-lucide="plus"></i></button>
+                        <button class="btn-node-action delete" data-nodeid="${parentNode.id}" title="Excluir Integrante"><i data-lucide="trash-2"></i></button>
+                    </div>
+                    <button class="btn-node-locate" data-location="${parentNode.location || 'sa'}"><i data-lucide="map-pin"></i> ${(parentNode.location || 'sa').toUpperCase()}</button>
                     <button class="btn-node-hide" title="Ocultar Usuário" data-nodeid="${parentNode.id}"><i data-lucide="eye-off"></i></button>
                 </div>
             `;
@@ -3162,14 +3173,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h4>${focusedNode.name}</h4>
                     <span>${focusedNode.role}</span>
                 </div>
-                <button class="btn-node-locate" data-location="${focusedNode.location}"><i data-lucide="map-pin"></i> ${focusedNode.location.toUpperCase()}</button>
+                <div class="node-actions-bar">
+                    <button class="btn-node-action edit" data-nodeid="${focusedNode.id}" title="Editar Integrante"><i data-lucide="edit-2"></i></button>
+                    <button class="btn-node-action add" data-nodeid="${focusedNode.id}" title="Adicionar Subordinado"><i data-lucide="plus"></i></button>
+                    <button class="btn-node-action delete" data-nodeid="${focusedNode.id}" title="Excluir Integrante"><i data-lucide="trash-2"></i></button>
+                </div>
+                <button class="btn-node-locate" data-location="${focusedNode.location || 'sa'}"><i data-lucide="map-pin"></i> ${(focusedNode.location || 'sa').toUpperCase()}</button>
                 <button class="btn-node-hide" title="Ocultar Usuário" data-nodeid="${focusedNode.id}"><i data-lucide="eye-off"></i></button>
             </div>
         `;
         orgTreeWrapper.appendChild(focusedContainer);
 
         // 3. Renderizar Subordinados (se houver)
-        // Filtramos os subordinados ocultados para que o CSS Flexbox se organize automaticamente!
         const visibleReports = (focusedNode.reports || []).filter(child => !hiddenNodeIds.has(child.id));
 
         if (visibleReports.length > 0) {
@@ -3200,8 +3215,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4>${child.name}</h4>
                         <span>${child.role}</span>
                     </div>
+                    <div class="node-actions-bar">
+                        <button class="btn-node-action edit" data-nodeid="${child.id}" title="Editar Integrante"><i data-lucide="edit-2"></i></button>
+                        <button class="btn-node-action add" data-nodeid="${child.id}" title="Adicionar Subordinado"><i data-lucide="plus"></i></button>
+                        <button class="btn-node-action delete" data-nodeid="${child.id}" title="Excluir Integrante"><i data-lucide="trash-2"></i></button>
+                    </div>
                     ${isClickable ? '<span class="node-expand-tag">Ver Equipe</span>' : ''}
-                    <button class="btn-node-locate" data-location="${child.location}"><i data-lucide="map-pin"></i> ${child.location.toUpperCase()}</button>
+                    <button class="btn-node-locate" data-location="${child.location || 'sa'}"><i data-lucide="map-pin"></i> ${(child.location || 'sa').toUpperCase()}</button>
                     <button class="btn-node-hide" title="Ocultar Usuário" data-nodeid="${child.id}"><i data-lucide="eye-off"></i></button>
                 `;
                 row.appendChild(nodeDiv);
@@ -3215,11 +3235,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const nodes = orgTreeWrapper.querySelectorAll('.tree-node');
         nodes.forEach(n => {
             n.addEventListener('click', (e) => {
-                // Se clicou no botão de localização ou de ocultar, não fazer drill-down
-                if (e.target.closest('.btn-node-locate') || e.target.closest('.btn-node-hide')) return;
+                if (e.target.closest('.btn-node-locate') || e.target.closest('.btn-node-hide') || e.target.closest('.node-actions-bar')) return;
 
                 const nodeId = n.getAttribute('data-nodeid');
-                // Apenas fazer drill-down se tiver reports ou for subir nível
                 const targetNode = findNodeById(orgHierarchy, nodeId);
                 if (targetNode && ((targetNode.reports && targetNode.reports.length > 0) || n.classList.contains('parent-node'))) {
                     currentFocusedNodeId = nodeId;
@@ -3228,26 +3246,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Registrar eventos nos botões de localização dentro dos nodes
+        // Registrar eventos nos botões de localização
         const locateBtns = orgTreeWrapper.querySelectorAll('.btn-node-locate');
         locateBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const loc = btn.getAttribute('data-location');
-                
-                // Mudar para o modo mapa
                 const mapSelectorBtn = document.querySelector('.org-view-btn[data-orgview="map"]');
                 if (mapSelectorBtn) mapSelectorBtn.click();
-                
-                // Clicar no pin correspondente no mapa
                 const targetPin = document.querySelector(`.map-pin-pulse[data-pinloc="${loc}"]`);
                 if (targetPin) {
                     setTimeout(() => {
                         targetPin.click();
                         targetPin.style.transform = 'translate(-50%, -50%) scale(1.6)';
-                        setTimeout(() => {
-                            targetPin.style.transform = 'translate(-50%, -50%) scale(1)';
-                        }, 300);
+                        setTimeout(() => { targetPin.style.transform = 'translate(-50%, -50%) scale(1)'; }, 300);
                     }, 350);
                 }
             });
@@ -3268,6 +3280,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 renderTree();
+            });
+        });
+
+        // Vincular ações da barra de edição
+        const editBtns = orgTreeWrapper.querySelectorAll('.btn-node-action.edit');
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nodeId = btn.getAttribute('data-nodeid');
+                openEditOrgNodeModal(nodeId);
+            });
+        });
+
+        const addBtns = orgTreeWrapper.querySelectorAll('.btn-node-action.add');
+        addBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nodeId = btn.getAttribute('data-nodeid');
+                openAddOrgNodeModal(nodeId);
+            });
+        });
+
+        const deleteBtns = orgTreeWrapper.querySelectorAll('.btn-node-action.delete');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nodeId = btn.getAttribute('data-nodeid');
+                if (confirm('Tem certeza que deseja excluir este integrante da hierarquia? Isso também removerá todos os seus subordinados!')) {
+                    deleteOrgNode(nodeId);
+                }
             });
         });
 
@@ -4733,4 +4775,276 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar renderizações de Informações
     renderSpecialists();
     renderInfotainment();
+
+    // ========================================================
+    // 21. GERENCIAMENTO DINÂMICO DE HIERARQUIA (ORGANIZAR)
+    // ========================================================
+    window.isOrgManagementActive = false;
+    let selectedNodeIdForEdit = null;
+    let selectedNodeIdForAdd = null;
+
+    const btnManageHierarchy = document.getElementById('btnManageHierarchy');
+    
+    // Modais e inputs de Edição
+    const modalEditOrgNode = document.getElementById('modalEditOrgNode');
+    const btnCloseEditOrgNodeModal = document.getElementById('btnCloseEditOrgNodeModal');
+    const btnCancelEditOrgNodeModal = document.getElementById('btnCancelEditOrgNodeModal');
+    const btnSaveEditOrgNode = document.getElementById('btnSaveEditOrgNode');
+    const inputEditOrgName = document.getElementById('inputEditOrgName');
+    const inputEditOrgRole = document.getElementById('inputEditOrgRole');
+    const inputEditOrgAvatar = document.getElementById('inputEditOrgAvatar');
+    const selectEditOrgLocation = document.getElementById('selectEditOrgLocation');
+
+    // Modais e inputs de Adição
+    const modalAddOrgNode = document.getElementById('modalAddOrgNode');
+    const btnCloseAddOrgNodeModal = document.getElementById('btnCloseAddOrgNodeModal');
+    const btnCancelAddOrgNodeModal = document.getElementById('btnCancelAddOrgNodeModal');
+    const btnSaveAddOrgNode = document.getElementById('btnSaveAddOrgNode');
+    const inputAddOrgName = document.getElementById('inputAddOrgName');
+    const inputAddOrgRole = document.getElementById('inputAddOrgRole');
+    const inputAddOrgAvatar = document.getElementById('inputAddOrgAvatar');
+    const selectAddOrgLocation = document.getElementById('selectAddOrgLocation');
+
+    // Toggle do modo de organização
+    if (btnManageHierarchy) {
+        btnManageHierarchy.addEventListener('click', () => {
+            window.isOrgManagementActive = !window.isOrgManagementActive;
+            if (window.isOrgManagementActive) {
+                btnManageHierarchy.innerHTML = `<i data-lucide="x"></i> Concluir Organização`;
+                btnManageHierarchy.style.background = 'rgba(239, 68, 68, 0.1)';
+                btnManageHierarchy.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                btnManageHierarchy.style.color = '#ef4444';
+            } else {
+                btnManageHierarchy.innerHTML = `<i data-lucide="settings"></i> Organizar Hierarquia`;
+                btnManageHierarchy.style.background = 'rgba(6, 182, 212, 0.1)';
+                btnManageHierarchy.style.borderColor = 'rgba(6, 182, 212, 0.2)';
+                btnManageHierarchy.style.color = 'var(--secondary)';
+            }
+            lucide.createIcons();
+            renderTree();
+        });
+    }
+
+    // Modal de Edição: Abrir
+    window.openEditOrgNodeModal = function(nodeId) {
+        const node = findNodeById(orgHierarchy, nodeId);
+        if (!node) return;
+
+        selectedNodeIdForEdit = nodeId;
+        inputEditOrgName.value = node.name || '';
+        inputEditOrgRole.value = node.role || '';
+        inputEditOrgAvatar.value = node.avatar || '';
+        selectEditOrgLocation.value = node.location || 'sa';
+
+        if (modalEditOrgNode) modalEditOrgNode.classList.add('open');
+    };
+
+    function closeEditOrgNodeModal() {
+        if (modalEditOrgNode) modalEditOrgNode.classList.remove('open');
+        selectedNodeIdForEdit = null;
+    }
+
+    if (btnCloseEditOrgNodeModal) btnCloseEditOrgNodeModal.addEventListener('click', closeEditOrgNodeModal);
+    if (btnCancelEditOrgNodeModal) btnCancelEditOrgNodeModal.addEventListener('click', closeEditOrgNodeModal);
+
+    if (modalEditOrgNode) {
+        modalEditOrgNode.addEventListener('click', (e) => {
+            if (e.target === modalEditOrgNode) closeEditOrgNodeModal();
+        });
+    }
+
+    // Modal de Edição: Salvar
+    if (btnSaveEditOrgNode) {
+        btnSaveEditOrgNode.addEventListener('click', () => {
+            if (!selectedNodeIdForEdit) return;
+            const node = findNodeById(orgHierarchy, selectedNodeIdForEdit);
+            if (!node) return;
+
+            const name = inputEditOrgName.value.trim();
+            const role = inputEditOrgRole.value.trim();
+            const avatar = inputEditOrgAvatar.value.trim().toUpperCase();
+            const location = selectEditOrgLocation.value;
+
+            if (!name || !role || !avatar) {
+                alert('Por favor, preencha todos os campos!');
+                return;
+            }
+
+            node.name = name;
+            node.role = role;
+            node.avatar = avatar;
+            node.location = location;
+
+            localStorage.setItem('stellantis_hierarchy', JSON.stringify(orgHierarchy));
+            closeEditOrgNodeModal();
+            renderTree();
+
+            // Gamificação
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Registrar na timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: name,
+                type: 'geral',
+                desc: `Editou as informações de "${name}" (${role}) na árvore hierárquica organizacional.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Dados de "${name}" atualizados com sucesso!\nVocê ganhou +50 XP por organizar a estrutura da equipe.`);
+        });
+    }
+
+    // Modal de Adição: Abrir
+    window.openAddOrgNodeModal = function(nodeId) {
+        selectedNodeIdForAdd = nodeId;
+        inputAddOrgName.value = '';
+        inputAddOrgRole.value = '';
+        inputAddOrgAvatar.value = '';
+        selectAddOrgLocation.value = 'sa';
+
+        if (modalAddOrgNode) modalAddOrgNode.classList.add('open');
+    };
+
+    function closeAddOrgNodeModal() {
+        if (modalAddOrgNode) modalAddOrgNode.classList.remove('open');
+        selectedNodeIdForAdd = null;
+    }
+
+    if (btnCloseAddOrgNodeModal) btnCloseAddOrgNodeModal.addEventListener('click', closeAddOrgNodeModal);
+    if (btnCancelAddOrgNodeModal) btnCancelAddOrgNodeModal.addEventListener('click', closeAddOrgNodeModal);
+
+    if (modalAddOrgNode) {
+        modalAddOrgNode.addEventListener('click', (e) => {
+            if (e.target === modalAddOrgNode) closeAddOrgNodeModal();
+        });
+    }
+
+    // Modal de Adição: Salvar
+    if (btnSaveAddOrgNode) {
+        btnSaveAddOrgNode.addEventListener('click', () => {
+            if (!selectedNodeIdForAdd) return;
+            const parentNode = findNodeById(orgHierarchy, selectedNodeIdForAdd);
+            if (!parentNode) return;
+
+            const name = inputAddOrgName.value.trim();
+            const role = inputAddOrgRole.value.trim();
+            const avatar = inputAddOrgAvatar.value.trim().toUpperCase();
+            const location = selectAddOrgLocation.value;
+
+            if (!name || !role || !avatar) {
+                alert('Por favor, preencha todos os campos!');
+                return;
+            }
+
+            // Descobrir level aproximado do filho
+            let level = 'N-6';
+            if (parentNode.level === 'N-2') level = 'N-3';
+            else if (parentNode.level === 'N-3') level = 'N-4';
+            else if (parentNode.level === 'N-4') level = 'N-5';
+            else if (parentNode.level === 'N-5') level = 'N-6 Group';
+            else if (parentNode.level && parentNode.level.includes('Group')) level = 'N-6';
+
+            const newChild = {
+                id: `node-${Date.now()}`,
+                name: name,
+                role: role,
+                avatar: avatar,
+                location: location,
+                level: level,
+                reports: []
+            };
+
+            if (!parentNode.reports) parentNode.reports = [];
+            parentNode.reports.push(newChild);
+
+            localStorage.setItem('stellantis_hierarchy', JSON.stringify(orgHierarchy));
+            closeAddOrgNodeModal();
+            renderTree();
+
+            // Gamificação
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Registrar na timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: name,
+                type: 'geral',
+                desc: `Adicionou o subordinado "${name}" sob a supervisão de "${parentNode.name}" na estrutura hierárquica.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Integrante "${name}" adicionado com sucesso!\nVocê ganhou +50 XP por expandir a estrutura do time.`);
+        });
+    }
+
+    // Ação de Excluir Nó
+    window.deleteOrgNode = function(nodeId) {
+        if (nodeId === 'heiko') {
+            alert('Não é possível excluir o diretor global raiz da árvore!');
+            return;
+        }
+
+        const parent = findParentNode(orgHierarchy, nodeId);
+        const node = findNodeById(orgHierarchy, nodeId);
+        if (!parent || !node) {
+            alert('Nó pai não encontrado. Não é possível excluir.');
+            return;
+        }
+
+        // Remover da lista de reports do pai
+        parent.reports = parent.reports.filter(child => child.id !== nodeId);
+
+        // Se o nó focado atual for excluído, redirecionar o foco para o pai
+        if (currentFocusedNodeId === nodeId) {
+            currentFocusedNodeId = parent.id;
+        }
+
+        localStorage.setItem('stellantis_hierarchy', JSON.stringify(orgHierarchy));
+        renderTree();
+
+        // Gamificação
+        if (typeof userXp !== 'undefined') {
+            userXp += 50;
+            localStorage.setItem('stellantis_user_xp', userXp);
+            if (typeof updateProfileUI === 'function') updateProfileUI();
+        }
+
+        // Registrar na timeline do Perfil
+        let currentIdeas = [];
+        try {
+            currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+        } catch(e) { currentIdeas = []; }
+
+        const nowStr = new Date().toLocaleString('pt-BR');
+        currentIdeas.push({
+            title: node.name,
+            type: 'geral',
+            desc: `Excluiu o integrante "${node.name}" (${node.role}) da estrutura organizacional.`,
+            date: nowStr
+        });
+        localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+        alert(`🗑️ Integrante "${node.name}" e seus subordinados foram removidos da hierarquia!\nVocê ganhou +50 XP.`);
+    };
 });
