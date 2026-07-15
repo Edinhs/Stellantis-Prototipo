@@ -563,12 +563,74 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatEmptyState = document.getElementById('chatEmptyState');
     const btnNewChat = document.getElementById('btnNewChat');
     const suggestionCards = document.querySelectorAll('.suggestion-card');
-    const historyItems = document.querySelectorAll('.history-item');
+    const historyItems = document.querySelectorAll('#recentChatHistory .history-item');
+    const chatMainArea = document.getElementById('chatMainArea');
+    const chatTraditionalView = document.getElementById('chatTraditionalView');
+    const notebookLayout = document.getElementById('notebookLayout');
+    const btnToggleChatSidebar = document.getElementById('btnToggleChatSidebar');
+    const chatSidebar = document.querySelector('.chat-sidebar');
+    
+    // Elementos do Módulo Notebook
+    const btnCreateNotebook = document.getElementById('btnCreateNotebook');
+    const notebookHistoryList = document.getElementById('#notebookHistoryList') || document.getElementById('notebookHistoryList');
+    const notebookNoteTitle = document.getElementById('notebookNoteTitle');
+    const notebookNoteContent = document.getElementById('notebookNoteContent');
+    const notebookStatusIndicator = document.getElementById('notebookStatusIndicator');
+    const btnNotebookSave = document.getElementById('btnNotebookSave');
+    
+    const btnNotebookSummary = document.getElementById('btnNotebookSummary');
+    const btnNotebookImprove = document.getElementById('btnNotebookImprove');
+    const btnNotebookExtractAcronyms = document.getElementById('btnNotebookExtractAcronyms');
+    
+    const notebookChatBody = document.getElementById('notebookChatBody');
+    const notebookChatEmptyState = document.getElementById('notebookChatEmptyState');
+    const notebookChatMessages = document.getElementById('notebookChatMessages');
+    const notebookChatInput = document.getElementById('notebookChatInput');
+    const btnSendNotebookChat = document.getElementById('btnSendNotebookChat');
 
+    // ==========================================
+    // DATA MOCK & LOCAL STORAGE PARA NOTEBOOKS
+    // ==========================================
+    const defaultNotebooks = {
+        "nb-1": {
+            title: "Diretrizes Bio-Hybrid",
+            content: "A plataforma Bio-Hybrid combina eletrificação avançada com motores flex a etanol de alta eficiência. O sistema é segmentado em três arquiteturas principais:\n1. Bio-Hybrid (MHEV 12V/48V): utiliza um dispositivo elétrico multifuncional que substitui o alternador e motor de partida tradicional, auxiliando nas acelerações e regenerando energia nas frenagens.\n2. Bio-Hybrid e-DCT (HEV): acopla um motor elétrico de tração diretamente ao câmbio e-DCT (transmissão de dupla embreagem eletrificada) permitindo rodagem em modo 100% elétrico em baixas velocidades.\n3. Bio-Hybrid Plug-in (PHEV): combina uma bateria de íons de lítio recarregável na tomada com motor elétrico traseiro e motor flex dianteiro T270 Turbo Flex, oferecendo tração integral eletrificada (e-AWD)."
+        },
+        "nb-2": {
+            title: "Projeto Jeep Commander",
+            content: "O Jeep Commander emprega a arquitetura eletrônica global Small Wide e incorpora sistemas avançados de assistência ao motorista (ADAS) nível 2. Principais componentes e fornecedores:\n- Radar frontal e câmera no para-brisa integrados fornecidos pela Aptiv e Bosch.\n- Controle de Cruzeiro Adaptativo (ACC) com função Stop & Go para tráfego pesado.\n- Frenagem Autônoma de Emergência (AEB) com detecção ativa de ciclistas e pedestres.\n- Assistente de Permanência e Centralização em Faixa (LKA/LFA) com correções de torque ativo na coluna de direção assistida eletricamente.\n- Central multimídia Uconnect de 10.1 polegadas baseada no sistema Android Automotive (IVI) com processador Harman."
+        },
+        "nb-3": {
+            title: "Diagnóstico ADAS Nível 2",
+            content: "Procedimentos de calibração e teste dinâmico para ADAS Nível 2 no Jeep Commander:\n- Calibração estática do Radar Frontal (Bosch LRR4): exige posicionamento do espelho refletor metálico a exatamente 1.5 metros do centro do para-choque, alinhamento a laser no eixo geométrico de empuxo e temperatura controlada na oficina.\n- Calibração estática da Câmera Multifunção (Aptiv MFC): exige painel de alvos contrastantes (tabuleiro xadrez oficial Stellantis) iluminado homogeneamente a 2.1 metros do para-brisa.\n- Teste de validação dinâmico em pista de testes a velocidades acima de 40 km/h para detecção ativa de faixas de tráfego, leitura de placas e teste dinâmico de frenagem ativa."
+        }
+    };
+
+    // Inicializar o banco de dados de notebooks no LocalStorage
+    let activeNotebookId = null;
+    let notebookSaveTimeout = null;
+
+    function getNotebooks() {
+        let stored = localStorage.getItem('stellantis_notebooks');
+        if (!stored) {
+            localStorage.setItem('stellantis_notebooks', JSON.stringify(defaultNotebooks));
+            return defaultNotebooks;
+        }
+        return JSON.parse(stored);
+    }
+
+    function saveNotebooks(notebooks) {
+        localStorage.setItem('stellantis_notebooks', JSON.stringify(notebooks));
+    }
+
+    // ==========================================
+    // LÓGICA DO CHAT GEMINI TRADICIONAL
+    // ==========================================
     function appendGptMessage(sender, text) {
         if (!chatMessagesScroll) return;
 
-        // Ocultar estado vazio e mostrar contêiner de mensagens
+        // Ativar layout de mensagens ativas (move input para baixo)
+        if (chatMainArea) chatMainArea.classList.add('has-messages');
         if (chatEmptyState) chatEmptyState.style.display = 'none';
         if (chatMessagesScroll) chatMessagesScroll.style.display = 'flex';
 
@@ -576,8 +638,8 @@ document.addEventListener('DOMContentLoaded', () => {
         messageEl.className = `message ${sender}`;
         
         const avatarHtml = sender === 'user' 
-            ? '<div class="msg-avatar"><i data-lucide="user"></i></div>' 
-            : '<div class="msg-avatar"><i data-lucide="bot"></i></div>';
+            ? '<div class="msg-avatar" style="background:#27272a;"><i data-lucide="user" style="color:#a1a1aa;"></i></div>' 
+            : '<div class="msg-avatar" style="background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);"><i data-lucide="sparkles" style="color:#ffffff; fill:#ffffff;"></i></div>';
 
         messageEl.innerHTML = `
             ${avatarHtml}
@@ -599,29 +661,29 @@ document.addEventListener('DOMContentLoaded', () => {
         appendGptMessage('user', query);
         chatInputGpt.value = '';
 
-        // Simulação de resposta da IA
+        // Simulação de resposta do Gemini
         setTimeout(() => {
             let responseText = "Desculpe, não entendi essa questão automotiva. Tente me perguntar sobre 'ADAS', 'Bio-Hybrid' ou 'motores Turbo Flex'.";
             const q = query.toLowerCase();
 
             if (q.includes('olá') || q.includes('oi')) {
-                responseText = "Olá! Sou o assistente inteligente StellantisGPT. No que posso te ajudar hoje? Posso te explicar sobre tecnologias de propulsão ou te ajudar a criar novos verbetes.";
-            } else if (q.includes('adas')) {
-                responseText = "O **ADAS** (Advanced Driver Assistance Systems) engloba assistentes como Frenagem Autônoma de Emergência, Detecção de Fadiga e Piloto Automático Adaptativo. No Jeep Commander, o ADAS atinge o nível 2 de automação.";
+                responseText = "Olá! Sou o assistente inteligente Gemini Stellantis. Como posso te auxiliar em seu trabalho de engenharia ou treinamento hoje?";
+            } else if (q.includes('adas') || q.includes('automação')) {
+                responseText = "Os sistemas **ADAS** (Advanced Driver Assistance Systems) no grupo Stellantis englobam assistentes avançados ativos como o ACC (Controle de Cruzeiro Adaptativo), AEB (Frenagem Autônoma de Emergência) e LKA (Assistente de Permanência em Faixa). No Jeep Commander, o sistema ADAS de nível 2 atua combinando radar e câmera para centralização de faixa e controle dinâmico longitudinal.";
             } else if (q.includes('bio-hybrid') || q.includes('hibrido') || q.includes('híbrido')) {
-                responseText = "O **Bio-Hybrid** da Stellantis é uma tecnologia inovadora que une eletrificação a motores flex movidos a etanol, ideal para a transição energética sustentável no Brasil.";
-            } else if (q.includes('t270') || q.includes('motor turbo')) {
-                responseText = "O motor **T270 Turbo Flex** tem 1.3L, injeção direta de combustível e comando de válvulas MultiAir III. Produz até 185 cavalos de potência. É considerado um dos motores flex mais modernos do mundo.";
+                responseText = "A arquitetura **Bio-Hybrid** da Stellantis engloba a eletrificação inteligente de motores flex a etanol. Ela se divide em:\n\n*   **Bio-Hybrid (MHEV)**: Sistema híbrido leve com bateria de 12V/48V.\n*   **Bio-Hybrid e-DCT (HEV)**: Híbrido convencional com motor elétrico acoplado no câmbio de dupla embreagem.\n*   **Bio-Hybrid Plug-in (PHEV)**: Híbrido plug-in recarregável com tração e-AWD e motor T270 Turbo Flex.";
+            } else if (q.includes('t270') || q.includes('motor turbo') || q.includes('hurricane')) {
+                responseText = "O motor **T270 Turbo Flex** (1.3L GSE) produz 185 cv com etanol e possui tecnologia de comando de válvulas **MultiAir III** para maior eficiência na admissão. Já o motor **Hurricane 4** é um 2.0L Turbo a gasolina de 272 cv que equipa veículos de alta performance como a Ram Rampage e o Jeep Wrangler.";
             } else if (q.includes('plataforma') || q.includes('stla')) {
-                responseText = "A Stellantis possui quatro plataformas globais voltadas para BEVs (Veículos Elétricos a Bateria): STLA Small, STLA Medium, STLA Large e STLA Frame. Elas oferecem alta flexibilidade estrutural.";
-            } else if (q.includes('ideia') || q.includes('prototipo') || q.includes('sugestão')) {
-                responseText = "Você pode inserir qualquer ideia ou feedback usando o **Painel de Ideias** na lateral direita da sua tela! Basta preencher o tipo, título e descrição.";
-            } else if (q.includes('criar') && q.includes('termo')) {
-                responseText = "Claro! Para criar um novo termo, use o Painel de Ideias na direita e escolha a opção 'Novo Termo para Dicionário'. Ele aparecerá imediatamente na nossa grade de busca do Dicionário.";
+                responseText = "A Stellantis adota quatro plataformas globais modulares para eletrificação:\n\n1.  **STLA Small**: Para veículos urbanos e compactos.\n2.  **STLA Medium**: Otimizada para veículos de médio porte (como o novo Compass elétrico).\n3.  **STLA Large**: Para utilitários e carros de performance premium.\n4.  **STLA Frame**: Arquitetura de chassis de travessa para pickups pesadas e SUVs grandes (ex: Ram 1500).";
+            } else if (q.includes('dicionário') || q.includes('criar') || q.includes('flashcard')) {
+                responseText = "Você pode usar o **Dicionário** no menu principal para pesquisar termos. Nos detalhes de qualquer termo, existe a opção 'Criar Flashcard' que te redireciona automaticamente para o modal de criação de flashcards na aba de Treinamento com os dados preenchidos!";
+            } else if (q.includes('especialista') || q.includes('contatar')) {
+                responseText = "Na aba de **Informações**, em 'Especialistas', você pode ver os líderes de cada área da Stellantis (como Motor, Transmissão, Conectividade, ADAS) e clicar em 'Contatar Especialista' para iniciar dúvidas contextuais.";
             }
 
             appendGptMessage('system', responseText);
-        }, 800);
+        }, 850);
     }
 
     if (btnSendGpt) {
@@ -635,9 +697,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Botão de Novo Chat
+    // Botão de Novo Chat (Gemini Style)
     if (btnNewChat) {
         btnNewChat.addEventListener('click', () => {
+            // Sair do modo Notebook
+            if (notebookLayout) notebookLayout.style.display = 'none';
+            if (chatTraditionalView) chatTraditionalView.style.display = 'flex';
+            
+            // Limpar estados ativos
+            const allItems = document.querySelectorAll('.chat-sidebar .history-item');
+            allItems.forEach(item => item.classList.remove('active'));
+            
+            // Voltar input para o centro
+            if (chatMainArea) chatMainArea.classList.remove('has-messages');
             if (chatMessagesScroll) {
                 chatMessagesScroll.innerHTML = '';
                 chatMessagesScroll.style.display = 'none';
@@ -645,7 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (chatEmptyState) {
                 chatEmptyState.style.display = 'flex';
             }
-            historyItems.forEach(item => item.classList.remove('active'));
+            activeNotebookId = null;
         });
     }
 
@@ -663,28 +735,372 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simulação do histórico lateral
     historyItems.forEach(item => {
         item.addEventListener('click', () => {
-            historyItems.forEach(i => i.classList.remove('active'));
+            // Garantir que estamos no chat tradicional
+            if (notebookLayout) notebookLayout.style.display = 'none';
+            if (chatTraditionalView) chatTraditionalView.style.display = 'flex';
+            
+            const allItems = document.querySelectorAll('.chat-sidebar .history-item');
+            allItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             
-            const title = item.textContent.trim();
+            const title = item.querySelector('span') ? item.querySelector('span').textContent.trim() : item.textContent.trim();
             
             // Limpar mensagens atuais e simular carregamento
             if (chatMessagesScroll) chatMessagesScroll.innerHTML = '';
             
-            appendGptMessage('user', `Carregar histórico: ${title}`);
+            appendGptMessage('user', `Carregar histórico da conversa: ${title}`);
             setTimeout(() => {
-                let loadResponse = `Carregando histórico do chat sobre **${title}**. Aqui estão as últimas diretrizes discutidas...`;
+                let loadResponse = `Carregando discussões anteriores do Gemini sobre **${title}**...`;
                 if (title.includes('ADAS')) {
-                    loadResponse += "\n\nO sistema ADAS Stellantis monitora constantemente o ambiente. A câmera no para-brisa atua de forma redundante ao radar frontal.";
-                } else if (title.includes('Motores')) {
-                    loadResponse += "\n\nA linha de motores GSE Turbo (T270 e T200) emprega bloco em alumínio e cabeçote MultiAir para controle dinâmico de admissão.";
+                    loadResponse += "\n\nAs diretrizes de segurança do sistema ADAS Stellantis exigem auditorias de software Tier-1 da Aptiv trimestralmente.";
+                } else if (title.includes('Motores') || title.includes('Turbo')) {
+                    loadResponse += "\n\nO cabeçote MultiAir III regula a abertura das válvulas de admissão de forma eletro-hidráulica em tempo real, maximizando o rendimento do motor T270 Turbo Flex.";
                 } else {
-                    loadResponse += "\n\nAs plataformas modulares STLA suportam carregamento rápido e eletrificação avançada.";
+                    loadResponse += "\n\nDiscussões focadas nos padrões estruturais e flexibilidade da plataforma STLA no polo de Betim.";
                 }
                 appendGptMessage('system', loadResponse);
             }, 400);
         });
     });
+
+    // Botão recolher/expandir sidebar do Chat
+    if (btnToggleChatSidebar && chatSidebar) {
+        btnToggleChatSidebar.addEventListener('click', () => {
+            chatSidebar.classList.toggle('collapsed');
+            if (chatSidebar.classList.contains('collapsed')) {
+                chatSidebar.style.width = '64px';
+                // Ocultar spans de texto e marcas de cabeçalho
+                document.querySelectorAll('.chat-sidebar span').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.chat-sidebar .section-label').forEach(el => el.style.display = 'none');
+                if (btnCreateNotebook) btnCreateNotebook.style.display = 'none';
+            } else {
+                chatSidebar.style.width = '260px';
+                document.querySelectorAll('.chat-sidebar span').forEach(el => el.style.display = 'inline');
+                document.querySelectorAll('.chat-sidebar .section-label').forEach(el => el.style.display = 'inline');
+                if (btnCreateNotebook) btnCreateNotebook.style.display = 'flex';
+            }
+        });
+    }
+
+    // ==========================================
+    // 📓 WORKSPACE DO NOTEBOOK INTERATIVO
+    // ==========================================
+    
+    // Atualizar a lista de notebooks na barra lateral
+    function renderNotebookSidebar() {
+        const notebooks = getNotebooks();
+        if (!notebookHistoryList) return;
+        
+        notebookHistoryList.innerHTML = '';
+        
+        Object.keys(notebooks).forEach(id => {
+            const note = notebooks[id];
+            const li = document.createElement('li');
+            li.className = 'history-item notebook-item';
+            if (activeNotebookId === id) li.classList.add('active');
+            li.setAttribute('data-notebook-id', id);
+            
+            li.innerHTML = `
+                <i data-lucide="file-text"></i>
+                <span>📝 ${note.title || 'Sem título'}</span>
+            `;
+            
+            li.addEventListener('click', () => {
+                selectNotebook(id);
+            });
+            
+            notebookHistoryList.appendChild(li);
+        });
+        lucide.createIcons();
+    }
+
+    // Selecionar e carregar uma anotação no Notebook
+    function selectNotebook(id) {
+        const notebooks = getNotebooks();
+        const note = notebooks[id];
+        if (!note) return;
+        
+        activeNotebookId = id;
+        
+        // Ativar classe ativa na sidebar
+        document.querySelectorAll('.chat-sidebar .history-item').forEach(i => i.classList.remove('active'));
+        const activeLi = document.querySelector(`.notebook-item[data-notebook-id="${id}"]`);
+        if (activeLi) activeLi.classList.add('active');
+        
+        // Alternar visualizações da Main Area
+        if (chatTraditionalView) chatTraditionalView.style.display = 'none';
+        if (notebookLayout) notebookLayout.style.display = 'grid';
+        
+        // Carregar dados no editor
+        if (notebookNoteTitle) notebookNoteTitle.value = note.title;
+        if (notebookNoteContent) notebookNoteContent.value = note.content;
+        
+        // Resetar Chat do Notebook
+        if (notebookChatEmptyState) notebookChatEmptyState.style.display = 'flex';
+        if (notebookChatMessages) {
+            notebookChatMessages.innerHTML = '';
+            notebookChatMessages.style.display = 'none';
+        }
+        
+        if (notebookStatusIndicator) {
+            notebookStatusIndicator.innerHTML = '<i data-lucide="check-circle-2" style="color:#22c55e;"></i> Salvo localmente';
+        }
+        lucide.createIcons();
+    }
+
+    // Criar uma nova anotação / Notebook
+    if (btnCreateNotebook) {
+        btnCreateNotebook.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita clicks no pai
+            
+            const notebooks = getNotebooks();
+            const newId = 'nb-' + Date.now();
+            
+            notebooks[newId] = {
+                title: "Nova Anotação",
+                content: "Escreva suas anotações técnicas aqui..."
+            };
+            
+            saveNotebooks(notebooks);
+            renderNotebookSidebar();
+            selectNotebook(newId);
+            
+            // Focar no título para digitação
+            if (notebookNoteTitle) {
+                notebookNoteTitle.focus();
+                notebookNoteTitle.select();
+            }
+        });
+    }
+
+    // Salvamento automático com Debounce ao digitar no editor do Notebook
+    function triggerAutoSave() {
+        if (!activeNotebookId) return;
+        
+        if (notebookStatusIndicator) {
+            notebookStatusIndicator.innerHTML = '<i class="ai-pulse-icon" style="color:var(--text-dark); margin-right:4px;">⏳</i> Salvando anotação...';
+        }
+        
+        clearTimeout(notebookSaveTimeout);
+        notebookSaveTimeout = setTimeout(() => {
+            const notebooks = getNotebooks();
+            if (notebooks[activeNotebookId]) {
+                notebooks[activeNotebookId].title = notebookNoteTitle.value || "Sem título";
+                notebooks[activeNotebookId].content = notebookNoteContent.value;
+                saveNotebooks(notebooks);
+                
+                // Atualizar título na barra lateral sem recarregar tudo
+                const liSpan = document.querySelector(`.notebook-item[data-notebook-id="${activeNotebookId}"] span`);
+                if (liSpan) liSpan.textContent = `📝 ${notebookNoteTitle.value || "Sem título"}`;
+                
+                if (notebookStatusIndicator) {
+                    notebookStatusIndicator.innerHTML = '<i data-lucide="check-circle-2" style="color:#22c55e;"></i> Salvo automaticamente';
+                    lucide.createIcons();
+                }
+            }
+        }, 1200);
+    }
+
+    if (notebookNoteTitle) notebookNoteTitle.addEventListener('input', triggerAutoSave);
+    if (notebookNoteContent) notebookNoteContent.addEventListener('input', triggerAutoSave);
+
+    // Botão Salvar manual
+    if (btnNotebookSave) {
+        btnNotebookSave.addEventListener('click', () => {
+            if (!activeNotebookId) return;
+            const notebooks = getNotebooks();
+            if (notebooks[activeNotebookId]) {
+                notebooks[activeNotebookId].title = notebookNoteTitle.value || "Sem título";
+                notebooks[activeNotebookId].content = notebookNoteContent.value;
+                saveNotebooks(notebooks);
+                renderNotebookSidebar();
+                
+                // Feedback visual de sucesso no botão
+                const originalText = btnNotebookSave.innerHTML;
+                btnNotebookSave.innerHTML = '<i data-lucide="check"></i> Salvo!';
+                btnNotebookSave.style.background = '#22c55e';
+                btnNotebookSave.style.color = '#ffffff';
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    btnNotebookSave.innerHTML = originalText;
+                    btnNotebookSave.style.background = '';
+                    btnNotebookSave.style.color = '';
+                    lucide.createIcons();
+                }, 1500);
+            }
+        });
+    }
+
+    // Lógica do Chat do Notebook (Direita)
+    function appendNotebookChatMessage(sender, text) {
+        if (!notebookChatMessages) return;
+        
+        if (notebookChatEmptyState) notebookChatEmptyState.style.display = 'none';
+        notebookChatMessages.style.display = 'flex';
+        
+        const msgEl = document.createElement('div');
+        msgEl.className = `notebook-msg ${sender}`;
+        msgEl.style.padding = '10px 12px';
+        msgEl.style.borderRadius = '10px';
+        msgEl.style.marginBottom = '10px';
+        msgEl.style.fontSize = '12px';
+        msgEl.style.lineHeight = '1.5';
+        
+        if (sender === 'user') {
+            msgEl.style.background = 'rgba(255, 255, 255, 0.05)';
+            msgEl.style.color = 'var(--text-main)';
+            msgEl.style.alignSelf = 'flex-end';
+            msgEl.style.marginLeft = '20px';
+            msgEl.innerHTML = `<strong>Você:</strong><br>${text}`;
+        } else {
+            msgEl.style.background = 'rgba(6, 182, 212, 0.06)';
+            msgEl.style.border = '1px solid rgba(6, 182, 212, 0.15)';
+            msgEl.style.color = 'var(--text-main)';
+            msgEl.style.alignSelf = 'flex-start';
+            msgEl.style.marginRight = '20px';
+            msgEl.innerHTML = `<strong>Assistente Gemini:</strong><br>${text}`;
+        }
+        
+        notebookChatMessages.appendChild(msgEl);
+        notebookChatBody.scrollTop = notebookChatBody.scrollHeight;
+    }
+
+    function processNotebookChat() {
+        if (!notebookChatInput) return;
+        const query = notebookChatInput.value.trim();
+        if (query === '') return;
+        
+        const noteContent = notebookNoteContent ? notebookNoteContent.value.trim() : "";
+        
+        appendNotebookChatMessage('user', query);
+        notebookChatInput.value = '';
+        
+        setTimeout(() => {
+            let reply = "Como assistente do seu Notebook, analisei o texto ao lado, mas não encontrei menção específica a essa pergunta. Você pode adicionar mais detalhes na nota para eu te responder melhor!";
+            const q = query.toLowerCase();
+            
+            if (noteContent === "") {
+                reply = "Suas anotações no editor à esquerda estão vazias! Escreva algo sobre motores, transmissões ou projetos Stellantis e eu poderei te ajudar com análises e resumos.";
+            } else {
+                // Análise contextual baseada em palavras-chave da nota
+                if (q.includes('resum') || q.includes('tópicos') || q.includes('resumo')) {
+                    reply = `Aqui está uma síntese dos pontos-chave presentes na sua nota:\n\n1. **Foco Principal**: ${notebookNoteTitle.value}\n2. **Tamanho das Notas**: Contém ${noteContent.split(' ').length} palavras.\n3. **Conteúdo**: Analisando os conceitos, o texto descreve componentes técnicos, processos e parâmetros operacionais.`;
+                } else if (q.includes('componente') || q.includes('peça') || q.includes('tecnologia')) {
+                    if (noteContent.toLowerCase().includes('adas') || noteContent.toLowerCase().includes('commander')) {
+                        reply = "Com base nas suas anotações, as principais tecnologias e componentes citados para o Jeep Commander são: câmera de para-brisa, radar frontal da Bosch/Aptiv, ACC (Controle de Cruzeiro Adaptativo), AEB (Frenagem Autônoma de Emergência) e central Uconnect de 10.1\".";
+                    } else if (noteContent.toLowerCase().includes('hybrid')) {
+                        reply = "Com base nas suas anotações, a plataforma Bio-Hybrid descreve três tecnologias principais: MHEV (Híbrido leve com gerador elétrico e baterias de 12V/48V), HEV (Híbrido convencional com motor no câmbio e-DCT) e PHEV (Híbrido plug-in recarregável com motor flex T270 dianteiro e motor elétrico traseiro).";
+                    } else {
+                        reply = "Encontrei menções a componentes de engenharia automotiva na sua nota. O texto detalha a integração física e eletrônica de módulos de controle da Stellantis.";
+                    }
+                } else if (q.includes('calibração') || q.includes('procedimento') || q.includes('teste')) {
+                    if (noteContent.toLowerCase().includes('calibração') || noteContent.toLowerCase().includes('radar')) {
+                        reply = "De acordo com suas notas de calibração, o Radar Frontal (Bosch LRR4) requer um espelho refletor posicionado a 1.5 metros do centro e alinhamento geométrico. Já a câmera (Aptiv MFC) requer um tabuleiro xadrez a 2.1 metros do para-brisa.";
+                    } else {
+                        reply = "As calibrações e testes descritos no seu texto exigem padrões rígidos de controle, ferramentas especializadas Stellantis e condições controladas de oficina ou pista.";
+                    }
+                } else {
+                    // Resposta inteligente genérica contextual
+                    reply = `Com base nas informações da sua nota de **"${notebookNoteTitle.value}"**, pude extrair que o foco principal é a engenharia automotiva e validação de sistemas Stellantis. Você gostaria de expandir algum detalhe específico das notas, como fornecedores ou parâmetros operacionais?`;
+                }
+            }
+            
+            // Formatando quebras de linha para HTML
+            reply = reply.replace(/\n/g, '<br>');
+            appendNotebookChatMessage('system', reply);
+        }, 800);
+    }
+
+    if (btnSendNotebookChat) btnSendNotebookChat.addEventListener('click', processNotebookChat);
+    if (notebookChatInput) {
+        notebookChatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                processNotebookChat();
+            }
+        });
+    }
+
+    // Botões assistidos por IA do Notebook (Esquerda)
+    
+    // 1. Resumir nota
+    if (btnNotebookSummary) {
+        btnNotebookSummary.addEventListener('click', () => {
+            const content = notebookNoteContent ? notebookNoteContent.value.trim() : "";
+            if (content === "") {
+                alert("O conteúdo da nota está vazio para ser resumido!");
+                return;
+            }
+            
+            // Simular efeito de processamento
+            appendNotebookChatMessage('user', "Por favor, gere um resumo executivo desta anotação.");
+            
+            setTimeout(() => {
+                let summary = `### Resumo da Nota: **${notebookNoteTitle.value}**\n\n- **Objetivo**: Documentação técnica e de conformidade de engenharia Stellantis.\n- **Pontos Relevantes**:\n  - Detalhamento de arquitetura física e eletrônica do sistema.\n  - Definição clara dos componentes principais e parametrização.\n  - Indicações de fornecedores Tier-1 e protocolos de validação.\n\n- **Status**: Pronto para revisão de engenharia.`;
+                summary = summary.replace(/\n/g, '<br>');
+                appendNotebookChatMessage('system', summary);
+            }, 600);
+        });
+    }
+
+    // 2. Melhorar texto
+    if (btnNotebookImprove) {
+        btnNotebookImprove.addEventListener('click', () => {
+            const content = notebookNoteContent ? notebookNoteContent.value.trim() : "";
+            if (content === "") {
+                alert("O conteúdo da nota está vazio para ser aprimorado!");
+                return;
+            }
+            
+            appendNotebookChatMessage('user', "Refine a linguagem deste texto para um padrão técnico e corporativo formal.");
+            
+            setTimeout(() => {
+                let improvement = `Aqui está uma versão refinada e profissional para as suas anotações:\n\n*\"O presente documento estabelece as especificações de arquitetura e parâmetros operacionais do sistema ${notebookNoteTitle.value}. A integração dos componentes de controle atende aos requisitos globais de qualidade e durabilidade Stellantis, assegurando a conformidade das interfaces elétricas e protocolos de comunicação Tier-1. As calibrações descritas devem ser executadas em ambiente técnico controlado, seguindo as diretrizes oficiais de validação.\"*`;
+                improvement = improvement.replace(/\n/g, '<br>');
+                appendNotebookChatMessage('system', improvement);
+            }, 700);
+        });
+    }
+
+    // 3. Extrair Siglas
+    if (btnNotebookExtractAcronyms) {
+        btnNotebookExtractAcronyms.addEventListener('click', () => {
+            const content = notebookNoteContent ? notebookNoteContent.value.trim() : "";
+            if (content === "") {
+                alert("Escreva alguma nota antes de extrair as siglas!");
+                return;
+            }
+            
+            appendNotebookChatMessage('user', "Encontre e explique as siglas técnicas Stellantis neste texto.");
+            
+            setTimeout(() => {
+                let acronymsText = "Identifiquei as seguintes siglas no seu texto e as associei com a base de dados do dicionário Stellantis:<br><br>";
+                
+                const found = [];
+                if (content.toLowerCase().includes('adas')) found.push("🚗 **ADAS**: Advanced Driver Assistance Systems (Sistemas Avançados de Assistência ao Condutor).");
+                if (content.toLowerCase().includes('acc')) found.push("⏱️ **ACC**: Adaptive Cruise Control (Controle de Cruzeiro Adaptativo).");
+                if (content.toLowerCase().includes('mhev')) found.push("⚡ **MHEV**: Mild Hybrid Electric Vehicle (Veículo Híbrido Leve).");
+                if (content.toLowerCase().includes('hev')) found.push("🔋 **HEV**: Hybrid Electric Vehicle (Veículo Híbrido Convencional).");
+                if (content.toLowerCase().includes('phev')) found.push("🔌 **PHEV**: Plug-in Hybrid Electric Vehicle (Híbrido Plug-in).");
+                if (content.toLowerCase().includes('e-dct')) found.push("⚙️ **e-DCT**: electrified Dual Clutch Transmission (Transmissão de dupla embreagem eletrificada).");
+                if (content.toLowerCase().includes('ivi') || content.toLowerCase().includes('uconnect')) found.push("📱 **IVI**: In-Vehicle Infotainment (Infotretenimento de Bordo).");
+                if (content.toLowerCase().includes('t270')) found.push("🔥 **T270**: Motor Stellantis 1.3L Turbo Flex de 185 cv.");
+                
+                if (found.length === 0) {
+                    acronymsText += "Nenhuma sigla técnica Stellantis cadastrada foi identificada no texto atual. Tente inserir termos como ADAS, ACC, MHEV ou e-DCT.";
+                } else {
+                    acronymsText += found.join('<br>');
+                }
+                
+                appendNotebookChatMessage('system', acronymsText);
+            }, 600);
+        });
+    }
+
+    // Inicializar os Notebooks na carga da página
+    renderNotebookSidebar();
+
+
 
     // ========================================================
     // 6. LÓGICA DO CENTRO DE TREINAMENTO (SUBABAS, FLASHCARDS, LEITOR)
