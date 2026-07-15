@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellantis Dictionary - Protótipo Interativo</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (para ícones modernos) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Three.js (para o visualizador 3D futurista) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Fundo de Partículas Dinâmicas (Efeito Visual) -->
+    <div class="bg-particles" id="bgParticles"></div>
+
+    <!-- Header / Navbar -->
+    <header class="main-header">
+        <div class="logo-container">
+            <svg viewBox="0 0 450 120" class="stellantis-logo-svg" style="width: 100%; height: auto; max-width: 220px; color: var(--text-main); display: block;">
+                <!-- Anel de Pontos (Constelação) -->
+                <g class="constellation-group" fill="var(--secondary)" transform-origin="256px 64px" style="transition: transform 0.8s cubic-bezier(0.3, 1, 0.3, 1);">
+                    <!-- Camada Interna R=24 -->
+                    <circle cx="280" cy="64" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="276.8" cy="76" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="268" cy="84.8" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="256" cy="88" r="1.8" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="244" cy="84.8" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="235.2" cy="76" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="232" cy="64" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="235.2" cy="52" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="244" cy="43.2" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="256" cy="40" r="1.8" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="268" cy="43.2" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="276.8" cy="52" r="1.5" class="stellantis-star" transform-origin="256px 64px" />
+
+                    <!-- Camada Média R=34 -->
+                    <circle cx="290" cy="64" r="2.2" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="287.4" cy="77" r="2.1" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="280" cy="88" r="2.2" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="269" cy="95.4" r="2.3" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="256" cy="98" r="2.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="243" cy="95.4" r="2.3" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="232" cy="88" r="2.2" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="224.6" cy="77" r="2.1" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="222" cy="64" r="2.2" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="224.6" cy="51" r="2.1" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="232" cy="40" r="2.2" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="243" cy="32.6" r="2.3" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="256" cy="30" r="2.5" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="269" cy="32.6" r="2.3" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="280" cy="40" r="2.2" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="287.4" cy="51" r="2.1" class="stellantis-star" transform-origin="256px 64px" />
+
+                    <!-- Camada Externa R=45 -->
+                    <circle cx="301" cy="64" r="1.6" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="298.3" cy="79.4" r="1.4" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="290.5" cy="92.9" r="1.6" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="278.5" cy="103" r="1.7" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="263.8" cy="108.3" r="1.8" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="248.2" cy="108.3" r="1.8" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="233.5" cy="103" r="1.7" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="221.5" cy="92.9" r="1.6" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="213.7" cy="79.4" r="1.4" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="211" cy="64" r="1.6" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="213.7" cy="48.6" r="1.4" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="221.5" cy="35.1" r="1.6" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="233.5" cy="25" r="1.7" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="248.2" cy="19.7" r="1.8" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="263.8" cy="19.7" r="1.8" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="278.5" cy="25" r="1.7" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="290.5" cy="35.1" r="1.6" class="stellantis-star" transform-origin="256px 64px" />
+                    <circle cx="298.3" cy="48.6" r="1.4" class="stellantis-star" transform-origin="256px 64px" />
+                </g>
+
+                <!-- Palavra STELLANTIS (Vetorizada) -->
+                <g stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- S -->
+                    <path d="M 62,46 L 38,46 A 8,8 0 0,0 30,54 L 30,56 A 8,8 0 0,0 38,64 L 58,64 A 8,8 0 0,1 66,72 L 66,74 A 8,8 0 0,1 58,82 L 30,82" />
+                    <!-- T -->
+                    <path d="M 82,46 L 112,46 M 97,46 L 97,82" />
+                    <!-- E -->
+                    <path d="M 148,46 L 128,46 M 128,64 L 144,64 M 148,82 L 128,82 M 128,46 L 128,82" />
+                    <!-- L -->
+                    <path d="M 166,46 L 166,82 L 186,82" />
+                    <!-- L -->
+                    <path d="M 204,46 L 204,82 L 224,82" />
+                    <!-- Λ (A) -->
+                    <path d="M 242,82 L 256,46 L 270,82" />
+                    <!-- N -->
+                    <path d="M 288,82 L 288,46 L 312,82 L 312,46" />
+                    <!-- T -->
+                    <path d="M 326,46 L 356,46 M 341,46 L 341,82" />
+                    <!-- I -->
+                    <path d="M 372,46 L 372,82" />
+                    <!-- S -->
+                    <path d="M 416,46 L 392,46 A 8,8 0 0,0 384,54 L 384,56 A 8,8 0 0,0 392,64 L 412,64 A 8,8 0 0,1 420,72 L 420,74 A 8,8 0 0,1 412,82 L 384,82" />
+                </g>
+
+                <!-- Palavra DICTIONARY -->
+                <text x="225" y="110" fill="currentColor" font-family="var(--font-heading)" font-size="13" font-weight="700" letter-spacing="11" text-anchor="middle">DICTIONARY</text>
+            </svg>
+        </div>
+
+        <nav class="main-nav">
+            <ul>
+                <li><button class="nav-link active" data-target="home">Início</button></li>
+                <li><button class="nav-link" data-target="dicionario">Dicionário</button></li>
+                <li><button class="nav-link" data-target="explorador">Explorador 3D <span style="font-size: 8px; background: rgba(6,182,212,0.15); color: var(--secondary); padding: 1px 5px; border-radius: 4px; font-weight: 800; vertical-align: middle; margin-left: 2px; border: 1px solid rgba(6,182,212,0.2);">BETA</span></button></li>
+                <li><button class="nav-link" data-target="chat-ia">Chat IA</button></li>
+                <li class="nav-item-dropdown">
+                    <button class="nav-link" data-target="treinamento">
+                        Treinamento & Integração <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-link" data-target="onboarding" data-sub="boas-vindas">Kit de Boas-Vindas</button></li>
+                        <li><button class="dropdown-link" data-target="treinamento" data-sub="cards">Flashcards</button></li>
+                        <li><button class="dropdown-link" data-target="treinamento" data-sub="conteudo">Conteúdo Técnico</button></li>
+                        <li><button class="dropdown-link" data-target="treinamento" data-sub="canais">Canais Oficiais</button></li>
+                    </ul>
+                </li>
+                <li class="nav-item-dropdown">
+                    <button class="nav-link" data-target="informacoes">
+                        Informações <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="especialistas">Especialistas</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="projetos">Projetos</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="infotainment">Infotainment</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="estrutura">Estrutura & Equipe</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="diretrizes">Diretrizes Globais</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="timeline">Marcos & Conquistas</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="veiculos">Lançamento de Veículos</button></li>
+                    </ul>
+                </li>
+                <li><button class="nav-link" data-target="automacoes">Automações & IA</button></li>
+                <li><button class="nav-link" data-target="sobre">Sobre</button></li>
+            </ul>
+        </nav>
+
+        <div class="auth-container" id="authContainer">
+            <!-- Caso Não Logado -->
+            <button class="btn-login" id="btnLogin" style="display: none;">Entrar</button>
+
+            <!-- Caso Logado -->
+            <div class="user-profile-menu-container" id="userProfileMenuContainer">
+                <button class="btn-profile-toggle" id="btnProfileToggle">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80" alt="Foto do Usuário" class="user-avatar-img">
+                    <span class="user-name-abbr">Eduardo H.</span>
+                    <i data-lucide="chevron-down" class="profile-chevron"></i>
+                </button>
+
+                <!-- Dropdown Card de Perfil -->
+                <div class="profile-dropdown-card" id="profileDropdownCard">
+                    <div class="profile-card-header">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80" alt="Foto do Usuário" class="profile-avatar-large">
+                        <div class="profile-header-info">
+                            <h4>Eduardo Henrique</h4>
+                            <span class="profile-cargo">Engenheiro de Produto Júnior</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-xp-section">
+                        <div class="xp-header">
+                            <span class="xp-level" id="profileXpLevel">Nível 3 (Pleno)</span>
+                            <span class="xp-amount" id="profileXpText">850 / 1500 XP</span>
+                        </div>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar-fill" id="profileXpBar" style="width: 56%;"></div>
+                        </div>
+                        <p class="xp-hint">Complete módulos em "Treinamento" para ganhar XP e liberar insígnias!</p>
+                    </div>
+
+                    <div class="profile-achievements">
+                        <h5>Insígnias do Engenheiro</h5>
+                        <div class="badges-row">
+                            <span class="badge-icon active" id="badgeBioHybrid" title="Bio-Hybrid concluído"><i data-lucide="leaf"></i> Bio-H</span>
+                            <span class="badge-icon" id="badgeADAS" title="Módulo ADAS pendente"><i data-lucide="eye"></i> ADAS</span>
+                            <span class="badge-icon" id="badgeMotores" title="Módulo MultiAir pendente"><i data-lucide="cpu"></i> MultiAir</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-card-footer">
+                        <button class="btn-logout" id="btnLogout"><i data-lucide="log-out"></i> Sair da Conta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="content-wrapper">
+        
+        <!-- ================= SEÇÃO INÍCIO ================= -->
+        <section id="sec-home" class="app-section active">
+            <div class="hero-container">
+                <!-- Coluna Esquerda: Textos e Chamadas -->
+                <div class="hero-left">
+                    <div class="badge-interactive">
+                        <span class="badge-dot"></span>
+                        <span class="badge-text">Dicionário Interativo do Setor</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        Explore o <br>
+                        <span class="italic-highlight">veículo</span> e <br>
+                        entenda <br>
+                        <span class="gradient-text">cada peça</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Gire o carro em 360°, clique nos pontos destacados e vá direto ao verbete no dicionário — siglas, termos e componentes explicados de forma visual.
+                    </p>
+
+                    <div class="hero-cta-wrapper">
+                        <button class="btn-primary" id="btn-explore-dict">
+                            Explorar o Dicionário 
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-number">120+</span>
+                            <span class="stat-label">TERMOS & SIGLAS</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">360°</span>
+                            <span class="stat-label">VISÃO INTERATIVA</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">3D</span>
+                            <span class="stat-label">CARRO NAVEGÁVEL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Visualizador Interativo 3D Simulador -->
+                <div class="hero-right">
+                    <div class="car-visualizer-container">
+                        <!-- Carro Container -->
+                        <div class="car-view-box" id="carViewBox">
+                            <!-- Hotspot: Grade -->
+                            <div class="hotspot" style="top: 59%; left: 74%;" data-id="grid" data-title="Grade Frontal Jeep" data-desc="Grade icônica de 7 fendas Stellantis, otimizada para aerodinâmica e refrigeração dos motores turbo (T270 / Hurricane).">
+                                <span class="hotspot-pulse"></span>
+                                <span class="hotspot-core"></span>
+                            </div>
+                            <!-- Hotspot: Painel -->
+                            <div class="hotspot" style="top: 48%; left: 45%;" data-id="dashboard" data-title="Painel de Instrumentos ADAS" data-desc="Cluster digital integrado e central multimídia de última geração com sistemas inteligentes de auxílio à condução (ADAS).">
+                                <span class="hotspot-pulse"></span>
+                                <span class="hotspot-core"></span>
+                            </div>
+                            
+                            <!-- Hotspot: Roda/Suspensão -->
+                            <div class="hotspot" style="top: 62%; left: 24%;" data-id="suspension" data-title="Suspensão & Rodas" data-desc="Sistema de suspensão independente recalibrado para maior conforto urbano e robustez fora de estrada.">
+                                <span class="hotspot-pulse"></span>
+                                <span class="hotspot-core"></span>
+                            </div>
+
+                            <!-- Imagem do Carro (Simulação do Print) -->
+                            <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80" alt="Jeep Commander White" class="car-image" id="carImage">
+                            
+                            <!-- Overlay de Carregamento / Alternador -->
+                            <div class="visualizer-toggle-btn" id="btn-toggle-3d-mode" title="Alternar para renderizador 3D interativo real">
+                                <i data-lucide="box"></i> Ativar 3D Real (Three.js)
+                            </div>
+                        </div>
+
+                        <!-- Info Card do Hotspot Selecionado -->
+                        <div class="hotspot-info-card" id="hotspotInfoCard">
+                            <h3 id="hotspotTitle">Grade Frontal Jeep</h3>
+                            <p id="hotspotDesc">Grade icônica de 7 fendas Stellantis...</p>
+                            <div class="hotspot-card-actions">
+                                <button class="btn-card-action" id="btn-hotspot-dict">Ver no Dicionário</button>
+                                <button class="btn-card-action secondary" id="btn-hotspot-idea">Inserir Ideia Aqui</button>
+                            </div>
+                            <button class="btn-close-card" id="btnCloseCard"><i data-lucide="x"></i></button>
+                        </div>
+
+                        <div class="rotation-indicator">
+                            <i data-lucide="rotate-3d" class="rotate-icon"></i>
+                            <span>Arraste para girar • clique nos pontos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel Rolante de Marcas da Stellantis -->
+            <div class="stellantis-brands-ticker" style="margin-top: 50px; padding: 24px 0; border-top: 1px solid rgba(255, 255, 255, 0.04); border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <span style="font-size: 9px; text-transform: uppercase; color: var(--text-dark); font-weight: 800; letter-spacing: 2.5px;">Marcas Globais do Grupo Stellantis</span>
+                </div>
+                <div class="ticker-wrap">
+                    <div class="ticker-track">
+                        <!-- Itens (Duplicados para rolagem contínua e sem quebras) -->
+                        <div class="ticker-item"><span>FIAT</span></div>
+                        <div class="ticker-item"><span>JEEP</span></div>
+                        <div class="ticker-item"><span>PEUGEOT</span></div>
+                        <div class="ticker-item"><span>CITROËN</span></div>
+                        <div class="ticker-item"><span>RAM</span></div>
+                        <div class="ticker-item"><span>DODGE</span></div>
+                        <div class="ticker-item"><span>CHRYSLER</span></div>
+                        <div class="ticker-item"><span>ALFA ROMEO</span></div>
+                        <div class="ticker-item"><span>MASERATI</span></div>
+                        <div class="ticker-item"><span>ABARTH</span></div>
+                        <div class="ticker-item"><span>DS AUTOMOBILES</span></div>
+                        <div class="ticker-item"><span>OPEL</span></div>
+                        <div class="ticker-item"><span>LANCIA</span></div>
+                        <div class="ticker-item"><span>VAUXHALL</span></div>
+                        <!-- Duplicação dos itens -->
+                        <div class="ticker-item"><span>FIAT</span></div>
+                        <div class="ticker-item"><span>JEEP</span></div>
+                        <div class="ticker-item"><span>PEUGEOT</span></div>
+                        <div class="ticker-item"><span>CITROËN</span></div>
+                        <div class="ticker-item"><span>RAM</span></div>
+                        <div class="ticker-item"><span>DODGE</span></div>
+                        <div class="ticker-item"><span>CHRYSLER</span></div>
+                        <div class="ticker-item"><span>ALFA ROMEO</span></div>
+                        <div class="ticker-item"><span>MASERATI</span></div>
+                        <div class="ticker-item"><span>ABARTH</span></div>
+                        <div class="ticker-item"><span>DS AUTOMOBILES</span></div>
+                        <div class="ticker-item"><span>OPEL</span></div>
+                        <div class="ticker-item"><span>LANCIA</span></div>
+                        <div class="ticker-item"><span>VAUXHALL</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO DICIONÁRIO ================= -->
+        <section id="sec-dicionario" class="app-section">
+            <div class="section-header-row">
+                <div class="section-header">
+                    <h2 class="section-title">Dicionário Stellantis</h2>
+                    <p class="section-subtitle">Consulte siglas, componentes e termos técnicos do ecossistema automotivo.</p>
+                </div>
+                <button class="btn-add-term-minimal" id="btnOpenAddTermModal" title="Adicionar Novo Termo">
+                    <i data-lucide="plus"></i> Novo Termo
+                </button>
+            </div>
+
+            <!-- Filtros e Busca -->
+            <div class="search-filter-container">
+                <div class="search-box-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="searchTerms" placeholder="Busque por termos como 'ADAS', 'T270', 'Turbina'...">
+                </div>
+                <div class="filter-categories" id="filterCategories">
+                    <button class="filter-btn active" data-category="all">Todos</button>
+                    <button class="filter-btn" data-category="tecnologia">Tecnologia</button>
+                    <button class="filter-btn" data-category="motorizacao">Motorização</button>
+                    <button class="filter-btn" data-category="componentes">Componentes</button>
+                    <button class="filter-btn" data-category="plataformas">Plataformas</button>
+                </div>
+            </div>
+
+            <!-- Lista de Termos -->
+            <div class="terms-grid" id="termsGrid">
+                <!-- Preenchido via Javascript -->
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO EXPLORADOR 3D ================= -->
+        <section id="sec-explorador" class="app-section">
+            <div class="section-header">
+                <h2 class="section-title">Explorador de Veículos 3D <span class="beta-badge">Beta</span></h2>
+                <p class="section-subtitle">Rotacione o modelo 3D em tempo real e adicione ideias personalizadas sobre a estrutura tridimensional.</p>
+            </div>
+
+            <div class="explorador-3d-layout">
+                <!-- Tela 3D Real (Three.js Canvas) -->
+                <div class="canvas-3d-container" id="canvas3dContainer">
+                    <div class="canvas-instructions">
+                        <i data-lucide="mouse-pointer-click"></i> Botão esquerdo: Girar | Botão direito: Mover | Scroll: Zoom
+                    </div>
+                    <!-- Canvas criado dinamicamente -->
+                    <div class="canvas-overlay-ui">
+                        <button class="btn-canvas-ui" id="btn-3d-wireframe" title="Alternar modo Wireframe/Sólido">
+                            <i data-lucide="layout-grid"></i> Estilo Digital
+                        </button>
+                        <button class="btn-canvas-ui" id="btn-3d-reset" title="Resetar Câmera">
+                            <i data-lucide="refresh-cw"></i> Resetar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Painel de Detalhes 3D e Anotações -->
+                <div class="details-panel-3d">
+                    <div class="card-details-3d">
+                        <h3>Painel de Inspeção 3D</h3>
+                        <p class="panel-desc">Selecione componentes no modelo ou clique abaixo para ver partes específicas.</p>
+                        
+                        <div class="component-list-3d">
+                            <button class="comp-3d-btn" data-comp="chassi">
+                                <i data-lucide="cpu"></i> Chassi Inteligente
+                            </button>
+                            <button class="comp-3d-btn" data-comp="rodas">
+                                <i data-lucide="disc"></i> Rodas de Liga e Motores Elétricos
+                            </button>
+                            <button class="comp-3d-btn" data-comp="sensores">
+                                <i data-lucide="eye"></i> Sensores LiDAR/Radar (ADAS)
+                            </button>
+                            <button class="comp-3d-btn" data-comp="bateria">
+                                <i data-lucide="battery-charging"></i> Bloco de Baterias (Híbrido/EV)
+                            </button>
+                        </div>
+
+                        <div class="inspected-info" id="inspectedInfo">
+                            <h4>Nenhum componente selecionado</h4>
+                            <p>Clique em um componente na lista ou no modelo para inspecionar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO CHAT IA ================= -->
+        <section id="sec-chat-ia" class="app-section">
+            <div class="chat-gpt-layout">
+                <!-- Barra Lateral Esquerda do Chat (Estilo ChatGPT) -->
+                <aside class="chat-sidebar">
+                    <button class="btn-new-chat" id="btnNewChat">
+                        <i data-lucide="square-pen"></i> Novo chat
+                    </button>
+                    
+                    <div class="sidebar-nav">
+                        <button class="side-nav-item"><i data-lucide="search"></i> Buscar</button>
+                        <button class="side-nav-item"><i data-lucide="folder"></i> Biblioteca</button>
+                        <button class="side-nav-item"><i data-lucide="toy-brick"></i> Plugins</button>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="section-label">Fixado</div>
+                        <ul class="chat-history-list" id="fixedChatHistory">
+                            <li class="history-item active" data-id="chat-1"><i data-lucide="message-square"></i> Engenharia Stellantis</li>
+                            <li class="history-item" data-id="chat-2"><i data-lucide="message-square"></i> Motores Turbo Flex</li>
+                            <li class="history-item" data-id="chat-3"><i data-lucide="message-square"></i> Sistemas ADAS</li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="section-label">Chats Recentes</div>
+                        <ul class="chat-history-list" id="recentChatHistory">
+                            <li class="history-item" data-id="chat-4"><i data-lucide="message-square"></i> Plataforma STLA</li>
+                            <li class="history-item" data-id="chat-5"><i data-lucide="message-square"></i> eTCU Transmissão</li>
+                            <li class="history-item" data-id="chat-6"><i data-lucide="message-square"></i> Híbrido Flex Bio</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Área de Chat Principal Direita -->
+                <div class="chat-main-area">
+                    <!-- Topbar do Chat -->
+                    <div class="chat-topbar">
+                        <div class="model-selector">
+                            <span class="model-name">StellantisGPT</span>
+                            <i data-lucide="chevron-down"></i>
+                        </div>
+                        <div class="topbar-actions">
+                            <button class="btn-upgrade"><i data-lucide="sparkles"></i> Fazer upgrade</button>
+                            <div class="user-avatar-top">S</div>
+                        </div>
+                    </div>
+
+                    <!-- Corpo do Chat (Mensagens ou Tela Inicial Vazia) -->
+                    <div class="chat-body-container" id="chatBodyContainer">
+                        <!-- Tela Inicial (Vazia) - IDÊNTICA AO PRINT DO USER -->
+                        <div class="chat-empty-state" id="chatEmptyState">
+                            <h2>No que você está pensando hoje?</h2>
+                            
+                            <!-- Sugestões de cliques rápidos (estilo premium) -->
+                            <div class="chat-suggestions">
+                                <button class="suggestion-card" data-prompt="Me explique como funciona o sistema Bio-Hybrid.">
+                                    <h5>Explicar Bio-Hybrid</h5>
+                                    <p>Entenda a tecnologia híbrida a etanol da Stellantis</p>
+                                </button>
+                                <button class="suggestion-card" data-prompt="Quais são os níveis de automação do ADAS no Jeep Commander?">
+                                    <h5>Níveis de ADAS</h5>
+                                    <p>Sistemas auxiliares e automação veicular</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lista de Mensagens do Chat Ativo (Estilo ChatGPT) -->
+                        <div class="chat-messages-scroll" id="chatMessagesScroll" style="display: none;">
+                            <!-- Inserido dinamicamente via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Área de Entrada de Mensagem Inferior (IDÊNTICA AO PRINT DO USER) -->
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper-gpt">
+                            <button class="btn-input-attach" title="Anexar arquivo"><i data-lucide="plus"></i></button>
+                            <input type="text" id="chatInputGpt" placeholder="Pergunte alguma coisa">
+                            <div class="input-right-actions">
+                                <button class="btn-input-voice" title="Digitação por voz"><i data-lucide="mic"></i></button>
+                                <button class="btn-input-audio" title="Resposta por áudio"><i data-lucide="volume-2"></i></button>
+                                <button class="btn-send-gpt" id="btnSendGpt"><i data-lucide="arrow-up"></i></button>
+                            </div>
+                        </div>
+                        <div class="chat-footer-disclaimer">
+                            StellantisGPT pode cometer erros. Considere verificar informações importantes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO TREINAMENTO ================= -->
+        <section id="sec-treinamento" class="app-section">
+            <div class="section-header">
+                <h2 class="section-title">Centro de Treinamento Stellantis</h2>
+                <p class="section-subtitle">Aprimore seus conhecimentos técnicos através de módulos dinâmicos e flashcards de memorização.</p>
+            </div>
+
+            <!-- Subnavegação / Subabas de Treinamento -->
+            <div class="training-sub-nav">
+                <button class="sub-nav-btn active" data-subtarget="cards">
+                    <i data-lucide="layers"></i> Flashcards
+                </button>
+                <button class="sub-nav-btn" data-subtarget="conteudo">
+                    <i data-lucide="graduation-cap"></i> Conteúdo Técnico
+                </button>
+                <button class="sub-nav-btn" data-subtarget="canais">
+                    <i data-lucide="external-link"></i> Canais Oficiais
+                </button>
+            </div>
+
+            <!-- SUBABA 1: CARDS (Flashcards 3D Interativos) -->
+            <div id="sub-sec-cards" class="training-sub-section active">
+                <div class="section-header-row" style="margin-bottom: 24px;">
+                    <div class="sub-section-intro" style="margin-bottom: 0;">
+                        <h3>Cartões de Memorização Rápida</h3>
+                        <p>Clique em qualquer card para virá-lo e ver a resposta técnica sobre os sistemas Stellantis.</p>
+                    </div>
+                    <button class="btn-add-term-minimal" id="btnOpenAddCardModal" title="Adicionar Novo Flashcard">
+                        <i data-lucide="plus"></i> Novo Flashcard
+                    </button>
+                </div>
+
+                <div class="flashcards-grid">
+                    <!-- Flashcard 1 -->
+                    <div class="flashcard-container">
+                        <div class="flashcard">
+                            <div class="flashcard-front">
+                                <div class="card-logo-watermark">J</div>
+                                <h4>Sistema Bio-Hybrid</h4>
+                                <p>O que é e como funciona a propulsão híbrida flex da Stellantis?</p>
+                                <span class="click-hint"><i data-lucide="help-circle"></i> Revelar Resposta</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <h4>Resposta Técnica</h4>
+                                <p>É uma tecnologia de eletrificação leve (MHEV) que acopla um motor elétrico de 48V de 3 kW ao motor turbo flex a etanol. Regenera energia nas desacelerações e auxilia nas saídas, reduzindo consumo em até 15%.</p>
+                                <span class="click-hint-back"><i data-lucide="rotate-ccw"></i> Voltar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 2 -->
+                    <div class="flashcard-container">
+                        <div class="flashcard">
+                            <div class="flashcard-front">
+                                <div class="card-logo-watermark">S</div>
+                                <h4>eTCU</h4>
+                                <p>Qual a função principal da Unidade de Controle da Transmissão Elétrica?</p>
+                                <span class="click-hint"><i data-lucide="help-circle"></i> Revelar Resposta</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <h4>Resposta Técnica</h4>
+                                <p>Gerencia eletronicamente a troca de torque entre o motor elétrico auxiliar e o motor térmico. Garante acoplamento e desacoplamento sem solavancos nas trocas de marcha e transições de modo de condução.</p>
+                                <span class="click-hint-back"><i data-lucide="rotate-ccw"></i> Voltar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 3 -->
+                    <div class="flashcard-container">
+                        <div class="flashcard">
+                            <div class="flashcard-front">
+                                <div class="card-logo-watermark">A</div>
+                                <h4>ADAS Nível 2</h4>
+                                <p>O que define o suporte à condução autônoma ativa no Jeep Commander?</p>
+                                <span class="click-hint"><i data-lucide="help-circle"></i> Revelar Resposta</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <h4>Resposta Técnica</h4>
+                                <p>O veículo assume o controle longitudinal (aceleração/frenagem via ACC) e lateral (direção via centralizador de faixa) de forma coordenada. O condutor é obrigado a manter as mãos no volante sob supervisão direta.</p>
+                                <span class="click-hint-back"><i data-lucide="rotate-ccw"></i> Voltar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 4 -->
+                    <div class="flashcard-container">
+                        <div class="flashcard">
+                            <div class="flashcard-front">
+                                <div class="card-logo-watermark">T</div>
+                                <h4>Motor T270 Flex</h4>
+                                <p>Quais as principais inovações mecânicas da linha de motores GSE Turbo?</p>
+                                <span class="click-hint"><i data-lucide="help-circle"></i> Revelar Resposta</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <h4>Resposta Técnica</h4>
+                                <p>Comando de válvulas inteligente MultiAir III (controle eletro-hidráulico da abertura das válvulas de admissão), injeção direta de combustível e turbocompressor de baixa inércia com wastegate elétrica.</p>
+                                <span class="click-hint-back"><i data-lucide="rotate-ccw"></i> Voltar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 2: CONTEÚDO (Módulos de Curso e Leitor) -->
+            <div id="sub-sec-conteudo" class="training-sub-section">
+                <div class="conteudo-layout">
+                    <!-- Lista de Módulos de Conteúdo -->
+                    <div class="courses-list" id="coursesList">
+                        <!-- Módulo 1 -->
+                        <div class="course-card" data-course="biohybrid">
+                            <div class="course-card-header">
+                                <span class="course-badge iniciante">Iniciante</span>
+                                <span class="course-duration"><i data-lucide="clock"></i> 15 min</span>
+                            </div>
+                            <h4>Eletrificação Bio-Hybrid Flex</h4>
+                            <p>Entenda as diferenças estruturais entre MHEV, HEV e PHEV dentro do ecossistema Stellantis.</p>
+                            <div class="course-progress-wrapper">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 80%;"></div>
+                                </div>
+                                <span class="progress-text">80% Concluído</span>
+                            </div>
+                            <button class="btn-start-course" data-course="biohybrid">
+                                <i data-lucide="play-circle"></i> Acessar Módulo
+                            </button>
+                        </div>
+
+                        <!-- Módulo 2 -->
+                        <div class="course-card" data-course="adas">
+                            <div class="course-card-header">
+                                <span class="course-badge intermediario">Intermediário</span>
+                                <span class="course-duration"><i data-lucide="clock"></i> 30 min</span>
+                            </div>
+                            <h4>Arquitetura de Sensores ADAS</h4>
+                            <p>Funcionamento de radares milimétricos e câmeras estereoscópicas para segurança veicular.</p>
+                            <div class="course-progress-wrapper">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 45%;"></div>
+                                </div>
+                                <span class="progress-text">45% Concluído</span>
+                            </div>
+                            <button class="btn-start-course" data-course="adas">
+                                <i data-lucide="play-circle"></i> Acessar Módulo
+                            </button>
+                        </div>
+
+                        <!-- Módulo 3 -->
+                        <div class="course-card" data-course="motores">
+                            <div class="course-card-header">
+                                <span class="course-badge avancado">Avançado</span>
+                                <span class="course-duration"><i data-lucide="clock"></i> 45 min</span>
+                            </div>
+                            <h4>Mapeamento Térmico & MultiAir III</h4>
+                            <p>Estudo aprofundado sobre controle eletro-hidráulico de válvulas e mapeamento de combustão do motor T270.</p>
+                            <div class="course-progress-wrapper">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 0%;"></div>
+                                </div>
+                                <span class="progress-text">0% Concluído</span>
+                            </div>
+                            <button class="btn-start-course" data-course="motores">
+                                <i data-lucide="play-circle"></i> Acessar Módulo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Leitor do Curso Selecionado -->
+                    <div class="course-reader-panel" id="courseReaderPanel">
+                        <div class="reader-empty-state" id="readerEmptyState">
+                            <i data-lucide="book-open" class="reader-icon-huge"></i>
+                            <h4>Nenhum curso carregado</h4>
+                            <p>Selecione um dos módulos à esquerda para ler o conteúdo de treinamento detalhado.</p>
+                        </div>
+
+                        <div class="reader-content-area" id="readerContentArea" style="display: none;">
+                            <!-- Conteúdo do módulo inserido via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO INFORMAÇÕES ================= -->
+        <section id="sec-informacoes" class="app-section">
+            <div class="section-header">
+                <h2 class="section-title">Central de Informações Stellantis</h2>
+                <p class="section-subtitle">Acesse as diretrizes globais do grupo e conecte-se com nossa equipe técnica de especialistas.</p>
+            </div>
+
+            <!-- Subnavegação de Informações -->
+            <div class="info-sub-nav">
+                <button class="sub-nav-btn active" data-infosub="especialistas">
+                    <i data-lucide="users"></i> Especialistas
+                </button>
+                <button class="sub-nav-btn" data-infosub="projetos">
+                    <i data-lucide="folder-git-2"></i> Projetos
+                </button>
+                <button class="sub-nav-btn" data-infosub="infotainment">
+                    <i data-lucide="tv"></i> Infotainment
+                </button>
+                <button class="sub-nav-btn" data-infosub="estrutura">
+                    <i data-lucide="network"></i> Estrutura & Equipe
+                </button>
+                <button class="sub-nav-btn" data-infosub="diretrizes">
+                    <i data-lucide="shield-check"></i> Diretrizes Globais
+                </button>
+                <button class="sub-nav-btn" data-infosub="timeline">
+                    <i data-lucide="milestone"></i> Marcos & Conquistas
+                </button>
+                <button class="sub-nav-btn" data-infosub="veiculos">
+                    <i data-lucide="car"></i> Lançamento de Veículos
+                </button>
+            </div>
+
+            <!-- SUBABA 1: ESPECIALISTAS -->
+            <div id="info-sec-especialistas" class="info-sub-section active">
+                <div class="sub-section-intro">
+                    <h3>Corpo Técnico de Engenharia</h3>
+                    <p>Entre em contato direto com os especialistas responsáveis pelas principais tecnologias do grupo Stellantis.</p>
+                </div>
+
+                <div class="specialists-grid">
+                    <!-- Especialista 1 -->
+                    <div class="specialist-card">
+                        <div class="specialist-avatar-container">
+                            <div class="specialist-avatar blue">EN</div>
+                            <span class="specialist-status active" title="Disponível"></span>
+                        </div>
+                        <div class="specialist-info">
+                            <h4>Dr. Enzo Nogueira</h4>
+                            <span class="specialist-role">Diretor de Propulsão Híbrida</span>
+                            <span class="specialist-dept"><i data-lucide="cpu"></i> Divisão Bio-Hybrid Flex</span>
+                            <p class="specialist-bio">Especialista em calibração de motores flex associados a motores de assistência leve de 48V.</p>
+                            <button class="btn-contact-specialist" data-name="Dr. Enzo Nogueira" data-dept="Bio-Hybrid">
+                                <i data-lucide="message-square"></i> Contatar Especialista
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Especialista 2 -->
+                    <div class="specialist-card">
+                        <div class="specialist-avatar-container">
+                            <div class="specialist-avatar cian">AM</div>
+                            <span class="specialist-status active" title="Disponível"></span>
+                        </div>
+                        <div class="specialist-info">
+                            <h4>Engª Ana Martins</h4>
+                            <span class="specialist-role">Especialista Sênior em ADAS</span>
+                            <span class="specialist-dept"><i data-lucide="eye"></i> Sistemas Inteligentes</span>
+                            <p class="specialist-bio">Responsável pela calibração de frenagem de emergência autônoma e fusão de dados radar/câmera.</p>
+                            <button class="btn-contact-specialist" data-name="Engª Ana Martins" data-dept="Sistemas ADAS">
+                                <i data-lucide="message-square"></i> Contatar Especialista
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Especialista 3 -->
+                    <div class="specialist-card">
+                        <div class="specialist-avatar-container">
+                            <div class="specialist-avatar green">CS</div>
+                            <span class="specialist-status active" title="Disponível"></span>
+                        </div>
+                        <div class="specialist-info">
+                            <h4>Carlos Silva</h4>
+                            <span class="specialist-role">Arquiteto de Plataformas Elétricas</span>
+                            <span class="specialist-dept"><i data-lucide="battery-charging"></i> Engenharia STLA</span>
+                            <p class="specialist-bio">Arquiteto estrutural das plataformas BEV STLA Medium e Large para o mercado latino-americano.</p>
+                            <button class="btn-contact-specialist" data-name="Carlos Silva" data-dept="Plataformas STLA">
+                                <i data-lucide="message-square"></i> Contatar Especialista
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 2: PROJETOS (CÓDIGOS E FOTOS REALISTAS) -->
+            <div id="info-sec-projetos" class="info-sub-section">
+                <div class="sub-section-intro">
+                    <h3>Projetos Ativos Stellantis</h3>
+                    <p>Consulte os códigos internos de desenvolvimento e a imagem correspondente do modelo do ano.</p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- Projeto 1: J3U (Compass) -->
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=600&q=80" alt="Jeep Compass J3U" class="project-image">
+                            <span class="project-code-badge">J3U</span>
+                        </div>
+                        <div class="project-card-info">
+                            <h4>Jeep Compass 2026/2027</h4>
+                            <p class="project-desc">SUV líder de categoria, agora com propulsão híbrida flex Bio-Hybrid integrada.</p>
+                            <table class="project-info-table">
+                                <tr>
+                                    <td><strong>Plataforma:</strong></td>
+                                    <td>Small Wide LWB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Motorização:</strong></td>
+                                    <td>T270 / Hurricane 4</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td><span class="status-indicator active">Produção</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Projeto 2: T90 (Rampage) -->
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Ram Rampage T90" class="project-image">
+                            <span class="project-code-badge">T90</span>
+                        </div>
+                        <div class="project-card-info">
+                            <h4>Ram Rampage 2026</h4>
+                            <p class="project-desc">Picape intermediária premium projetada e desenvolvida no Brasil.</p>
+                            <table class="project-info-table">
+                                <tr>
+                                    <td><strong>Plataforma:</strong></td>
+                                    <td>Small Wide LWB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Motorização:</strong></td>
+                                    <td>Hurricane 4 / TD380</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td><span class="status-indicator active">Produção</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Projeto 3: J4U (Commander) -->
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80" alt="Jeep Commander J4U" class="project-image">
+                            <span class="project-code-badge">J4U</span>
+                        </div>
+                        <div class="project-card-info">
+                            <h4>Jeep Commander 2026</h4>
+                            <p class="project-desc">D-SUV de 7 lugares desenvolvido sob a arquitetura alongada LWB.</p>
+                            <table class="project-info-table">
+                                <tr>
+                                    <td><strong>Plataforma:</strong></td>
+                                    <td>Small Wide LWB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Motorização:</strong></td>
+                                    <td>T270 / Hurricane 4</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td><span class="status-indicator active">Produção</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 3: INFOTAINMENT (COMPONENTES DO SETOR DE TECNOLOGIA E FILTRO) -->
+            <div id="info-sec-infotainment" class="info-sub-section">
+                <div class="sub-section-intro">
+                    <h3>Componentes de Infotainment</h3>
+                    <p>Filtre e explore as principais tecnologias de infotretenimento, telas e conectividade do ecossistema Stellantis.</p>
+                </div>
+
+                <!-- Barra de Filtros Duplos de Infotainment -->
+                <div class="infotainment-filters-container" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+                    <!-- Tipo 1: Por Componente -->
+                    <div class="filter-group">
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Filtrar por Componente:</span>
+                        <div class="infotainment-filter-bar" id="filterBarComponent" style="margin-bottom: 0;">
+                            <button class="infotainment-filter-btn active" data-infocategory="all">Todos</button>
+                            <button class="infotainment-filter-btn" data-infocategory="audio-tela"><i data-lucide="tv"></i> Telas & Som</button>
+                            <button class="infotainment-filter-btn" data-infocategory="conectividade"><i data-lucide="wifi"></i> Conectividade & Carga</button>
+                            <button class="infotainment-filter-btn" data-infocategory="auxilio"><i data-lucide="compass"></i> Câmeras & Auxílio</button>
+                        </div>
+                    </div>
+
+                    <!-- Tipo 2: Por Fornecedor -->
+                    <div class="filter-group">
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Filtrar por Fornecedor (Tier 1):</span>
+                        <div class="infotainment-filter-bar" id="filterBarSupplier" style="margin-bottom: 0; display: flex; flex-wrap: wrap; gap: 8px;">
+                            <button class="infotainment-filter-btn active" data-infosupplier="all">Todos</button>
+                            <button class="infotainment-filter-btn" data-infosupplier="aptiv"><i data-lucide="cpu"></i> Aptiv</button>
+                            <button class="infotainment-filter-btn" data-infosupplier="marelli"><i data-lucide="settings"></i> Magneti Marelli</button>
+                            <button class="infotainment-filter-btn" data-infosupplier="harman"><i data-lucide="music"></i> Harman Kardon</button>
+                            <button class="infotainment-filter-btn" data-infosupplier="bosch"><i data-lucide="eye"></i> Bosch</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="infotainment-grid">
+                    <!-- Componente 1: Multimídia Uconnect -->
+                    <div class="infotainment-card" data-infocategory="audio-tela" data-infosupplier="aptiv">
+                        <div class="infotainment-card-icon blue"><i data-lucide="tablet"></i></div>
+                        <div class="infotainment-card-content" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span class="info-cat-badge">Telas & Som</span>
+                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Aptiv</span>
+                            </div>
+                            <h4>Central Uconnect Touch 10.1"</h4>
+                            <p>Tela de alta definição de 10.1 polegadas com personalização em estilo widget, espelhamento sem fio de celular e múltiplos perfis de usuário.</p>
+                            <span class="info-applied">Disponível em: <strong>Compass, Commander, Rampage</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Componente 2: Painel Digital -->
+                    <div class="infotainment-card" data-infocategory="audio-tela" data-infosupplier="marelli">
+                        <div class="infotainment-card-icon blue"><i data-lucide="layout-dashboard"></i></div>
+                        <div class="infotainment-card-content" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span class="info-cat-badge">Telas & Som</span>
+                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Marelli</span>
+                            </div>
+                            <h4>Full Digital Cluster 10.25"</h4>
+                            <p>Painel de instrumentos de alta resolução com visualização configurável em 3D, integração de mapa de navegação nativo e leitura ADAS.</p>
+                            <span class="info-applied">Disponível em: <strong>Compass, Commander, Rampage</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Componente 3: Som Harman Kardon -->
+                    <div class="infotainment-card" data-infocategory="audio-tela" data-infosupplier="harman">
+                        <div class="infotainment-card-icon blue"><i data-lucide="volume-2"></i></div>
+                        <div class="infotainment-card-content" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span class="info-cat-badge">Telas & Som</span>
+                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Harman</span>
+                            </div>
+                            <h4>Som Premium Harman Kardon</h4>
+                            <p>Sistema de som premium de 9 alto-falantes com Subwoofer e amplificador de 360 Watts com tecnologia de áudio surround virtualizado.</p>
+                            <span class="info-applied">Disponível em: <strong>Rampage, Commander</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Componente 4: Adventure Intelligence -->
+                    <div class="infotainment-card" data-infocategory="conectividade" data-infosupplier="aptiv">
+                        <div class="infotainment-card-icon green"><i data-lucide="shield-alert"></i></div>
+                        <div class="infotainment-card-content" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span class="info-cat-badge">Conectividade & Carga</span>
+                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Aptiv</span>
+                            </div>
+                            <h4>Adventure Intelligence</h4>
+                            <p>Plataforma conectada que possibilita controle remoto de portas, localização, alertas rápidos de pânico automáticos e Wi-Fi nativo a bordo.</p>
+                            <span class="info-applied">Disponível em: <strong>Pulse, Fastback, Compass, Commander</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Componente 5: Carregador Indução -->
+                    <div class="infotainment-card" data-infocategory="conectividade" data-infosupplier="marelli">
+                        <div class="infotainment-card-icon green"><i data-lucide="zap"></i></div>
+                        <div class="infotainment-card-content" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span class="info-cat-badge">Conectividade & Carga</span>
+                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Marelli</span>
+                            </div>
+                            <h4>Wireless Charger com Refrigeração</h4>
+                            <p>Carregador de celular sem fio com sistema de refrigeração de ar ativo para evitar o superaquecimento do smartphone durante a indução.</p>
+                            <span class="info-applied">Disponível em: <strong>Rampage, Compass, Commander</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Componente 6: Câmeras 360 -->
+                    <div class="infotainment-card" data-infocategory="auxilio" data-infosupplier="bosch">
+                        <div class="infotainment-card-icon cian"><i data-lucide="video"></i></div>
+                        <div class="infotainment-card-content" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span class="info-cat-badge">Câmeras & Auxílio</span>
+                                <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Bosch</span>
+                            </div>
+                            <h4>Câmeras Multivisão 360°</h4>
+                            <p>Fusão de imagem de quatro câmeras externas simulando uma visão aérea tridimensional para manobras seguras e detecção de obstáculos próximos.</p>
+                            <span class="info-applied">Disponível em: <strong>Commander, Rampage (Overland/RT)</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 4: ESTRUTURA ORGANIZACIONAL & MAPA GLOBAL -->
+            <div id="info-sec-estrutura" class="info-sub-section">
+                <div class="sub-section-intro">
+                    <h3>Estrutura Organizacional & Distribuição Global</h3>
+                    <p>Navegue pela hierarquia de Software Engineering & Digital Cockpit e localize geograficamente os times e lideranças.</p>
+                </div>
+
+                <!-- Seletor de Modo: Árvore vs Mapa -->
+                <div class="org-view-selector">
+                    <button class="org-view-btn active" data-orgview="tree"><i data-lucide="git-merge"></i> Árvore Hierárquica</button>
+                    <button class="org-view-btn" data-orgview="map"><i data-lucide="globe"></i> Mapa de Distribuição Global</button>
+                </div>
+
+                <!-- MODO 1: ÁRVORE HIERÁRQUICA -->
+                <div id="org-view-tree" class="org-mode-container active">
+                    <div class="org-breadcrumbs-container" id="orgBreadcrumbs">
+                        <!-- Breadcrumbs gerados dinamicamente via JS -->
+                    </div>
+                    <div class="org-tree-wrapper" id="orgTreeWrapper">
+                        <!-- Árvore interativa gerada via JS -->
+                    </div>
+                </div>
+
+                <!-- MODO 2: MAPA DE DISTRIBUIÇÃO GLOBAL -->
+                <div id="org-view-map" class="org-mode-container">
+                    <div class="org-map-layout">
+                        <!-- Mapa Mundi Procedural Minimalista com Pins Relativos -->
+                        <div class="map-world-container" id="mapWorldContainer">
+                            <div class="map-grid-overlay"></div>
+                            
+                            <!-- Pin 1: South America (Brasil) -->
+                            <div class="map-pin-pulse pin-sa" data-pinloc="sa" style="top: 72%; left: 35%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">75</div>
+                                <span class="pin-tooltip">América do Sul (Brasil)<br>Liderança: Fernando Ataide</span>
+                            </div>
+
+                            <!-- Pin 2: North America (EUA) -->
+                            <div class="map-pin-pulse pin-na" data-pinloc="na" style="top: 36%; left: 22%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">2</div>
+                                <span class="pin-tooltip">América do Norte (EUA)<br>Liderança: Lora Vedder</span>
+                            </div>
+
+                            <!-- Pin 3: França (Paris) -->
+                            <div class="map-pin-pulse pin-fr" data-pinloc="fr" style="top: 32%; left: 47%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">2</div>
+                                <span class="pin-tooltip">França<br>Liderança: Alexandre Fromion</span>
+                            </div>
+
+                            <!-- Pin 4: Itália (Turim) -->
+                            <div class="map-pin-pulse pin-it" data-pinloc="it" style="top: 35%; left: 51%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">4</div>
+                                <span class="pin-tooltip">Itália<br>Liderança: Daniele Drocco</span>
+                            </div>
+
+                            <!-- Pin 5: Alemanha/Europa Central -->
+                            <div class="map-pin-pulse pin-de" data-pinloc="de" style="top: 31%; left: 54%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">4</div>
+                                <span class="pin-tooltip">Alemanha & Central Europe<br>Liderança: Heiko Schilling</span>
+                            </div>
+
+                            <!-- Pin 6: Marrocos -->
+                            <div class="map-pin-pulse pin-mor" data-pinloc="mor" style="top: 42%; left: 46%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">2</div>
+                                <span class="pin-tooltip">Marrocos<br>Time de Engenharia</span>
+                            </div>
+
+                            <!-- Pin 7: India (Pune) -->
+                            <div class="map-pin-pulse pin-in" data-pinloc="in" style="top: 52%; left: 70%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">3</div>
+                                <span class="pin-tooltip">Índia (Pune)<br>Liderança: Kannan Varadhan</span>
+                            </div>
+
+                            <!-- Pin 8: China (Xangai) -->
+                            <div class="map-pin-pulse pin-cn" data-pinloc="cn" style="top: 42%; left: 80%;">
+                                <div class="pin-dot"></div>
+                                <div class="pin-glow"></div>
+                                <div class="pin-badge">5</div>
+                                <span class="pin-tooltip">China (Xangai)<br>Liderança: Zhenquan Chen</span>
+                            </div>
+                        </div>
+
+                        <!-- Painel de Informações Lateral do Mapa -->
+                        <div class="map-detail-panel" id="mapDetailPanel">
+                            <div class="panel-loc-empty" id="locEmptyState">
+                                <i data-lucide="map"></i>
+                                <h4>Selecione um Pin no Mapa</h4>
+                                <p>Clique em qualquer pin piscante para ver as informações de engenheiros lotados na região.</p>
+                            </div>
+
+                            <div class="panel-loc-content" id="locContentArea" style="display: none;">
+                                <div class="loc-header">
+                                    <h4 id="locTitle">América do Sul (Brasil)</h4>
+                                    <span class="loc-subtitle" id="locSubtitle">Technical Center Betim / Goiana</span>
+                                </div>
+
+                                <div class="loc-stats-block">
+                                    <div class="stat-box">
+                                        <span class="stat-num" id="statLocInternal">37</span>
+                                        <span class="stat-lbl">Internos</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <span class="stat-num" id="statLocExternal">38</span>
+                                        <span class="stat-lbl">Externos</span>
+                                    </div>
+                                    <div class="stat-box highlighted">
+                                        <span class="stat-num" id="statLocTotal">75</span>
+                                        <span class="stat-lbl">Total Geral</span>
+                                    </div>
+                                </div>
+
+                                <div class="loc-team-section">
+                                    <h5>Equipe Local & Lideranças:</h5>
+                                    <ul class="loc-team-list" id="locTeamList">
+                                        <!-- Preenchido via JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 2: DIRETRIZES GLOBAIS -->
+            <div id="info-sec-diretrizes" class="info-sub-section">
+                <div class="sub-section-intro">
+                    <h3>Diretrizes Corporativas & Padrões Técnicos</h3>
+                    <p>Consulte as regulamentações vigentes e metas globais de engenharia da Stellantis.</p>
+                </div>
+
+                <div class="diretrizes-list">
+                    <div class="diretriz-item">
+                        <div class="diretriz-icon"><i data-lucide="award"></i></div>
+                        <div class="diretriz-content">
+                            <h4>Padrão de Qualidade WCM (World Class Manufacturing)</h4>
+                            <p>Metodologia global aplicada em todas as fábricas Stellantis (como Betim e Goiana) para eliminação de desperdícios, zero acidentes e qualidade total na montagem dos veículos.</p>
+                        </div>
+                    </div>
+
+                    <div class="diretriz-item">
+                        <div class="diretriz-icon"><i data-lucide="leaf"></i></div>
+                        <div class="diretriz-content">
+                            <h4>Compromisso ESG: Dare Forward 2030</h4>
+                            <p>Plano estratégico global da Stellantis para atingir zero emissões líquidas de carbono (Net Zero Carbon) em todas as operações até 2038, com redução de 50% já em 2030.</p>
+                        </div>
+                    </div>
+
+                    <div class="diretriz-item">
+                        <div class="diretriz-icon"><i data-lucide="file-text"></i></div>
+                        <div class="diretriz-content">
+                            <h4>Regulamentação PROCONVE L8 / Euro 7</h4>
+                            <p>Padrões rígidos de emissão e ruído veicular que norteiam o desenvolvimento e a calibração de todos os motores térmicos e híbridos no mercado nacional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 5: MARCOS & CONQUISTAS (LINHA DO TEMPO) -->
+            <div id="info-sec-timeline" class="info-sub-section">
+                <div class="sub-section-intro">
+                    <h3>Marcos & Conquistas</h3>
+                    <p>Acompanhe a evolução da Stellantis através de nossos resultados tecnológicos e conquistas de engenharia.</p>
+                </div>
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                        
+                        <!-- Ano 2025 -->
+                        <div class="timeline-year-section">
+                            <div class="timeline-year-badge">2025</div>
+                            
+                            <div class="timeline-items-grid">
+                                <!-- Card 1: AA & CP Certification Process -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-01">01</div>
+                                        <h4>Certificação AA & CP</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-blue"><i data-lucide="check-circle"></i> Homologado</span>
+                                        <ul class="timeline-list">
+                                            <li><strong>12 Certificações AA/CP</strong> concluídas e 3 em andamento.</li>
+                                            <li><strong>6 marcas</strong> e <strong>7 modelos de veículos</strong> homologados globalmente.</li>
+                                            <li>Primeira certificação de LPM (Local Partner Module) para AA & CP.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: NavInfo Launches -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-02">02</div>
+                                        <h4>Lançamentos NavInfo (Global KP1 B2.2)</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-green"><i data-lucide="navigation"></i> Navegação</span>
+                                        <ul class="timeline-list">
+                                            <li><strong>Fiat Titano</strong>: Lançamento em Abril/2025.</li>
+                                            <li><strong>RAM Dakota</strong>: Lançamento em Novembro/2025.</li>
+                                            <li>Alinhamento global de mapas e geolocalização no cluster.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: 21 Top Hat Launches in South America -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-03">03</div>
+                                        <h4>21 Lançamentos SA (Top Hat)</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-red"><i data-lucide="rocket"></i> Veículos</span>
+                                        <ul class="timeline-list">
+                                            <li>Novo projeto: <strong>RAM Dakota</strong>.</li>
+                                            <li><strong>5 MCAs</strong> (Mid-Cycle Action) e <strong>3 novos carros conectados</strong>.</li>
+                                            <li><strong>4 Model Years 2026 (MY26)</strong>, <strong>4 CY26</strong> e 4 carros importados lançados na SA.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 4: Crony 2 - NavCo -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-04">04</div>
+                                        <h4>Crony 2 - NavCo</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-orange"><i data-lucide="map"></i> Connected Nav</span>
+                                        <ul class="timeline-list">
+                                            <li>Introdução da plataforma **Crony 2** com navegação conectada ativa.</li>
+                                            <li>Entrega comercial e lançamento oficial em Outubro/2025.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 5: Legacy IVIs -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-05">05</div>
+                                        <h4>Sistemas de Infotainment Legados (IVIs)</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-purple"><i data-lucide="settings"></i> Manutenção</span>
+                                        <ul class="timeline-list">
+                                            <li>Lançamento dos novos sistemas: **VP2NG**, **A7+** e **SA 2.0**.</li>
+                                            <li>Gestão de crise bem sucedida de minerais raros e componentes Nexperia.</li>
+                                            <li>Manutenção ativa de ciclo de vida de **A7, Giorgio 2.5, VP2R e J10**.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 6: R2EX -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-06">06</div>
+                                        <h4>Homologação R2EX</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-teal"><i data-lucide="shield-check"></i> Validação</span>
+                                        <ul class="timeline-list">
+                                            <li><strong>616 respostas a RARs</strong> com tempo médio de resposta de 12 dias.</li>
+                                            <li><strong>14 SW oficiais</strong> homologados e <strong>48 ORs</strong> tratadas.</li>
+                                            <li>6 Calibrações + 10 DOTEs concluídos; 5 versões de Hardware desenvolvidas.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 7: R1Low-R Approval -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-07">07</div>
+                                        <h4>Aprovação da Plataforma R1Low-R</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-yellow"><i data-lucide="cpu"></i> Arquitetura</span>
+                                        <ul class="timeline-list">
+                                            <li>Migração completa de MD -> SW e Harman -> HW.</li>
+                                            <li>Integração total do sistema operacional **Android 14**.</li>
+                                            <li>Hardware chipset **QC6155** com 6GB RAM / 64GB Armazenamento.</li>
+                                            <li>Homologações de displays: NA -> 8.4 Ass. / SA -> SB.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 8: SR26 PI Releases -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-08">08</div>
+                                        <h4>Entregas SR26 PI</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-green-light"><i data-lucide="git-commit"></i> Agile</span>
+                                        <ul class="timeline-list">
+                                            <li>Entrega expressiva de pontos de história (History Points) por sprints:</li>
+                                            <li>63 pontos entregues na **25PI2**.</li>
+                                            <li>203 pontos na **25PI3** e 186 pontos entregues na **25PI4**.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 9: Cluster SW-F South America -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-09">09</div>
+                                        <h4>Cluster SW-F South America</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-orange-red"><i data-lucide="activity"></i> Fábrica de SW</span>
+                                        <ul class="timeline-list">
+                                            <li><strong>66 CRs</strong> e <strong>24 novas features</strong> implementadas em 24 sprints.</li>
+                                            <li><strong>38 software releases</strong> para 4 marcas e 11 modelos de veículos.</li>
+                                            <li>958 revisões de código e 550 testes executados (497 issues tratadas).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 10: Patents -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-10">10</div>
+                                        <h4>Propriedade Intelectual & Patentes</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-purple-dark"><i data-lucide="award"></i> Inovação</span>
+                                        <ul class="timeline-list">
+                                            <li><strong>13 novas patentes</strong> registradas in 2025:</li>
+                                            <li>2 sob avaliação no INPI, 4 aguardando aprovação corporativa no Portal e 7 patentes em fase de elaboração técnica.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 11: Complexity Reduction -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-11">11</div>
+                                        <h4>Redução de Complexidade de Módulos</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-lime"><i data-lucide="layers"></i> Otimização</span>
+                                        <ul class="timeline-list">
+                                            <li><strong>8 propostas de redução</strong> sob a arquitetura 4EE.</li>
+                                            <li>Redução das variantes de módulos **de 21 para apenas 7**.</li>
+                                            <li>Impacto positivo projetado em **8.8 milhões de unidades** entre 2025 e 2035.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Card 12: Quality & VO -->
+                                <div class="timeline-card">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-12">12</div>
+                                        <h4>Qualidade & Otimização de Valor (VO)</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-cyan"><i data-lucide="trending-up"></i> Finanças</span>
+                                        <ul class="timeline-list">
+                                            <li>23 Lições Aprendidas aplicadas entre módulos e R1low R. RFQ.</li>
+                                            <li><strong>VO South America</strong>: €6.06 alcançado vs. meta de €3.40.</li>
+                                            <li><strong>VO Global</strong>: €10.5 alcançado vs. meta de €5.00.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ano 2024 -->
+                        <div class="timeline-year-section">
+                            <div class="timeline-year-badge timeline-past">2024</div>
+                            
+                            <div class="timeline-items-grid">
+                                <div class="timeline-card card-past">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-past">13</div>
+                                        <h4>Consolidação do Android Automotive OS</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-past"><i data-lucide="archive"></i> Arquitetura</span>
+                                        <ul class="timeline-list">
+                                            <li>Migração estrutural de firmware de sistemas baseados em Linux legados para Android Automotive.</li>
+                                            <li>Desenvolvimento de bibliotecas de comunicação com rede CAN local Stellantis.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-card card-past">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-past">14</div>
+                                        <h4>Jeep Compass J3U (Fase 1)</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-past"><i data-lucide="tv"></i> Infotainment</span>
+                                        <ul class="timeline-list">
+                                            <li>Lançamento comercial da central multimídia flutuante de 10.1" de alta resolução.</li>
+                                            <li>Introdução do espelhamento sem fio nativo Apple CarPlay e Android Auto.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ano 2023 -->
+                        <div class="timeline-year-section">
+                            <div class="timeline-year-badge timeline-past">2023</div>
+                            
+                            <div class="timeline-items-grid">
+                                <div class="timeline-card card-past">
+                                    <div class="timeline-card-header">
+                                        <div class="timeline-badge-num num-past">15</div>
+                                        <h4>Padronização de Technical Centers</h4>
+                                    </div>
+                                    <div class="timeline-card-body">
+                                        <span class="timeline-tag tag-past"><i data-lucide="globe"></i> Operações</span>
+                                        <ul class="timeline-list">
+                                            <li>Unificação dos fluxos de entrega contínua (CI/CD) e métricas de code review entre Betim (SA), Turim (EMEA) e Pune (IAP).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 6: LANÇAMENTO DE VEÍCULOS -->
+            <div id="info-sec-veiculos" class="info-sub-section">
+                <div class="sub-section-intro">
+                    <h3>Lançamento de Veículos</h3>
+                    <p>Cronograma detalhado de lançamentos de modelos de carros desenvolvidos e validados pelo SA Tech Center em 2025.</p>
+                </div>
+
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+
+                    <!-- Lançamentos 2025 -->
+                    <div class="timeline-year-section">
+                        <div class="timeline-year-badge">2025 (SA Tech Center)</div>
+
+                        <div class="timeline-items-grid">
+                            <!-- Março 2025 -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-blue">Mar</div>
+                                    <h4>Argo & Cronos MCA II</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-blue"><i data-lucide="refresh-cw"></i> Facelift / MCA II</span>
+                                    <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=400&q=80" alt="Argo & Cronos" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Atualização estética de meia vida para Hatch e Sedan de maior volume do grupo Fiat.</li>
+                                        <li>Calibrações de segurança ativa no módulo de controle e transmissão.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Abril 2025 -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-green">Abr</div>
+                                    <h4>Pulse & Fastback MCA</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-green"><i data-lucide="zap"></i> Atualização / MCA</span>
+                                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80" alt="Pulse & Fastback" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Novidades estéticas e de calibração para os SUVs compactos Fiat.</li>
+                                        <li>Melhorias no ecossistema e refinamentos de software de cockpit.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Maio 2025 -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-red">Mai</div>
+                                    <h4>Fiat Titano</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-red"><i data-lucide="globe"></i> Lançamento Regional</span>
+                                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80" alt="Titano" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Lançamento comercial da picape média da marca Fiat nos mercados vizinhos.</li>
+                                        <li>Foco de exportação e suporte do SA Tech Center:</li>
+                                        <div style="display: flex; gap: 8px; margin-top: 4px; font-size: 10px; font-weight: 700;">
+                                            <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; color: var(--text-main);">🇺🇾 Uruguai</span>
+                                            <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; color: var(--text-main);">🇦🇷 Argentina</span>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Junho 2025 - Peugeot -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-orange">Jun</div>
+                                    <h4>Peugeot 208 & 2008 Connected</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-orange"><i data-lucide="wifi"></i> Connected Multimídia</span>
+                                    <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" alt="Peugeot 208" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Lançamento da nova central i-Cockpit com tela de alta definição conectada de fábrica.</li>
+                                        <li>Serviços baseados em nuvem e telemetria ativos.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Junho 2025 - Outros -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-purple">Jun</div>
+                                    <h4>Commander MEA / Mobi / RAM 1500</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-purple"><i data-lucide="package"></i> Múltiplos Lançamentos</span>
+                                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=400&q=80" alt="Lançamentos Junho" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>**Commander MEA**: Exportação de SUV de 7 lugares para o Oriente Médio.</li>
+                                        <li>**Mobi MY26**: Novo ano-modelo com itens de segurança ativa obrigatórios.</li>
+                                        <li>**RAM 1500**: Lançamento da picape premium atualizada.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Julho 2025 -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-teal">Jul</div>
+                                    <h4>Commander MCA</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-teal"><i data-lucide="refresh-cw"></i> Facelift / MCA</span>
+                                    <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=400&q=80" alt="Commander MCA" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Atualização estética e de grades para o Commander no mercado nacional.</li>
+                                        <li>Novos sistemas de assistência de motorista e novo cockpit.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Agosto 2025 - RAM & Strada -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-yellow">Ago</div>
+                                    <h4>RAM 2500/3500 & Strada Connected</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-yellow"><i data-lucide="wifi"></i> Connected Picapes</span>
+                                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80" alt="Strada & RAM" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Picapes de grande porte RAM 2500 e 3500 atualizadas com central inteligente.</li>
+                                        <li>Fiat Strada com novos pacotes de conectividade sem fio integrados de fábrica.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Agosto 2025 - Citroen -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-green-light">Ago</div>
+                                    <h4>C3 / Basalt / Aircross MY26</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-green-light"><i data-lucide="tv"></i> New Bezel / MY26</span>
+                                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=400&q=80" alt="Citroen Basalt" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Introdução da nova moldura de multimídia (New Bezel) e do ano-modelo 2026.</li>
+                                        <li>Lançamento comercial da picape/SUV Coupé **Citroën Basalt**.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Outubro 2025 -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-orange-red">Out</div>
+                                    <h4>Fiat Strada</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-orange-red"><i data-lucide="cog"></i> Atualização Mecânica</span>
+                                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80" alt="Fiat Strada" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Reajustes técnicos de motor e calibração de câmbio para a picape compacta líder de mercado na América do Sul.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Novembro 2025 -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-purple-dark">Nov</div>
+                                    <h4>C10 Leapmotor / RAM Dakota</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-purple-dark"><i data-lucide="rocket"></i> Novos Projetos</span>
+                                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=400&q=80" alt="Leapmotor C10 & Dakota" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>**C10 Leapmotor**: SUV totalmente elétrico premium importado da marca parceira de EV.</li>
+                                        <li>**RAM Dakota**: Lançamento da picape média nacional do grupo Stellantis.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Novembro 2025 - Compass -->
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-badge-num bg-gradient-cyan">Nov</div>
+                                    <h4>Compass GME Flex MY26</h4>
+                                </div>
+                                <div class="timeline-card-body">
+                                    <span class="timeline-tag tag-cyan"><i data-lucide="cpu"></i> Motor GME Flex / MY26</span>
+                                    <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=400&q=80" alt="Compass GME Flex" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <ul class="timeline-list">
+                                        <li>Lançamento comercial do Jeep Compass equipado com a nova motorização global GME Turbo Flex de alta performance.</li>
+                                        <li>Lançamento do ano-modelo 2026.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBABA 3: CANAIS OFICIAIS (Links e portais corporativos de treinamento) -->
+            <div id="sub-sec-canais" class="training-sub-section">
+                <div class="sub-section-intro" style="margin-bottom: 24px;">
+                    <h3>Canais & Portais de Treinamento Stellantis</h3>
+                    <p>Acesse as plataformas oficiais de capacitação, documentação técnica e desenvolvimento profissional do grupo.</p>
+                </div>
+
+                <div class="channels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                    <!-- Card 1: Stellantis Academy -->
+                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                        <div>
+                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                                <i data-lucide="graduation-cap" style="color: var(--secondary); width: 20px; height: 20px;"></i>
+                            </div>
+                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Stellantis Academy</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Plataforma global de capacitação que oferece cursos sobre metodologia WCM, liderança, engenharia de produto, qualidade e processos de manufatura.</p>
+                        </div>
+                        <a href="https://academy.stellantis.com" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Stellantis Academy</a>
+                    </div>
+
+                    <!-- Card 2: Cornerstone (Stellantis LXP) -->
+                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                        <div>
+                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                                <i data-lucide="book-open" style="color: var(--accent); width: 20px; height: 20px;"></i>
+                            </div>
+                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Stellantis LXP (Cornerstone)</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Portal de Experiência de Aprendizado corporativo contendo as trilhas obrigatórias de compliance, ESG, proteção de dados (LGPD) e segurança da informação.</p>
+                        </div>
+                        <a href="https://stellantis.csod.com" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Portal LXP</a>
+                    </div>
+
+                    <!-- Card 3: Android Automotive IVI Portal -->
+                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                        <div>
+                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                                <i data-lucide="tablet" style="color: #10b981; width: 20px; height: 20px;"></i>
+                            </div>
+                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Android IVI Documentation</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Documentação oficial e manuais de engenharia de software para o ecossistema Android Automotive OS (AAOS) utilizado nas centrais multimídias do grupo.</p>
+                        </div>
+                        <a href="https://source.android.com/devices/automotive" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Documentação</a>
+                    </div>
+
+                    <!-- Card 4: Developer Portal & APIs -->
+                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                        <div>
+                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                                <i data-lucide="code-2" style="color: #f59e0b; width: 20px; height: 20px;"></i>
+                            </div>
+                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Stellantis Developer Portal</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Repositório de APIs, especificações de gateways e arquiteturas de barramento de dados para desenvolvimento de serviços conectados e apps embarcados.</p>
+                        </div>
+                        <a href="https://developer.stellantis.com" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Portal de Desenvolvedores</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO ON-BOARDING ================= -->
+        <section id="sec-onboarding" class="app-section">
+            <div class="section-header-row">
+                <div class="section-header">
+                    <h2 class="section-title">Programa de On-boarding</h2>
+                    <p class="section-subtitle">Tudo o que você precisa saber para iniciar sua jornada na Engenharia Stellantis.</p>
+                </div>
+            </div>
+
+            <!-- Subnavegação de Onboarding (Kit de Boas-Vindas) -->
+            <div class="onboarding-sub-nav" style="display: none;">
+                <button class="sub-nav-btn active" data-onboardingsub="boas-vindas">
+                    <i data-lucide="gift"></i> Kit de Boas-Vindas
+                </button>
+            </div>
+
+            <!-- SUBABA: KIT DE BOAS-VINDAS -->
+            <div id="onboarding-sec-boas-vindas" class="onboarding-sub-section active">
+                <div class="welcome-kit-layout">
+                    <!-- Introdução do Kit -->
+                    <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary);">
+                        <div class="welcome-intro-badge" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary); padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px;">
+                            <i data-lucide="sparkles"></i> Bem-vindo ao Time Stellantis!
+                        </div>
+                        <h3 style="font-size: 22px; color: var(--text-main); margin-bottom: 12px; font-weight: 700;">Olá, novo colaborador!</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Preparamos este Kit de Boas-Vindas digital para facilitar sua integração no nosso Tech Center. Aqui você encontra os principais acessos, documentos úteis, contatos e o passo a passo para configurar suas ferramentas de trabalho no primeiro dia.</p>
+                    </div>
+
+                    <!-- Grid de Seções do Kit -->
+                    <div class="kit-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                        <!-- Card 1: Checklist do Primeiro Dia -->
+                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
+                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <i data-lucide="check-square" style="width: 24px; height: 24px; color: #3b82f6;"></i>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Checklist de Acessos</h4>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Siga os passos iniciais para garantir a liberação do seu ambiente de desenvolvimento:</p>
+                            <ul class="kit-list" style="margin: 0; padding: 0 0 0 16px; font-size: 12px; color: var(--text-muted); line-height: 1.8;">
+                                <li style="margin-bottom: 8px;"><strong>Retirar Crachá</strong> no posto de segurança Betim/filial.</li>
+                                <li style="margin-bottom: 8px;"><strong>Ativar Conta AD</strong> (Active Directory) com a senha temporária do RH.</li>
+                                <li style="margin-bottom: 8px;"><strong>Configurar MFA</strong> (Multi-Factor Authentication) no celular.</li>
+                                <li style="margin-bottom: 8px;"><strong>Conectar à VPN</strong> Corporativa (Zscaler/AnyConnect).</li>
+                                <li style="margin-bottom: 8px;"><strong>Instalar Ferramentas</strong> básicas pelo portal Software Stellantis.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Card 2: Portais Corporativos e Links Úteis -->
+                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
+                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <i data-lucide="external-link" style="width: 24px; height: 24px; color: #10b981;"></i>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Portais e Ferramentas</h4>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Acesse rapidamente os principais sistemas de gestão corporativa e suporte de TI:</p>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="globe" style="width: 14px; height: 14px;"></i> Stellantis People Portal (RH)</a>
+                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="help-circle" style="width: 14px; height: 14px;"></i> Service Desk TI (Acessos/Suporte)</a>
+                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="network" style="width: 14px; height: 14px;"></i> Intranet Global Stellantis</a>
+                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="code" style="width: 14px; height: 14px;"></i> GitLab / Confluence da Engenharia</a>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Espaço do Estagiário -->
+                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
+                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <i data-lucide="graduation-cap" style="width: 24px; height: 24px; color: #a855f7;"></i>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Espaço do Estagiário</h4>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Informações e orientações essenciais voltadas à nossa equipe de jovens talentos:</p>
+                            <ul class="kit-list" style="margin: 0; padding: 0 0 0 16px; font-size: 12px; color: var(--text-muted); line-height: 1.8;">
+                                <li style="margin-bottom: 8px;"><strong>Portal CIEE/Agente</strong>: Gestão de termos de compromisso e contratos.</li>
+                                <li style="margin-bottom: 8px;"><strong>Plano de Atividades</strong>: Assinatura obrigatória nos primeiros 15 dias.</li>
+                                <li style="margin-bottom: 8px;"><strong>Relatório de Estágio</strong>: Entrega semestral obrigatória ao supervisor.</li>
+                                <li style="margin-bottom: 8px;"><strong>Treinamentos Obrigatórios</strong>: Compliance, LGPD e Segurança da Informação.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Card 4: Suporte e Canais de Comunicação -->
+                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
+                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <i data-lucide="message-square" style="width: 24px; height: 24px; color: #14b8a6;"></i>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Canais de Comunicação</h4>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Participe dos canais oficiais da engenharia e saiba a quem recorrer em caso de dúvidas:</p>
+                            <ul class="kit-list" style="margin: 0; padding: 0 0 0 16px; font-size: 12px; color: var(--text-muted); line-height: 1.8;">
+                                <li style="margin-bottom: 8px;"><strong>Slack/Teams</strong>: Canais `#digital-cockpit` e `#general-sa`.</li>
+                                <li style="margin-bottom: 8px;"><strong>Dúvidas de TI</strong>: Ramal 2300 (Suporte Betim).</li>
+                                <li style="margin-bottom: 8px;"><strong>Dúvidas de RH</strong>: E-mail `people.support.sa@stellantis.com`.</li>
+                                <li style="margin-bottom: 8px;"><strong>Buddy de Integração</strong>: Colega de equipe designado para guiar você.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO AUTOMAÇÕES & IA ================= -->
+        <section id="sec-automacoes" class="app-section">
+            <div class="section-header-row">
+                <div class="section-header">
+                    <h2 class="section-title">Automações & Inteligência Artificial</h2>
+                    <p class="section-subtitle">Conheça as soluções de inteligência computacional e automação em desenvolvimento no nosso setor.</p>
+                </div>
+            </div>
+
+            <div class="automations-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+                <!-- Card 1: StellantisGPT -->
+                <div class="automation-card" data-projid="stellantisgpt" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                    <div>
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
+                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary); padding: 4px 10px; border-radius: 6px;"><i data-lucide="bot" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> IA Conversacional</span>
+                            <i data-lucide="sparkles" style="color: var(--secondary); width: 18px; height: 18px;"></i>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">StellantisGPT</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Assistente técnico baseado em LLM Gemini para apoio ao time de engenharia de infotainment.</p>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                        <span>Responsável: Engª Ana Martins</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: TestGen-AI -->
+                <div class="automation-card" data-projid="testgenai" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                    <div>
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
+                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--accent); padding: 4px 10px; border-radius: 6px;"><i data-lucide="code" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Automação de QA</span>
+                            <i data-lucide="check-circle-2" style="color: var(--accent); width: 18px; height: 18px;"></i>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">TestGen-AI</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Geração automática de scripts de teste para Android Automotive OS a partir de requisitos do Confluence.</p>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                        <span>Responsável: Breno Teixeira</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: CAN-Analyzer AI -->
+                <div class="automation-card" data-projid="cananalyzer" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                    <div>
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
+                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--accent-red); padding: 4px 10px; border-radius: 6px;"><i data-lucide="cpu" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Análise de Hardware</span>
+                            <i data-lucide="activity" style="color: var(--accent-red); width: 18px; height: 18px;"></i>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">CAN-Analyzer AI</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Detecção inteligente de anomalias e erros de comunicação em tempo real na rede CAN dos protótipos.</p>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                        <span>Responsável: Dr. Enzo Nogueira</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: PowerOpt-AI -->
+                <div class="automation-card" data-projid="poweroptai" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                    <div>
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
+                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; padding: 4px 10px; border-radius: 6px;"><i data-lucide="zap" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Otimização Preditiva</span>
+                            <i data-lucide="battery" style="color: #a855f7; width: 18px; height: 18px;"></i>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">PowerOpt-AI</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Modelo de aprendizado por reforço para otimizar os fluxos de consumo e regeneração do Bio-Hybrid 48V.</p>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                        <span>Responsável: Engª Ana Martins</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEÇÃO SOBRE ================= -->
+        <section id="sec-sobre" class="app-section">
+            <div class="about-container">
+                <div class="about-card">
+                    <h2 class="section-title">Sobre o Protótipo</h2>
+                    <p class="lead-text">Este é um ambiente interativo de cocriação e prototipagem rápida para o <strong>Stellantis Dictionary</strong>.</p>
+                    
+                    <div class="about-features">
+                        <div class="about-feat-item">
+                            <div class="feat-icon"><i data-lucide="check-circle-2"></i></div>
+                            <div>
+                                <h4>Cocriação Ativa</h4>
+                                <p>Use o painel lateral para registrar ideias de recursos, novas telas ou ajustes visuais a qualquer momento.</p>
+                            </div>
+                        </div>
+                        <div class="about-feat-item">
+                            <div class="feat-icon"><i data-lucide="box"></i></div>
+                            <div>
+                                <h4>Explorador 3D Procedural</h4>
+                                <p>Integração com Three.js para demonstrar a viabilidade de um modelo interativo de carro rodando direto no browser.</p>
+                            </div>
+                        </div>
+                        <div class="about-feat-item">
+                            <div class="feat-icon"><i data-lucide="database"></i></div>
+                            <div>
+                                <h4>Banco de Dados Local</h4>
+                                <p>Seus termos adicionados e ideias anotadas ficam persistidos no LocalStorage do seu próprio navegador.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-tech-stack">
+                        <h5>Tecnologias Utilizadas no Protótipo:</h5>
+                        <div class="tech-tags">
+                            <span>HTML5 Semântico</span>
+                            <span>Vanilla CSS3 (Grid/Flex/Glow)</span>
+                            <span>Vanilla Javascript ES6+</span>
+                            <span>Three.js (Visualização 3D)</span>
+                            <span>Lucide Icons</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= PAINEL FLUTUANTE DE CRIAÇÃO DE IDEIAS (PROTÓTIPO) ================= -->
+    <div class="prototype-ideas-panel" id="ideasPanel">
+        <button class="panel-toggle" id="btnToggleIdeasPanel">
+            <i data-lucide="lightbulb" class="bulb-icon"></i>
+            <span class="toggle-text">Painel de Ideias</span>
+            <span class="idea-count" id="ideaCount">0</span>
+        </button>
+
+        <div class="panel-content">
+            <div class="panel-header">
+                <h3>💡 Inserir Novas Ideias</h3>
+                <p>Use este painel para registrar insights para o protótipo.</p>
+            </div>
+
+            <!-- Form para Nova Ideia -->
+            <form id="ideaForm" class="idea-form">
+                <div class="form-group">
+                    <label for="ideaType">Tipo de Insight:</label>
+                    <select id="ideaType">
+                        <option value="funcionalidade">Nova Funcionalidade</option>
+                        <option value="termo">Novo Termo para Dicionário</option>
+                        <option value="layout">Sugestão de Layout/Design</option>
+                        <option value="hotspot">Anotação sobre Componente</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ideaTitle">Título:</label>
+                    <input type="text" id="ideaTitle" placeholder="Ex: Adicionar visualização do interior" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ideaDesc">Descrição detalhada:</label>
+                    <textarea id="ideaDesc" rows="3" placeholder="Descreva sua ideia ou o significado do termo..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-idea">
+                    <i data-lucide="plus-circle"></i> Salvar Ideia no Protótipo
+                </button>
+            </form>
+
+            <!-- Lista de Ideias Adicionadas -->
+            <div class="saved-ideas-section">
+                <h4>Ideias Registradas:</h4>
+                <div class="saved-ideas-list" id="savedIdeasList">
+                    <!-- Gerado dinamicamente -->
+                    <p class="no-ideas">Nenhuma ideia inserida ainda. Adicione acima!</p>
+                </div>
+            </div>
+
+            <div class="panel-footer-actions">
+                <button class="btn-footer-action secondary" id="btnExportIdeias">
+                    <i data-lucide="download"></i> Exportar JSON
+                </button>
+                <button class="btn-footer-action danger" id="btnClearIdeias">
+                    <i data-lucide="trash-2"></i> Limpar Tudo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Auxiliar de Inserção de Ideia Localizada -->
+    <div class="modal-overlay" id="modalIdea">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>💡 Adicionar Nota ao Componente</h3>
+                <button class="btn-close-modal" id="btnCloseModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Adicionando ideia relacionada a: <strong id="modalComponentTarget">Grade Frontal</strong></p>
+                <div class="form-group">
+                    <label for="modalIdeaTitle">Título da Nota/Ideia:</label>
+                    <input type="text" id="modalIdeaTitle" placeholder="Ex: Sensor de colisão na grade" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalIdeaDesc">Descrição do Insight:</label>
+                    <textarea id="modalIdeaDesc" rows="4" placeholder="Como esta parte pode ser melhorada ou o que precisa ser explicado sobre ela?" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-action secondary" id="btnCancelModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveModalIdea">Salvar Nota</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes de Projetos (Gama de Modelos Jeep/Ram) -->
+    <div class="modal-overlay" id="modalProjectDetails">
+        <div class="modal-card modal-large">
+            <div class="modal-header">
+                <div class="modal-header-title-group">
+                    <h3 id="projectModalTitle">Gama de Modelos Jeep Compass</h3>
+                    <span class="project-modal-subtitle" id="projectModalSubtitle">Projeto J3U</span>
+                </div>
+                <button class="btn-close-modal" id="btnCloseProjectModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="projectModalBody">
+                <!-- Conteúdo das versões injetado via JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-action primary" id="btnCloseProjectModalBtn">Fechar Detalhes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar Novo Termo no Dicionário -->
+    <div class="modal-overlay" id="modalAddTerm">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Adicionar Novo Termo</h3>
+                <button class="btn-close-modal" id="btnCloseAddTermModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAddTerm" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label for="termTitle">Termo / Sigla:</label>
+                        <input type="text" id="termTitle" placeholder="Ex: eTCU, ADAS, MultiAir..." required style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="termCategory">Categoria:</label>
+                        <select id="termCategory" required style="width: 100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none;">
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="motorizacao">Motorização</option>
+                            <option value="componentes">Componentes</option>
+                            <option value="plataformas">Plataformas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="termDef">Definição / Significado:</label>
+                        <textarea id="termDef" rows="4" placeholder="Explicação técnica detalhada do termo ou sigla..." required style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none; resize: vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="termAuthor">Autor / Seu Nome (Opcional):</label>
+                        <input type="text" id="termAuthor" placeholder="Ex: Eduardo Henrique" style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-action secondary" id="btnCancelAddTermModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewTerm">Adicionar ao Dicionário</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar Novo Flashcard -->
+    <div class="modal-overlay" id="modalAddCard">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Criar Novo Flashcard</h3>
+                <button class="btn-close-modal" id="btnCloseAddCardModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <!-- Barra de Busca Rápida no Dicionário para Auto-preenchimento -->
+                <div class="form-group" style="margin-bottom: 16px; position: relative;">
+                    <label style="color: var(--secondary); font-weight: 700; font-size: 12px; display: block; margin-bottom: 6px;"><i data-lucide="search" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Importar dados do Dicionário (Opcional):</label>
+                    <input type="text" id="fcSearchDictionary" placeholder="Pesquisar termo no dicionário para auto-preencher..." style="width:100%; padding: 10px 12px; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(6,182,212,0.3); border-radius: 8px; color: var(--text-main); outline: none; font-size: 13px; transition: border-color 0.2s ease;">
+                    <div id="fcSearchSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; max-height: 180px; overflow-y: auto; z-index: 10; display: none; margin-top: 4px; box-shadow: var(--shadow-premium); backdrop-filter: blur(20px);"></div>
+                </div>
+
+                <form id="formAddCard" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label for="cardWatermark">Letra da Marca d'água (Fundo do card):</label>
+                        <input type="text" id="cardWatermark" placeholder="Ex: J, S, A, T..." maxlength="1" required style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none; text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardTitle">Título do Card / Assunto:</label>
+                        <input type="text" id="cardTitle" placeholder="Ex: Sistema eTCU, Motor T270..." required style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardQuestion">Pergunta / Descrição da Frente:</label>
+                        <textarea id="cardQuestion" rows="3" placeholder="O que você deseja fixar sobre este assunto na frente do card?" required style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none; resize: vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardAnswer">Resposta Técnica (Verso do card):</label>
+                        <textarea id="cardAnswer" rows="4" placeholder="Qual a resposta correta/descrição técnica que aparecerá quando virar o card?" required style="width:100%; padding: 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); outline: none; resize: vertical;"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-action secondary" id="btnCancelAddCardModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewCard">Adicionar Flashcard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Projeto de Automação & IA -->
+    <div class="modal-overlay" id="modalAutomationDetails">
+        <div class="modal-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 id="automationModalTitle">Título do Projeto</h3>
+                <button class="btn-close-modal" id="btnCloseAutomationModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div>
+                    <h5 style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); margin-bottom: 6px; font-weight: 700; letter-spacing: 0.5px;">Descrição do Projeto:</h5>
+                    <p id="automationModalDesc" style="font-size: 13px; color: var(--text-muted); line-height: 1.6;"></p>
+                </div>
+                <div>
+                    <h5 style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); margin-bottom: 6px; font-weight: 700; letter-spacing: 0.5px;">Tecnologias Utilizadas:</h5>
+                    <div id="automationModalTechs" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                </div>
+                <div style="display: flex; gap: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; margin-top: 8px;">
+                    <div style="flex: 1;">
+                        <span style="font-size: 10px; color: var(--text-dark); display: block; margin-bottom: 2px;">Responsável Técnico:</span>
+                        <span id="automationModalOwner" style="font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;"><i data-lucide="user" style="width: 14px; height: 14px; color: var(--secondary);"></i> Nome</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <span style="font-size: 10px; color: var(--text-dark); display: block; margin-bottom: 2px;">Status do Projeto:</span>
+                        <span id="automationModalStatus" style="font-size: 12px; font-weight: 700; color: #10b981; display: flex; align-items: center; gap: 6px;"><span style="background-color: #10b981; box-shadow: 0 0 6px #10b981; width:6px; height:6px; border-radius:50%; display:inline-block;"></span> Produção</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 12px; width: 100%;">
+                <button class="btn-modal-action secondary" id="btnCancelAutomationModal" style="flex: 1; padding: 12px; height: 42px;">Voltar</button>
+                <a href="#" target="_blank" class="btn-modal-action primary" id="btnLinkAutomation" style="flex: 1; padding: 12px; text-decoration: none; text-align: center; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; height: 42px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Projeto</a>
+                <button class="btn-modal-action primary" id="btnContactAutomationOwner" style="flex: 1; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, var(--secondary) 0%, #0891b2 100%); border-color: var(--secondary); height: 42px;"><i data-lucide="message-square" style="width: 14px; height: 14px;"></i> Falar com Responsável</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Termo do Dicionário -->
+    <div class="modal-overlay" id="modalTermDetails">
+        <div class="modal-card" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3 id="termDetailsTitle">Detalhes do Termo</h3>
+                <button class="btn-close-modal" id="btnCloseTermDetailsModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div>
+                    <h5 style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); margin-bottom: 6px; font-weight: 700; letter-spacing: 0.5px;">Definição / Significado:</h5>
+                    <p id="termDetailsDef" style="font-size: 14px; color: var(--text-main); line-height: 1.6;"></p>
+                </div>
+                <div style="display: flex; gap: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; margin-top: 8px;">
+                    <div style="flex: 1;">
+                        <span style="font-size: 10px; color: var(--text-dark); display: block; margin-bottom: 2px;">Categoria:</span>
+                        <span id="termDetailsCategory" style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--secondary); background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); padding: 4px 10px; border-radius: 6px; display: inline-block;">Tecnologia</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <span style="font-size: 10px; color: var(--text-dark); display: block; margin-bottom: 2px;">Cadastrado por:</span>
+                        <span id="termDetailsAuthor" style="font-size: 13px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px;"><i data-lucide="user" style="width: 14px; height: 14px; color: var(--secondary);"></i> Sistema</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 12px; width: 100%; flex-wrap: wrap;">
+                <button class="btn-modal-action secondary" id="btnCancelTermDetailsModal" style="flex: 1; min-width: 80px; padding: 12px; height: 42px;">Voltar</button>
+                <button class="btn-modal-action primary" id="btnCreateFlashcardFromTerm" style="flex: 1.5; min-width: 140px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-color: #7c3aed; height: 42px;"><i data-lucide="layers" style="width: 14px; height: 14px;"></i> Criar Flashcard</button>
+                <button class="btn-modal-action primary" id="btnAskGptAboutTerm" style="flex: 1.5; min-width: 160px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, var(--secondary) 0%, #0891b2 100%); border-color: var(--secondary); height: 42px;"><i data-lucide="message-square" style="width: 14px; height: 14px;"></i> Perguntar ao StellantisGPT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Principal -->
+    <script src="app.js"></script>
+    <script src="car-interactivity.js"></script>
+</body>
+</html>
