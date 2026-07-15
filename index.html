@@ -442,38 +442,39 @@
                         <i data-lucide="plus"></i> <span>Nova conversa</span>
                     </button>
                     
-
-
-                    <!-- Seção de Notebooks -->
-                    <div class="sidebar-section stellantis-gpt-sidebar-section">
-                        <div class="section-label-row">
-                            <span class="section-label">Notebooks</span>
-                            <button class="btn-add-notebook" id="btnCreateNotebook" title="Novo notebook">
-                                <i data-lucide="plus"></i>
-                            </button>
+                    <!-- Área Rolável para Histórico e Notebooks -->
+                    <div class="stellantis-gpt-sidebar-scroll-area">
+                        <!-- Seção de Notebooks -->
+                        <div class="sidebar-section stellantis-gpt-sidebar-section">
+                            <div class="section-label-row">
+                                <span class="section-label">Notebooks</span>
+                                <button class="btn-add-notebook" id="btnCreateNotebook" title="Novo notebook">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                            </div>
+                            <ul class="chat-history-list stellantis-gpt-notebook-list" id="notebookHistoryList">
+                                <li class="history-item notebook-item" data-notebook-id="nb-1">
+                                    <i data-lucide="file-text"></i> <span>📝 Diretrizes Bio-Hybrid</span>
+                                </li>
+                                <li class="history-item notebook-item" data-notebook-id="nb-2">
+                                    <i data-lucide="file-text"></i> <span>📝 Projeto Jeep Commander</span>
+                                </li>
+                                <li class="history-item notebook-item" data-notebook-id="nb-3">
+                                    <i data-lucide="file-text"></i> <span>📝 Diagnóstico ADAS Nível 2</span>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="chat-history-list stellantis-gpt-notebook-list" id="notebookHistoryList">
-                            <li class="history-item notebook-item" data-notebook-id="nb-1">
-                                <i data-lucide="file-text"></i> <span>📝 Diretrizes Bio-Hybrid</span>
-                            </li>
-                            <li class="history-item notebook-item" data-notebook-id="nb-2">
-                                <i data-lucide="file-text"></i> <span>📝 Projeto Jeep Commander</span>
-                            </li>
-                            <li class="history-item notebook-item" data-notebook-id="nb-3">
-                                <i data-lucide="file-text"></i> <span>📝 Diagnóstico ADAS Nível 2</span>
-                            </li>
-                        </ul>
-                    </div>
 
-                    <!-- Seção Recentes (Histórico de Conversas) -->
-                    <div class="sidebar-section stellantis-gpt-sidebar-section">
-                        <div class="section-label">Recentes</div>
-                        <ul class="chat-history-list" id="recentChatHistory">
-                            <li class="history-item active" data-id="chat-1"><i data-lucide="message-square"></i> <span>Engenharia Stellantis</span></li>
-                            <li class="history-item" data-id="chat-2"><i data-lucide="message-square"></i> <span>Motores Turbo Flex</span></li>
-                            <li class="history-item" data-id="chat-3"><i data-lucide="message-square"></i> <span>Sistemas ADAS</span></li>
-                            <li class="history-item" data-id="chat-4"><i data-lucide="message-square"></i> <span>Plataforma STLA</span></li>
-                        </ul>
+                        <!-- Seção Recentes (Histórico de Conversas) -->
+                        <div class="sidebar-section stellantis-gpt-sidebar-section">
+                            <div class="section-label">Recentes</div>
+                            <ul class="chat-history-list" id="recentChatHistory">
+                                <li class="history-item active" data-id="chat-1"><i data-lucide="message-square"></i> <span>Engenharia Stellantis</span></li>
+                                <li class="history-item" data-id="chat-2"><i data-lucide="message-square"></i> <span>Motores Turbo Flex</span></li>
+                                <li class="history-item" data-id="chat-3"><i data-lucide="message-square"></i> <span>Sistemas ADAS</span></li>
+                                <li class="history-item" data-id="chat-4"><i data-lucide="message-square"></i> <span>Plataforma STLA</span></li>
+                            </ul>
+                        </div>
                     </div>
                 </aside>
 
