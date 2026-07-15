@@ -289,6 +289,7 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    padding-left: 60px; /* Posicionar mais para a direita */
 }
 
 .badge-interactive {
@@ -320,7 +321,7 @@ body::before {
 
 .hero-title {
     font-family: var(--font-heading);
-    font-size: 58px;
+    font-size: 68px; /* Aumentado de 58px */
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -1.5px;
@@ -340,7 +341,7 @@ body::before {
 
 .hero-description {
     color: var(--text-muted);
-    font-size: 16px;
+    font-size: 18px; /* Aumentado de 16px */
     line-height: 1.6;
     max-width: 480px;
 }
