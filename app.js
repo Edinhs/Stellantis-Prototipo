@@ -3079,11 +3079,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
-    let currentFocusedNodeId = "heiko";
+    let currentFocusedNodeId = "leaders-root";
     const hiddenNodeIds = new Set();
 
     // Função recursiva para achar nó na hierarquia
     function findNodeById(node, id) {
+        if (id === "leaders-root") {
+            return {
+                id: "leaders-root",
+                name: "Lideranças",
+                role: "Software Engineering Leads",
+                reports: []
+            };
+        }
         if (node.id === id) return node;
         for (let child of node.reports) {
             let found = findNodeById(child, id);
@@ -3094,6 +3102,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função recursiva para achar nó pai de um nó na hierarquia
     function findParentNode(rootNode, targetId, parentNode = null) {
+        if (targetId === "leaders-root") return null;
+        
+        // Se o target for um dos 7 líderes, o pai conceitual da visualização é "leaders-root"!
+        const leadersIds = ["saulo", "breno", "heber", "gabriel", "arthur", "alexandre_p", "yu"];
+        if (leadersIds.includes(targetId)) {
+            return {
+                id: "leaders-root",
+                name: "Lideranças",
+                role: "Software Engineering Leads",
+                reports: []
+            };
+        }
+
         if (rootNode.id === targetId) return parentNode;
         for (let child of rootNode.reports) {
             let found = findParentNode(child, targetId, rootNode);
@@ -3104,12 +3125,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função recursiva para gerar os breadcrumbs do nó focado
     function getBreadcrumbPath(rootNode, targetId, path = []) {
-        if (rootNode.id === targetId) {
-            return [...path, rootNode];
+        if (targetId === "leaders-root") {
+            return [{ id: "leaders-root", name: "Início", role: "" }];
         }
-        for (let child of rootNode.reports) {
-            let found = getBreadcrumbPath(child, targetId, [...path, rootNode]);
-            if (found) return found;
+        
+        // Obter caminho na árvore real
+        let realPath = null;
+        if (rootNode.id === targetId) {
+            realPath = [...path, rootNode];
+        } else {
+            for (let child of rootNode.reports) {
+                let found = getBreadcrumbPath(child, targetId, [...path, rootNode]);
+                if (found) {
+                    realPath = found;
+                    break;
+                }
+            }
+        }
+
+        if (realPath) {
+            // O caminho real começa em Heiko Schilling, Anantha, Fernando Ataide, etc.
+            // Queremos simplificar: o primeiro item visível para o usuário deve ser "Início" (leaders-root),
+            // e removemos Heiko, Anantha, Fernando Ataide do caminho para ficar limpo, mantendo a partir do líder N-5!
+            const cleanPath = [{ id: "leaders-root", name: "Início", role: "" }];
+            
+            // Adicionar apenas os nós que pertencem à hierarquia a partir dos 7 líderes (N-5 e inferiores)
+            const leadersIds = ["saulo", "breno", "heber", "gabriel", "arthur", "alexandre_p", "yu"];
+            
+            let foundLeader = false;
+            realPath.forEach(node => {
+                if (leadersIds.includes(node.id) || foundLeader) {
+                    foundLeader = true;
+                    cleanPath.push(node);
+                }
+            });
+
+            if (cleanPath.length > 1) {
+                return cleanPath;
+            }
+            return realPath;
         }
         return null;
     }
@@ -3119,68 +3173,141 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!orgTreeWrapper) return;
         orgTreeWrapper.innerHTML = '';
 
+        // Caso especial: Raiz com os 7 Líderes Horizontais
+        if (currentFocusedNodeId === "leaders-root") {
+            const listContainer = document.createElement('div');
+            listContainer.className = 'tree-level-container level-reports';
+            listContainer.innerHTML = `<span class="level-label" style="margin-bottom: 24px; font-size: 11px; font-weight: 800; color: var(--text-dark); letter-spacing: 1px;">LIDERANÇAS DE SOFTWARE ENGINEERING (CLIQUE EM VER EQUIPE PARA APROFUNDAR)</span>`;
+            
+            const row = document.createElement('div');
+            row.className = 'nodes-row';
+            row.style.display = 'flex';
+            row.style.flexWrap = 'nowrap';
+            row.style.overflowX = 'auto';
+            row.style.gap = '16px';
+            row.style.padding = '10px 10px 20px 10px';
+            row.style.justifyContent = 'flex-start';
+            row.style.scrollBehavior = 'smooth';
+            row.style.width = '100%';
+            
+            const leaders = [
+                findNodeById(orgHierarchy, "saulo"),
+                findNodeById(orgHierarchy, "breno"),
+                findNodeById(orgHierarchy, "heber"),
+                findNodeById(orgHierarchy, "gabriel"),
+                findNodeById(orgHierarchy, "arthur"),
+                findNodeById(orgHierarchy, "alexandre_p"),
+                findNodeById(orgHierarchy, "yu")
+            ].filter(Boolean);
+
+            leaders.forEach(lead => {
+                const nodeDiv = document.createElement('div');
+                nodeDiv.className = 'tree-node clickable';
+                nodeDiv.setAttribute('data-nodeid', lead.id);
+                nodeDiv.style.flex = '0 0 250px';
+
+                // Avatar color com base no líder
+                let colorClass = 'blue';
+                if (lead.id === 'saulo') colorClass = 'blue';
+                if (lead.id === 'breno') colorClass = 'cian';
+                if (lead.id === 'heber') colorClass = 'purple';
+                if (lead.id === 'gabriel') colorClass = 'orange';
+                if (lead.id === 'arthur') colorClass = 'green';
+                if (lead.id === 'alexandre_p') colorClass = 'red';
+                if (lead.id === 'yu') colorClass = 'teal';
+
+                nodeDiv.innerHTML = `
+                    <div class="node-avatar bg-${colorClass}">${lead.avatar}</div>
+                    <div class="node-info">
+                        <h4>${lead.name}</h4>
+                        <span style="font-size: 11px; color: var(--text-muted); line-height: 1.3; display: block; margin-top: 4px; height: 32px; overflow: hidden;">${lead.role}</span>
+                    </div>
+                    <span class="node-expand-tag">Ver Equipe</span>
+                    <button class="btn-node-locate" data-location="${lead.location}"><i data-lucide="map-pin"></i> ${lead.location.toUpperCase()}</button>
+                `;
+                row.appendChild(nodeDiv);
+            });
+
+            listContainer.appendChild(row);
+            orgTreeWrapper.appendChild(listContainer);
+            
+            // Registrar cliques
+            const nodes = orgTreeWrapper.querySelectorAll('.tree-node');
+            nodes.forEach(n => {
+                n.addEventListener('click', (e) => {
+                    if (e.target.closest('.btn-node-locate')) return;
+                    const nodeId = n.getAttribute('data-nodeid');
+                    currentFocusedNodeId = nodeId;
+                    renderTree();
+                });
+            });
+
+            const locateBtns = orgTreeWrapper.querySelectorAll('.btn-node-locate');
+            locateBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const loc = btn.getAttribute('data-location');
+                    const mapSelectorBtn = document.querySelector('.org-view-btn[data-orgview="map"]');
+                    if (mapSelectorBtn) mapSelectorBtn.click();
+                    const targetPin = document.querySelector(`.map-pin-pulse[data-pinloc="${loc}"]`);
+                    if (targetPin) {
+                        setTimeout(() => {
+                            targetPin.click();
+                            targetPin.style.transform = 'translate(-50%, -50%) scale(1.6)';
+                            setTimeout(() => { targetPin.style.transform = 'translate(-50%, -50%) scale(1)'; }, 300);
+                        }, 350);
+                    }
+                });
+            });
+
+            renderBreadcrumbs();
+            lucide.createIcons();
+            return;
+        }
+
+        // Caso normal: Foco Atual + Subordinados (sem card superior de Pai para seguir os prints)
         const focusedNode = findNodeById(orgHierarchy, currentFocusedNodeId);
         if (!focusedNode) return;
 
-        let parentNode = findParentNode(orgHierarchy, currentFocusedNodeId);
-        // Se o pai estiver ocultado, não mostra ele no topo superior
-        if (parentNode && hiddenNodeIds.has(parentNode.id)) {
-            parentNode = null;
-        }
-
-        // 1. Renderizar Nível Pai (se houver)
-        if (parentNode) {
-            const parentContainer = document.createElement('div');
-            parentContainer.className = 'tree-level-container level-parent';
-            parentContainer.innerHTML = `
-                <span class="level-label">Nível Superior (Clique para Subir)</span>
-                <div class="tree-node parent-node clickable" data-nodeid="${parentNode.id}">
-                    <div class="node-avatar bg-gray">${parentNode.avatar}</div>
-                    <div class="node-info">
-                        <h4>${parentNode.name}</h4>
-                        <span>${parentNode.role}</span>
-                    </div>
-                    <button class="btn-node-hide" title="Ocultar Usuário" data-nodeid="${parentNode.id}"><i data-lucide="eye-off"></i></button>
-                </div>
-            `;
-            orgTreeWrapper.appendChild(parentContainer);
-
-            // Conector vertical
-            const connector = document.createElement('div');
-            connector.className = 'tree-connector';
-            orgTreeWrapper.appendChild(connector);
-        }
-
-        // 2. Renderizar Nó Focado (Centro)
+        // 1. Renderizar Nó Focado (Centro)
         const focusedContainer = document.createElement('div');
         focusedContainer.className = 'tree-level-container level-focused';
+        
+        let focusColorClass = 'blue';
+        if (focusedNode.id === 'saulo') focusColorClass = 'blue';
+        else if (focusedNode.id === 'breno') focusColorClass = 'cian';
+        else if (focusedNode.id === 'heber') focusColorClass = 'purple';
+        else if (focusedNode.id === 'gabriel') focusColorClass = 'orange';
+        else if (focusedNode.id === 'arthur') focusColorClass = 'green';
+        else if (focusedNode.id === 'alexandre_p') focusColorClass = 'red';
+        else if (focusedNode.id === 'yu') focusColorClass = 'teal';
+        else if (focusedNode.level && focusedNode.level.includes('Group')) focusColorClass = 'blue'; // Setor
+
         focusedContainer.innerHTML = `
-            <span class="level-label">Foco Atual</span>
+            <span class="level-label" style="font-size: 11px; font-weight: 800; color: var(--secondary); letter-spacing: 1px;">FOCO ATUAL</span>
             <div class="tree-node leader-node active" data-nodeid="${focusedNode.id}">
-                <div class="node-avatar bg-blue">${focusedNode.avatar}</div>
+                <div class="node-avatar bg-${focusColorClass}">${focusedNode.avatar}</div>
                 <div class="node-info">
                     <h4>${focusedNode.name}</h4>
                     <span>${focusedNode.role}</span>
                 </div>
-                <button class="btn-node-locate" data-location="${focusedNode.location}"><i data-lucide="map-pin"></i> ${focusedNode.location.toUpperCase()}</button>
-                <button class="btn-node-hide" title="Ocultar Usuário" data-nodeid="${focusedNode.id}"><i data-lucide="eye-off"></i></button>
+                <button class="btn-node-locate" data-location="${focusedNode.location || 'sa'}"><i data-lucide="map-pin"></i> ${(focusedNode.location || 'sa').toUpperCase()}</button>
             </div>
         `;
         orgTreeWrapper.appendChild(focusedContainer);
 
-        // 3. Renderizar Subordinados (se houver)
-        // Filtramos os subordinados ocultados para que o CSS Flexbox se organize automaticamente!
-        const visibleReports = (focusedNode.reports || []).filter(child => !hiddenNodeIds.has(child.id));
+        // 2. Renderizar Subordinados (se houver)
+        const visibleReports = (focusedNode.reports || []);
 
         if (visibleReports.length > 0) {
             // Conector vertical
-            const connector2 = document.createElement('div');
-            connector2.className = 'tree-connector';
-            orgTreeWrapper.appendChild(connector2);
+            const connector = document.createElement('div');
+            connector.className = 'tree-connector';
+            orgTreeWrapper.appendChild(connector);
 
             const childContainer = document.createElement('div');
             childContainer.className = 'tree-level-container level-reports';
-            childContainer.innerHTML = `<span class="level-label">Subordinados Diretos (Clique no card para aprofundar)</span>`;
+            childContainer.innerHTML = `<span class="level-label" style="font-size: 11px; font-weight: 800; color: var(--text-dark); letter-spacing: 1px;">SUBORDINADOS DIRETOS (CLIQUE NO CARD PARA APROFUNDAR)</span>`;
             
             const row = document.createElement('div');
             row.className = 'nodes-row';
@@ -3194,15 +3321,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 nodeDiv.className = `tree-node ${isClickable ? 'clickable' : ''}`;
                 nodeDiv.setAttribute('data-nodeid', child.id);
 
+                let childColorClass = 'gray';
+                if (child.level && child.level.includes('Group')) childColorClass = 'gray'; // Grupo/Setor
+                else childColorClass = 'blue'; // Membro individual
+
                 nodeDiv.innerHTML = `
-                    <div class="node-avatar bg-gray">${child.avatar}</div>
+                    <div class="node-avatar bg-${childColorClass}">${child.avatar}</div>
                     <div class="node-info">
                         <h4>${child.name}</h4>
                         <span>${child.role}</span>
                     </div>
                     ${isClickable ? '<span class="node-expand-tag">Ver Equipe</span>' : ''}
-                    <button class="btn-node-locate" data-location="${child.location}"><i data-lucide="map-pin"></i> ${child.location.toUpperCase()}</button>
-                    <button class="btn-node-hide" title="Ocultar Usuário" data-nodeid="${child.id}"><i data-lucide="eye-off"></i></button>
+                    <button class="btn-node-locate" data-location="${child.location || 'sa'}"><i data-lucide="map-pin"></i> ${(child.location || 'sa').toUpperCase()}</button>
                 `;
                 row.appendChild(nodeDiv);
             });
@@ -3215,59 +3345,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const nodes = orgTreeWrapper.querySelectorAll('.tree-node');
         nodes.forEach(n => {
             n.addEventListener('click', (e) => {
-                // Se clicou no botão de localização ou de ocultar, não fazer drill-down
-                if (e.target.closest('.btn-node-locate') || e.target.closest('.btn-node-hide')) return;
-
+                if (e.target.closest('.btn-node-locate')) return;
                 const nodeId = n.getAttribute('data-nodeid');
-                // Apenas fazer drill-down se tiver reports ou for subir nível
                 const targetNode = findNodeById(orgHierarchy, nodeId);
-                if (targetNode && ((targetNode.reports && targetNode.reports.length > 0) || n.classList.contains('parent-node'))) {
+                if (targetNode && (targetNode.reports && targetNode.reports.length > 0)) {
                     currentFocusedNodeId = nodeId;
                     renderTree();
                 }
             });
         });
 
-        // Registrar eventos nos botões de localização dentro dos nodes
+        // Registrar eventos nos botões de localização
         const locateBtns = orgTreeWrapper.querySelectorAll('.btn-node-locate');
         locateBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const loc = btn.getAttribute('data-location');
-                
-                // Mudar para o modo mapa
                 const mapSelectorBtn = document.querySelector('.org-view-btn[data-orgview="map"]');
                 if (mapSelectorBtn) mapSelectorBtn.click();
-                
-                // Clicar no pin correspondente no mapa
                 const targetPin = document.querySelector(`.map-pin-pulse[data-pinloc="${loc}"]`);
                 if (targetPin) {
                     setTimeout(() => {
                         targetPin.click();
                         targetPin.style.transform = 'translate(-50%, -50%) scale(1.6)';
-                        setTimeout(() => {
-                            targetPin.style.transform = 'translate(-50%, -50%) scale(1)';
-                        }, 300);
+                        setTimeout(() => { targetPin.style.transform = 'translate(-50%, -50%) scale(1)'; }, 300);
                     }, 350);
                 }
-            });
-        });
-
-        // Registrar eventos nos botões de ocultação (olho)
-        const hideBtns = orgTreeWrapper.querySelectorAll('.btn-node-hide');
-        hideBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const nodeId = btn.getAttribute('data-nodeid');
-                hiddenNodeIds.add(nodeId);
-
-                // Se o nó ocultado for o focado atual, redefine o foco para o pai ou heiko
-                if (currentFocusedNodeId === nodeId) {
-                    const parent = findParentNode(orgHierarchy, nodeId);
-                    currentFocusedNodeId = parent ? parent.id : "heiko";
-                }
-
-                renderTree();
             });
         });
 
