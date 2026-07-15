@@ -1491,27 +1491,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Troca de Subabas em Onboarding
-    const onboardingSubNavBtns = document.querySelectorAll('.onboarding-sub-nav .sub-nav-btn');
-    const onboardingSubSections = document.querySelectorAll('.onboarding-sub-section');
-
-    if (onboardingSubNavBtns) {
-        onboardingSubNavBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                onboardingSubNavBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const target = btn.getAttribute('data-onboardingsub');
-                onboardingSubSections.forEach(sec => {
-                    sec.classList.remove('active');
-                    if (sec.id === `onboarding-sec-${target}`) {
-                        sec.classList.add('active');
-                    }
-                });
-            });
-        });
-    }
-
     // Lógica para links do dropdown menu superior
     if (dropdownLinks) {
         dropdownLinks.forEach(link => {
@@ -1529,9 +1508,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (subBtn) subBtn.click();
                 } else if (targetId === 'informacoes' && subtarget) {
                     const subBtn = document.querySelector(`.sub-nav-btn[data-infosub="${subtarget}"]`);
-                    if (subBtn) subBtn.click();
-                } else if (targetId === 'onboarding' && subtarget) {
-                    const subBtn = document.querySelector(`.sub-nav-btn[data-onboardingsub="${subtarget}"]`);
                     if (subBtn) subBtn.click();
                 }
             });
