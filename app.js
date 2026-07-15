@@ -667,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const q = query.toLowerCase();
 
             if (q.includes('olá') || q.includes('oi')) {
-                responseText = "Olá! Sou o assistente inteligente Gemini Stellantis. Como posso te auxiliar em seu trabalho de engenharia ou treinamento hoje?";
+                responseText = "Olá! Sou o assistente inteligente StellantisGPT. Como posso te auxiliar em seu trabalho de engenharia ou treinamento hoje?";
             } else if (q.includes('adas') || q.includes('automação')) {
                 responseText = "Os sistemas **ADAS** (Advanced Driver Assistance Systems) no grupo Stellantis englobam assistentes avançados ativos como o ACC (Controle de Cruzeiro Adaptativo), AEB (Frenagem Autônoma de Emergência) e LKA (Assistente de Permanência em Faixa). No Jeep Commander, o sistema ADAS de nível 2 atua combinando radar e câmera para centralização de faixa e controle dinâmico longitudinal.";
             } else if (q.includes('bio-hybrid') || q.includes('hibrido') || q.includes('híbrido')) {
@@ -750,7 +750,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             appendGptMessage('user', `Carregar histórico da conversa: ${title}`);
             setTimeout(() => {
-                let loadResponse = `Carregando discussões anteriores do Gemini sobre **${title}**...`;
+                let loadResponse = `Carregando discussões anteriores do StellantisGPT sobre **${title}**...`;
                 if (title.includes('ADAS')) {
                     loadResponse += "\n\nAs diretrizes de segurança do sistema ADAS Stellantis exigem auditorias de software Tier-1 da Aptiv trimestralmente.";
                 } else if (title.includes('Motores') || title.includes('Turbo')) {
@@ -959,7 +959,7 @@ document.addEventListener('DOMContentLoaded', () => {
             msgEl.style.color = 'var(--text-main)';
             msgEl.style.alignSelf = 'flex-start';
             msgEl.style.marginRight = '20px';
-            msgEl.innerHTML = `<strong>Assistente Gemini:</strong><br>${text}`;
+            msgEl.innerHTML = `<strong>Assistente de Notas:</strong><br>${text}`;
         }
         
         notebookChatMessages.appendChild(msgEl);
@@ -3073,8 +3073,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const automationsData = {
         stellantisgpt: {
             title: "StellantisGPT",
-            desc: "Assistente virtual técnico avançado que utiliza o modelo de linguagem Gemini da Google. A ferramenta foi projetada para otimizar os fluxos de consulta da engenharia Stellantis, permitindo encontrar respostas rápidas sobre a arquitetura Android Automotive, diretrizes ESG do Dare Forward 2030, regras de qualidade WCM e manuais de componentes. Conta com RAG (Geração Aumentada por Recuperação) para garantir precisão e segurança nas respostas com dados do setor.",
-            techs: ["Gemini API", "Python", "LangChain", "Vector DB", "ChromaDB", "HTML5/JS"],
+            desc: "Assistente virtual técnico avançado que utiliza uma LLM corporativa dedicada. A ferramenta foi projetada para otimizar os fluxos de consulta da engenharia Stellantis, permitindo encontrar respostas rápidas sobre a arquitetura Android Automotive, diretrizes ESG do Dare Forward 2030, regras de qualidade WCM e manuais de componentes. Conta com RAG (Geração Aumentada por Recuperação) para garantir precisão e segurança nas respostas com dados do setor.",
+            techs: ["LLM API", "Python", "LangChain", "Vector DB", "ChromaDB", "HTML5/JS"],
             owner: "Engª Ana Martins",
             ownerDept: "ADAS & AI Division",
             status: "Produção / Protótipo Funcional",

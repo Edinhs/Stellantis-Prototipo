@@ -422,27 +422,27 @@
 
         <!-- ================= SEÇÃO CHAT IA ================= -->
         <section id="sec-chat-ia" class="app-section">
-            <div class="chat-gpt-layout gemini-style-layout">
-                <!-- Barra Lateral Esquerda do Chat (Estilo Gemini) -->
-                <aside class="chat-sidebar gemini-sidebar">
-                    <div class="gemini-sidebar-header">
-                        <div class="gemini-brand">
-                            <div class="gemini-sparkle-icon">
-                                <i data-lucide="sparkles" style="color: var(--accent); fill: var(--accent);"></i>
+            <div class="chat-gpt-layout stellantis-gpt-style-layout">
+                <!-- Barra Lateral Esquerda do Chat (Estilo StellantisGPT) -->
+                <aside class="chat-sidebar stellantis-gpt-sidebar">
+                    <div class="stellantis-gpt-sidebar-header">
+                        <div class="stellantis-gpt-brand">
+                            <div class="stellantis-gpt-sparkle-icon">
+                                <i data-lucide="cpu" style="color: var(--accent); fill: rgba(6, 182, 212, 0.2);"></i>
                             </div>
-                            <span class="gemini-brand-text">Gemini <span class="st-sub">Stellantis</span></span>
+                            <span class="stellantis-gpt-brand-text">Stellantis<span class="st-sub">GPT Workspace</span></span>
                         </div>
                         <button class="btn-toggle-sidebar" id="btnToggleChatSidebar" title="Recolher menu">
                             <i data-lucide="menu"></i>
                         </button>
                     </div>
 
-                    <!-- Botão de Nova Conversa (Estilo Pílula Oval Gemini) -->
-                    <button class="btn-new-chat gemini-btn-new-chat" id="btnNewChat">
+                    <!-- Botão de Nova Conversa (Estilo Pílula Oval) -->
+                    <button class="btn-new-chat stellantis-gpt-btn-new-chat" id="btnNewChat">
                         <i data-lucide="plus"></i> <span>Nova conversa</span>
                     </button>
                     
-                    <div class="sidebar-nav gemini-sidebar-nav">
+                    <div class="sidebar-nav stellantis-gpt-sidebar-nav">
                         <button class="side-nav-item" id="btnSearchChats"><i data-lucide="search"></i> <span>Pesquisar conversas</span></button>
                         <button class="side-nav-item"><i data-lucide="image"></i> <span>Imagens</span></button>
                         <button class="side-nav-item"><i data-lucide="video"></i> <span>Vídeos</span></button>
@@ -450,15 +450,15 @@
                         <button class="side-nav-item"><i data-lucide="gem"></i> <span>Gems</span></button>
                     </div>
 
-                    <!-- Seção de Notebooks (Nova Funcionalidade) -->
-                    <div class="sidebar-section gemini-sidebar-section">
+                    <!-- Seção de Notebooks -->
+                    <div class="sidebar-section stellantis-gpt-sidebar-section">
                         <div class="section-label-row">
                             <span class="section-label">Notebooks</span>
                             <button class="btn-add-notebook" id="btnCreateNotebook" title="Novo notebook">
                                 <i data-lucide="plus"></i>
                             </button>
                         </div>
-                        <ul class="chat-history-list gemini-notebook-list" id="notebookHistoryList">
+                        <ul class="chat-history-list stellantis-gpt-notebook-list" id="notebookHistoryList">
                             <li class="history-item notebook-item" data-notebook-id="nb-1">
                                 <i data-lucide="file-text"></i> <span>📝 Diretrizes Bio-Hybrid</span>
                             </li>
@@ -472,7 +472,7 @@
                     </div>
 
                     <!-- Seção Recentes (Histórico de Conversas) -->
-                    <div class="sidebar-section gemini-sidebar-section">
+                    <div class="sidebar-section stellantis-gpt-sidebar-section">
                         <div class="section-label">Recentes</div>
                         <ul class="chat-history-list" id="recentChatHistory">
                             <li class="history-item active" data-id="chat-1"><i data-lucide="message-square"></i> <span>Engenharia Stellantis</span></li>
@@ -486,27 +486,27 @@
                 <!-- Área de Chat Principal Direita -->
                 <div class="chat-main-area" id="chatMainArea">
                     <!-- Topbar do Chat -->
-                    <div class="chat-topbar gemini-topbar">
-                        <div class="model-selector gemini-model-selector">
-                            <span class="model-name">Gemini 1.5 Pro</span>
+                    <div class="chat-topbar stellantis-gpt-topbar">
+                        <div class="model-selector stellantis-gpt-model-selector">
+                            <span class="model-name">StellantisGPT Pro</span>
                             <i data-lucide="chevron-down"></i>
                         </div>
                         <div class="topbar-actions">
-                            <button class="btn-upgrade gemini-btn-upgrade"><i data-lucide="sparkles"></i> Experimente o Advanced</button>
+                            <button class="btn-upgrade stellantis-gpt-btn-upgrade"><i data-lucide="sparkles"></i> Experimente o Advanced</button>
                             <div class="user-avatar-top" id="chatUserAvatar">EH</div>
                         </div>
                     </div>
 
-                    <!-- 1. MODO CHAT TRADICIONAL (Layout Gemini) -->
+                    <!-- 1. MODO CHAT TRADICIONAL (Layout StellantisGPT) -->
                     <div class="chat-traditional-view" id="chatTraditionalView">
                         <!-- Corpo do Chat (Mensagens ou Tela Inicial Vazia) -->
                         <div class="chat-body-container" id="chatBodyContainer">
-                            <!-- Tela Inicial (Vazia) - IDÊNTICA AO PRINT DO USER -->
+                            <!-- Tela Inicial (Vazia) -->
                             <div class="chat-empty-state" id="chatEmptyState">
-                                <h2 id="geminiGreeting">Como posso ajudar, Eduardo?</h2>
+                                <h2 id="chatGreeting">Como posso ajudar, Eduardo?</h2>
                                 
                                 <!-- Sugestões de cliques rápidos (estilo premium) -->
-                                <div class="chat-suggestions gemini-suggestions">
+                                <div class="chat-suggestions stellantis-gpt-suggestions">
                                     <button class="suggestion-card" data-prompt="Me explique como funciona o sistema Bio-Hybrid e quais veículos o utilizam.">
                                         <h5>Explicar Bio-Hybrid</h5>
                                         <p>Entenda a tecnologia híbrida a etanol da Stellantis</p>
@@ -524,27 +524,27 @@
                             </div>
                         </div>
 
-                        <!-- Área de Entrada de Mensagem Inferior (Pílula Gemini) -->
-                        <div class="chat-input-container gemini-input-container">
-                            <div class="chat-input-wrapper-gemini">
-                                <button class="btn-gemini-add" title="Adicionar ao prompt"><i data-lucide="plus"></i></button>
-                                <input type="text" id="chatInputGpt" placeholder="Pergunte ao Gemini...">
-                                <div class="gemini-input-actions">
+                        <!-- Área de Entrada de Mensagem Inferior -->
+                        <div class="chat-input-container stellantis-gpt-input-container">
+                            <div class="chat-input-wrapper-stellantis-gpt">
+                                <button class="btn-stellantis-gpt-add" title="Adicionar ao prompt"><i data-lucide="plus"></i></button>
+                                <input type="text" id="chatInputGpt" placeholder="Pergunte ao StellantisGPT...">
+                                <div class="stellantis-gpt-input-actions">
                                     <div class="model-badge-selector">
                                         <span>Pro</span>
                                         <i data-lucide="chevron-down"></i>
                                     </div>
-                                    <button class="btn-gemini-action btn-voice" id="btnChatVoice" title="Digitação por voz"><i data-lucide="mic"></i></button>
-                                    <button class="btn-gemini-send" id="btnSendGpt" title="Enviar prompt"><i data-lucide="arrow-up"></i></button>
+                                    <button class="btn-stellantis-gpt-action btn-voice" id="btnChatVoice" title="Digitação por voz"><i data-lucide="mic"></i></button>
+                                    <button class="btn-stellantis-gpt-send" id="btnSendGpt" title="Enviar prompt"><i data-lucide="arrow-up"></i></button>
                                 </div>
                             </div>
                             <div class="chat-footer-disclaimer">
-                                Gemini pode cometer erros. Considere verificar informações importantes, como manuais de engenharia da Stellantis.
+                                StellantisGPT pode cometer erros. Considere verificar informações importantes, como manuais de engenharia da Stellantis.
                             </div>
                         </div>
                     </div>
 
-                    <!-- 2. MODO NOTEBOOK (Novo Layout Split-Screen) -->
+                    <!-- 2. MODO NOTEBOOK (Layout Split-Screen) -->
                     <div class="notebook-layout" id="notebookLayout" style="display: none;">
                         <!-- Lado Esquerdo: Bloco de Notas / Editor -->
                         <div class="notebook-editor-panel">
@@ -581,7 +581,7 @@
                             <div class="notebook-chat-header">
                                 <div class="notebook-chat-title">
                                     <i data-lucide="bot" style="color: var(--accent); width: 16px; height: 16px;"></i>
-                                    <span>Notebook Assistente</span>
+                                    <span>Assistente de Notas</span>
                                 </div>
                                 <span class="badge-source">Contexto: Esta Nota</span>
                             </div>
@@ -1897,7 +1897,7 @@
                             <i data-lucide="sparkles" style="color: var(--secondary); width: 18px; height: 18px;"></i>
                         </div>
                         <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">StellantisGPT</h4>
-                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Assistente técnico baseado em LLM Gemini para apoio ao time de engenharia de infotainment.</p>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Assistente técnico baseado em LLM corporativa para apoio ao time de engenharia de infotainment.</p>
                     </div>
                     <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
                         <i data-lucide="user" style="width: 12px; height: 12px;"></i>
