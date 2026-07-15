@@ -5554,3 +5554,103 @@ body::before {
     border-color: rgba(168, 85, 247, 0.3) !important;
 }
 
+/* ========================================================
+   KIT COLABORADOR - INTERATIVO E DINÂMICO
+   ======================================================== */
+.kit-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.kit-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.kit-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    border-color: rgba(6, 182, 212, 0.3);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(6, 182, 212, 0.1);
+}
+
+.kit-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.kit-card-icon-container {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.kit-card:hover .kit-card-icon-container {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.kit-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+}
+
+.kit-card p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.kit-card-footer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 12px;
+    margin-top: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.kit-card-footer-info span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+

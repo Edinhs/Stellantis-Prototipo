@@ -3600,4 +3600,291 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('open');
         }
     };
+
+    // ========================================================
+    // 17. KIT COLABORADOR INTERATIVO (CARDS & POPUPS)
+    // ========================================================
+    const defaultKitItems = [
+        {
+            id: 'kit-1',
+            title: "Checklist de Acessos",
+            icon: "check-square",
+            color: "#3b82f6",
+            bgColor: "rgba(59, 130, 246, 0.1)",
+            borderColor: "rgba(59, 130, 246, 0.2)",
+            desc: "Siga o passo a passo inicial para configurar seu ambiente de desenvolvimento e crachá.",
+            content: `
+                <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Para garantir a liberação rápida do seu ambiente de trabalho no primeiro dia, execute os seguintes passos:</p>
+                <ul style="margin: 0; padding-left: 20px; line-height: 2.0; color: var(--text-muted);">
+                    <li style="margin-bottom: 6px;"><strong>Retirar Crachá</strong>: Dirija-se ao posto de segurança principal Betim ou de sua filial portando documento oficial com foto.</li>
+                    <li style="margin-bottom: 6px;"><strong>Ativar Conta AD</strong>: Utilize as credenciais corporativas e a senha temporária enviadas pelo RH para seu e-mail pessoal.</li>
+                    <li style="margin-bottom: 6px;"><strong>Configurar MFA (Multi-Factor Authentication)</strong>: Instale o aplicativo Microsoft Authenticator em seu celular para a dupla autenticação.</li>
+                    <li style="margin-bottom: 6px;"><strong>Conectar à VPN</strong>: Abra o cliente VPN Zscaler Client Connector instalado na sua máquina para acessar a rede interna.</li>
+                    <li style="margin-bottom: 6px;"><strong>Instalar Softwares Base</strong>: Acesse o catálogo da Stellantis Software Center e instale as ferramentas necessárias homologadas (ex: VS Code, Teams, Git).</li>
+                </ul>
+            `
+        },
+        {
+            id: 'kit-2',
+            title: "Portais e Ferramentas",
+            icon: "external-link",
+            color: "#10b981",
+            bgColor: "rgba(16, 185, 129, 0.1)",
+            borderColor: "rgba(16, 185, 129, 0.2)",
+            desc: "Links rápidos para portais de RH, Service Desk de TI e Gitlab da Engenharia.",
+            content: `
+                <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Acesse rapidamente os portais e sistemas corporativos mais utilizados na Stellantis:</p>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                    <a href="#" style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.15); color: var(--secondary); padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: background 0.2s;"><i data-lucide="globe" style="width: 16px; height: 16px;"></i> People Portal (Portal do Colaborador & Benefícios)</a>
+                    <a href="#" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); color: #10b981; padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: background 0.2s;"><i data-lucide="help-circle" style="width: 16px; height: 16px;"></i> Service Desk TI (Abertura de chamados e suporte)</a>
+                    <a href="#" style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15); color: #a855f7; padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: background 0.2s;"><i data-lucide="code" style="width: 16px; height: 16px;"></i> GitLab Engenharia (Repositórios de Software de Infotainment)</a>
+                </div>
+            `
+        },
+        {
+            id: 'kit-3',
+            title: "Espaço do Estagiário",
+            icon: "graduation-cap",
+            color: "#a855f7",
+            bgColor: "rgba(168, 85, 247, 0.1)",
+            borderColor: "rgba(168, 85, 247, 0.2)",
+            desc: "Instruções exclusivas, relatórios semestrais e termos de atividade obrigatórios.",
+            content: `
+                <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Se você ingressou na Stellantis como estagiário, atente-se às obrigações legais de seu programa:</p>
+                <ul style="margin: 0; padding-left: 20px; line-height: 2.0; color: var(--text-muted);">
+                    <li style="margin-bottom: 6px;"><strong>Agente de Integração (CIEE)</strong>: Monitore o recebimento de seus termos de compromisso digitais e certifique-se de mantê-los assinados.</li>
+                    <li style="margin-bottom: 6px;"><strong>Plano de Atividades (PAE)</strong>: Preencha com o auxílio do seu supervisor técnico nos primeiros 15 dias e envie assinado ao CIEE.</li>
+                    <li style="margin-bottom: 6px;"><strong>Relatório de Estágio (RAE)</strong>: Documento semestral obrigatório onde você relata suas atividades e aprendizados práticos na engenharia.</li>
+                    <li style="margin-bottom: 6px;"><strong>Treinamentos de Integração</strong>: Complete obrigatoriamente os cursos de Código de Conduta, LGPD e Segurança da Informação no portal de treinamentos da empresa.</li>
+                </ul>
+            `
+        },
+        {
+            id: 'kit-4',
+            title: "Canais de Comunicação",
+            icon: "message-square",
+            color: "#14b8a6",
+            bgColor: "rgba(20, 184, 166, 0.1)",
+            borderColor: "rgba(20, 184, 166, 0.2)",
+            desc: "Saiba a quem recorrer em caso de dúvidas e confira os canais oficiais do Slack e Teams.",
+            content: `
+                <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Entre em contato direto com a comunidade de engenharia através dos nossos canais:</p>
+                <ul style="margin: 0; padding-left: 20px; line-height: 2.0; color: var(--text-muted);">
+                    <li style="margin-bottom: 6px;"><strong>Slack & Teams</strong>: Entre nos canais <code>#digital-cockpit</code> e <code>#infotainment-lounge</code>. Estes são os pontos principais de troca técnica diária.</li>
+                    <li style="margin-bottom: 6px;"><strong>Suporte de TI Betim</strong>: Disque o ramal <strong>2300</strong> no telefone físico do escritório para chamados emergenciais.</li>
+                    <li style="margin-bottom: 6px;"><strong>Buddy de Integração</strong>: Lembre-se que você tem um padrinho (Buddy) do seu time designado para responder qualquer dúvida técnica ou de processos. Não hesite em chamá-lo!</li>
+                </ul>
+            `
+        }
+    ];
+
+    // Carregar itens do LocalStorage ou inicializar com o padrão
+    let kitItems = [];
+    try {
+        kitItems = JSON.parse(localStorage.getItem('stellantis_kit_items')) || defaultKitItems;
+    } catch(e) {
+        kitItems = [...defaultKitItems];
+    }
+
+    const kitGridContainer = document.getElementById('kitGridContainer');
+    const btnOpenAddKitModal = document.getElementById('btnOpenAddKitModal');
+    const addKitItemModal = document.getElementById('addKitItemModal');
+    const btnCancelAddKitModal = document.getElementById('btnCancelAddKitModal');
+    const btnSaveNewKitItem = document.getElementById('btnSaveNewKitItem');
+    const btnCloseAddKitModal = document.getElementById('btnCloseAddKitModal');
+
+    const kitDetailsModal = document.getElementById('kitDetailsModal');
+    const btnCloseKitDetailsModal = document.getElementById('btnCloseKitDetailsModal');
+    const btnCancelKitDetailsModal = document.getElementById('btnCancelKitDetailsModal');
+    const kitDetailsTitle = document.getElementById('kitDetailsTitle');
+    const kitDetailsContent = document.getElementById('kitDetailsContent');
+    const kitDetailsIconContainer = document.getElementById('kitDetailsIconContainer');
+
+    function renderKitItems() {
+        if (!kitGridContainer) return;
+        kitGridContainer.innerHTML = '';
+
+        kitItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'kit-card';
+            card.setAttribute('data-id', item.id);
+            
+            // Definir cores das bordas e ícones conforme o item
+            card.innerHTML = `
+                <div class="kit-card-header">
+                    <div class="kit-card-icon-container" style="background: ${item.bgColor || 'rgba(6, 182, 212, 0.1)'}; border: 1px solid ${item.borderColor || 'rgba(6, 182, 212, 0.2)'}; color: ${item.color || 'var(--secondary)'};">
+                        <i data-lucide="${item.icon}"></i>
+                    </div>
+                    <h4>${item.title}</h4>
+                </div>
+                <p>${item.desc}</p>
+                <div class="kit-card-footer-info">
+                    <span><i data-lucide="help-circle" style="width: 12px; height: 12px;"></i> Clique para ver</span>
+                    <span style="font-size: 9px; opacity: 0.6;">Stellantis Onboarding</span>
+                </div>
+            `;
+
+            // Clique abre o modal de detalhes
+            card.addEventListener('click', () => {
+                openKitDetailsModal(item);
+            });
+
+            kitGridContainer.appendChild(card);
+        });
+
+        // Recriar ícones lucide injetados
+        lucide.createIcons();
+    }
+
+    function openKitDetailsModal(item) {
+        if (!kitDetailsModal || !kitDetailsTitle || !kitDetailsContent || !kitDetailsIconContainer) return;
+        
+        kitDetailsTitle.textContent = item.title;
+        kitDetailsContent.innerHTML = item.content;
+        
+        // Estilizar e aplicar ícone do modal
+        kitDetailsIconContainer.style.background = item.bgColor || 'rgba(6, 182, 212, 0.1)';
+        kitDetailsIconContainer.style.borderColor = item.borderColor || 'rgba(6, 182, 212, 0.2)';
+        kitDetailsIconContainer.style.color = item.color || 'var(--secondary)';
+        kitDetailsIconContainer.innerHTML = `<i data-lucide="${item.icon}"></i>`;
+
+        kitDetailsModal.classList.add('open');
+        lucide.createIcons();
+    }
+
+    function closeKitDetailsModal() {
+        if (kitDetailsModal) kitDetailsModal.classList.remove('open');
+    }
+
+    // Modal de criação
+    if (btnOpenAddKitModal && addKitItemModal) {
+        btnOpenAddKitModal.addEventListener('click', () => {
+            // Reset do formulário
+            document.getElementById('inputKitTitle').value = '';
+            document.getElementById('inputKitDesc').value = '';
+            document.getElementById('textareaKitContent').value = '';
+            document.getElementById('selectKitIcon').value = 'check-square';
+            addKitItemModal.classList.add('open');
+        });
+    }
+
+    function closeAddKitModal() {
+        if (addKitItemModal) addKitItemModal.classList.remove('open');
+    }
+
+    if (btnCancelAddKitModal) btnCancelAddKitModal.addEventListener('click', closeAddKitModal);
+    if (btnCloseAddKitModal) btnCloseAddKitModal.addEventListener('click', closeAddKitModal);
+    
+    if (btnCloseKitDetailsModal) btnCloseKitDetailsModal.addEventListener('click', closeKitDetailsModal);
+    if (btnCancelKitDetailsModal) btnCancelKitDetailsModal.addEventListener('click', closeKitDetailsModal);
+
+    // Fechar modais ao clicar fora
+    if (addKitItemModal) {
+        addKitItemModal.addEventListener('click', (e) => {
+            if (e.target === addKitItemModal) closeAddKitModal();
+        });
+    }
+    if (kitDetailsModal) {
+        kitDetailsModal.addEventListener('click', (e) => {
+            if (e.target === kitDetailsModal) closeKitDetailsModal();
+        });
+    }
+
+    // Salvar Novo Item
+    if (btnSaveNewKitItem) {
+        btnSaveNewKitItem.addEventListener('click', () => {
+            const title = document.getElementById('inputKitTitle').value.trim();
+            const desc = document.getElementById('inputKitDesc').value.trim();
+            const rawContent = document.getElementById('textareaKitContent').value.trim();
+            const icon = document.getElementById('selectKitIcon').value;
+
+            if (!title || !desc || !rawContent) {
+                alert('Por favor, preencha todos os campos do card!');
+                return;
+            }
+
+            // Mapear cores para o ícone
+            let color = 'var(--secondary)';
+            let bgColor = 'rgba(6, 182, 212, 0.1)';
+            let borderColor = 'rgba(6, 182, 212, 0.2)';
+
+            if (icon === 'check-square') {
+                color = '#3b82f6';
+                bgColor = 'rgba(59, 130, 246, 0.1)';
+                borderColor = 'rgba(59, 130, 246, 0.2)';
+            } else if (icon === 'external-link') {
+                color = '#10b981';
+                bgColor = 'rgba(16, 185, 129, 0.1)';
+                borderColor = 'rgba(16, 185, 129, 0.2)';
+            } else if (icon === 'graduation-cap') {
+                color = '#a855f7';
+                bgColor = 'rgba(168, 85, 247, 0.1)';
+                borderColor = 'rgba(168, 85, 247, 0.2)';
+            } else if (icon === 'message-square') {
+                color = '#14b8a6';
+                bgColor = 'rgba(20, 184, 166, 0.1)';
+                borderColor = 'rgba(20, 184, 166, 0.2)';
+            } else if (icon === 'book-open') {
+                color = '#f59e0b';
+                bgColor = 'rgba(245, 158, 11, 0.1)';
+                borderColor = 'rgba(245, 158, 11, 0.2)';
+            } else if (icon === 'info') {
+                color = '#ef4444';
+                bgColor = 'rgba(239, 68, 68, 0.1)';
+                borderColor = 'rgba(239, 68, 68, 0.2)';
+            }
+
+            // Converter quebras de linha para tags <p> caso o usuário não tenha digitado HTML
+            let finalContent = rawContent;
+            if (!rawContent.includes('<p>') && !rawContent.includes('<li>')) {
+                finalContent = rawContent.split('\n').filter(line => line.trim() !== '').map(line => `<p style="margin-bottom: 8px;">${line}</p>`).join('');
+            }
+
+            const newItem = {
+                id: `kit-${Date.now()}`,
+                title: title,
+                icon: icon,
+                color: color,
+                bgColor: bgColor,
+                borderColor: borderColor,
+                desc: desc,
+                content: finalContent
+            };
+
+            // Salvar na lista e persistir
+            kitItems.push(newItem);
+            localStorage.setItem('stellantis_kit_items', JSON.stringify(kitItems));
+
+            // Fechar modal e renderizar
+            closeAddKitModal();
+            renderKitItems();
+
+            // Adicionar pontos de XP por cocriação (gamificação!)
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Registrar na timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: title,
+                type: 'geral',
+                desc: `Adicionou o card de informações "${title}" ao Kit do Novo Colaborador corporativo.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Card "${title}" adicionado ao Kit Colaborador!\nVocê ganhou +50 XP por contribuir com o onboarding da equipe!`);
+        });
+    }
+
+    // Inicializar renderização do Kit
+    renderKitItems();
 });

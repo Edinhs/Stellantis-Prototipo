@@ -619,77 +619,23 @@
             <!-- SUBABA 4: KIT COLABORADOR -->
             <div id="sub-sec-boas-vindas" class="training-sub-section active">
                 <div class="welcome-kit-layout">
-                    <!-- Introdução do Kit -->
-                    <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary);">
-                        <div class="welcome-intro-badge" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary); padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px;">
-                            <i data-lucide="sparkles"></i> Bem-vindo ao Time Stellantis!
+                    <!-- Introdução do Kit com botão no canto superior direito -->
+                    <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 280px;">
+                            <div class="welcome-intro-badge" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary); padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px;">
+                                <i data-lucide="sparkles"></i> Bem-vindo ao Time Stellantis!
+                            </div>
+                            <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700;">Olá, novo colaborador!</h3>
+                            <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Preparamos este Kit Colaborador digital para facilitar sua integração no nosso Tech Center. Clique em qualquer card para ver as instruções detalhadas ou adicione novas informações úteis.</p>
                         </div>
-                        <h3 style="font-size: 22px; color: var(--text-main); margin-bottom: 12px; font-weight: 700;">Olá, novo colaborador!</h3>
-                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Preparamos este Kit Colaborador digital para facilitar sua integração no nosso Tech Center. Aqui você encontra os principais acessos, documentos úteis, contatos e o passo a passo para configurar suas ferramentas de trabalho no primeiro dia.</p>
+                        <button class="btn-primary" id="btnOpenAddKitModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                            <i data-lucide="plus-circle"></i> Adicionar Informação
+                        </button>
                     </div>
 
-                    <!-- Grid de Seções do Kit -->
-                    <div class="kit-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
-                        <!-- Card 1: Checklist do Primeiro Dia -->
-                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
-                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                                <i data-lucide="check-square" style="width: 24px; height: 24px; color: #3b82f6;"></i>
-                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Checklist de Acessos</h4>
-                            </div>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Siga os passos iniciais para garantir a liberação do seu ambiente de desenvolvimento:</p>
-                            <ul class="kit-list" style="margin: 0; padding: 0 0 0 16px; font-size: 12px; color: var(--text-muted); line-height: 1.8;">
-                                <li style="margin-bottom: 8px;"><strong>Retirar Crachá</strong> no posto de segurança Betim/filial.</li>
-                                <li style="margin-bottom: 8px;"><strong>Ativar Conta AD</strong> (Active Directory) com a senha temporária do RH.</li>
-                                <li style="margin-bottom: 8px;"><strong>Configurar MFA</strong> (Multi-Factor Authentication) no celular.</li>
-                                <li style="margin-bottom: 8px;"><strong>Conectar à VPN</strong> Corporativa (Zscaler/AnyConnect).</li>
-                                <li style="margin-bottom: 8px;"><strong>Instalar Ferramentas</strong> básicas pelo portal Software Stellantis.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Card 2: Portais Corporativos e Links Úteis -->
-                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
-                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                                <i data-lucide="external-link" style="width: 24px; height: 24px; color: #10b981;"></i>
-                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Portais e Ferramentas</h4>
-                            </div>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Acesse rapidamente os principais sistemas de gestão corporativa e suporte de TI:</p>
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="globe" style="width: 14px; height: 14px;"></i> Stellantis People Portal (RH)</a>
-                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="help-circle" style="width: 14px; height: 14px;"></i> Service Desk TI (Acessos/Suporte)</a>
-                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="network" style="width: 14px; height: 14px;"></i> Intranet Global Stellantis</a>
-                                <a href="#" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--secondary); text-decoration: none; font-weight: 700; transition: color 0.2s;"><i data-lucide="code" style="width: 14px; height: 14px;"></i> GitLab / Confluence da Engenharia</a>
-                            </div>
-                        </div>
-
-                        <!-- Card 3: Espaço do Estagiário -->
-                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
-                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                                <i data-lucide="graduation-cap" style="width: 24px; height: 24px; color: #a855f7;"></i>
-                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Espaço do Estagiário</h4>
-                            </div>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Informações e orientações essenciais voltadas à nossa equipe de jovens talentos:</p>
-                            <ul class="kit-list" style="margin: 0; padding: 0 0 0 16px; font-size: 12px; color: var(--text-muted); line-height: 1.8;">
-                                <li style="margin-bottom: 8px;"><strong>Portal CIEE/Agente</strong>: Gestão de termos de compromisso e contratos.</li>
-                                <li style="margin-bottom: 8px;"><strong>Plano de Atividades</strong>: Assinatura obrigatória nos primeiros 15 dias.</li>
-                                <li style="margin-bottom: 8px;"><strong>Relatório de Estágio</strong>: Entrega semestral obrigatória ao supervisor.</li>
-                                <li style="margin-bottom: 8px;"><strong>Treinamentos Obrigatórios</strong>: Compliance, LGPD e Segurança da Informação.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Card 4: Suporte e Canais de Comunicação -->
-                        <div class="kit-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; transition: all 0.3s ease;">
-                            <div class="kit-card-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                                <i data-lucide="message-square" style="width: 24px; height: 24px; color: #14b8a6;"></i>
-                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Canais de Comunicação</h4>
-                            </div>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Participe dos canais oficiais da engenharia e saiba a quem recorrer em caso de dúvidas:</p>
-                            <ul class="kit-list" style="margin: 0; padding: 0 0 0 16px; font-size: 12px; color: var(--text-muted); line-height: 1.8;">
-                                <li style="margin-bottom: 8px;"><strong>Slack/Teams</strong>: Canais `#digital-cockpit` e `#general-sa`.</li>
-                                <li style="margin-bottom: 8px;"><strong>Dúvidas de TI</strong>: Ramal 2300 (Suporte Betim).</li>
-                                <li style="margin-bottom: 8px;"><strong>Dúvidas de RH</strong>: E-mail `people.support.sa@stellantis.com`.</li>
-                                <li style="margin-bottom: 8px;"><strong>Buddy de Integração</strong>: Colega de equipe designado para guiar você.</li>
-                            </ul>
-                        </div>
+                    <!-- Grid de Seções do Kit (Renderizado via JS) -->
+                    <div class="kit-grid" id="kitGridContainer" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                        <!-- Injetado dinamicamente via JS -->
                     </div>
                 </div>
             </div>
@@ -2366,6 +2312,70 @@
                 <button class="btn-modal-action secondary" id="btnCancelTermDetailsModal" style="flex: 1; min-width: 80px; padding: 12px; height: 42px;">Voltar</button>
                 <button class="btn-modal-action primary" id="btnCreateFlashcardFromTerm" style="flex: 1.5; min-width: 140px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-color: #7c3aed; height: 42px;"><i data-lucide="layers" style="width: 14px; height: 14px;"></i> Criar Flashcard</button>
                 <button class="btn-modal-action primary" id="btnAskGptAboutTerm" style="flex: 1.5; min-width: 160px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, var(--secondary) 0%, #0891b2 100%); border-color: var(--secondary); height: 42px;"><i data-lucide="message-square" style="width: 14px; height: 14px;"></i> Perguntar ao StellantisGPT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Kit Colaborador -->
+    <div class="modal-overlay" id="kitDetailsModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div id="kitDetailsIconContainer" style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #3b82f6;">
+                        <i data-lucide="check-square"></i>
+                    </div>
+                    <h3 id="kitDetailsTitle" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Detalhes da Instrução</h3>
+                </div>
+                <button class="btn-close-modal" id="btnCloseKitDetailsModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 10px 0 20px 0;">
+                <div id="kitDetailsContent" style="font-size: 13.5px; color: var(--text-muted); line-height: 1.7;">
+                    <!-- Preenchido via JS -->
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelKitDetailsModal" style="width: 100%;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Informação no Kit Colaborador -->
+    <div class="modal-overlay" id="addKitItemModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar ao Kit Colaborador</h3>
+                <button class="btn-close-modal" id="btnCloseAddKitModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputKitTitle" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Título do Card</label>
+                    <input type="text" id="inputKitTitle" placeholder="Ex: Configurando o Docker da Stellantis" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectKitIcon" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Ícone Representativo</label>
+                        <select id="selectKitIcon" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="check-square">✓ Checklist (Azul)</option>
+                            <option value="external-link">🔗 Portais & Links (Verde)</option>
+                            <option value="graduation-cap">🎓 Estágio & Ensino (Roxo)</option>
+                            <option value="message-square">💬 Canais & Comunicação (Teal)</option>
+                            <option value="book-open">📖 Tutoriais & Manuais (Amarelo)</option>
+                            <option value="info">ℹ Informações Gerais (Vermelho)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputKitDesc" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Descrição Curta</label>
+                        <input type="text" id="inputKitDesc" placeholder="Ex: Instruções de instalação e proxy." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaKitContent" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Instruções Detalhadas (Conteúdo do Pop-up)</label>
+                    <textarea id="textareaKitContent" rows="6" placeholder="Escreva os passos detalhados. Você pode usar tags HTML básicas como <p>, <li>, <strong>, <a> para links, etc." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 120px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddKitModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewKitItem">Adicionar ao Kit</button>
             </div>
         </div>
     </div>
