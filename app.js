@@ -108,7 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            if (link.classList.contains('dropdown-toggle')) {
+                e.preventDefault();
+                return;
+            }
             const targetId = link.getAttribute('data-target');
             switchSection(targetId);
         });
