@@ -5747,3 +5747,29 @@ body::before {
     gap: 4px;
 }
 
+/* ========================================================
+   FILTROS DROPDOWN DE INFOTAINMENT
+   ======================================================== */
+.btn-filter-dropdown:hover {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+}
+
+.btn-filter-dropdown.active {
+    border-color: var(--secondary) !important;
+    background: rgba(6, 182, 212, 0.05) !important;
+}
+
+.btn-filter-dropdown.open .dropdown-chevron {
+    transform: rotate(180deg);
+}
+
+.filter-checkbox-label:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+    color: var(--text-main) !important;
+}
+
+.filter-dropdown-menu {
+    z-index: 110;
+}
+

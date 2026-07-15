@@ -2291,45 +2291,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 10. FILTRO DE COMPONENTES DE INFOTAINMENT (MULTISELEÇÃO)
+    // 10. FILTRO DE COMPONENTES DE INFOTAINMENT (DROPDOWNS)
     // ========================================================
-    const componentFilterBtns = document.querySelectorAll('#filterBarComponent .infotainment-filter-btn');
-    const supplierFilterBtns = document.querySelectorAll('#filterBarSupplier .infotainment-filter-btn');
+    const btnFilterComponentDropdown = document.getElementById('btnFilterComponentDropdown');
+    const btnFilterSupplierDropdown = document.getElementById('btnFilterSupplierDropdown');
+    const menuFilterComponent = document.getElementById('menuFilterComponent');
+    const menuFilterSupplier = document.getElementById('menuFilterSupplier');
 
-    // Inicialmente todos começam ativos para mostrar tudo por padrão
-    let activeCategories = ['audio-tela', 'conectividade-auxilio'];
-    let activeSuppliers = ['aptiv', 'marelli', 'harman', 'bosch'];
+    // Arrays globais de filtros ativos (sincronizados com o estado inicial dos checkboxes no index.html)
+    window.activeCategories = ['audio-tela', 'conectividade-auxilio'];
+    window.activeSuppliers = ['aptiv', 'marelli', 'harman', 'bosch'];
 
-    function handleFilterToggle(btn) {
-        btn.classList.toggle('active');
+    function toggleFilterDropdown(btn, menu) {
+        if (!menu) return;
+        const isOpen = menu.style.display === 'flex';
         
-        // Recalcular ativos do grupo de categorias
-        const activeCatBtns = document.querySelectorAll('#filterBarComponent .infotainment-filter-btn.active');
-        activeCategories = Array.from(activeCatBtns).map(b => b.getAttribute('data-infocategory'));
+        // Fechar todos antes
+        if (menuFilterComponent) menuFilterComponent.style.display = 'none';
+        if (menuFilterSupplier) menuFilterSupplier.style.display = 'none';
+        if (btnFilterComponentDropdown) btnFilterComponentDropdown.classList.remove('open');
+        if (btnFilterSupplierDropdown) btnFilterSupplierDropdown.classList.remove('open');
 
-        // Recalcular ativos do grupo de fornecedores
-        const activeSupBtns = document.querySelectorAll('#filterBarSupplier .infotainment-filter-btn.active');
-        activeSuppliers = Array.from(activeSupBtns).map(b => b.getAttribute('data-infosupplier'));
+        if (!isOpen) {
+            menu.style.display = 'flex';
+            btn.classList.add('open');
+        }
+    }
 
-        // Disparar renderização dinâmica
+    if (btnFilterComponentDropdown && menuFilterComponent) {
+        btnFilterComponentDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFilterDropdown(btnFilterComponentDropdown, menuFilterComponent);
+        });
+    }
+
+    if (btnFilterSupplierDropdown && menuFilterSupplier) {
+        btnFilterSupplierDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFilterDropdown(btnFilterSupplierDropdown, menuFilterSupplier);
+        });
+    }
+
+    // Fechar dropdowns ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (menuFilterComponent && !menuFilterComponent.contains(e.target) && e.target !== btnFilterComponentDropdown) {
+            menuFilterComponent.style.display = 'none';
+            if (btnFilterComponentDropdown) btnFilterComponentDropdown.classList.remove('open');
+        }
+        if (menuFilterSupplier && !menuFilterSupplier.contains(e.target) && e.target !== btnFilterSupplierDropdown) {
+            menuFilterSupplier.style.display = 'none';
+            if (btnFilterSupplierDropdown) btnFilterSupplierDropdown.classList.remove('open');
+        }
+    });
+
+    // Evento de alteração nos checkboxes
+    const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+    function updateDropdownFilters() {
+        const catList = [];
+        const supList = [];
+
+        filterCheckboxes.forEach(cb => {
+            if (cb.checked) {
+                const cat = cb.getAttribute('data-cat');
+                const sup = cb.getAttribute('data-sup');
+                if (cat) catList.push(cat);
+                if (sup) supList.push(sup);
+            }
+        });
+
+        window.activeCategories = catList;
+        window.activeSuppliers = supList;
+
+        // Atualizar estado ativo visual nos botões principais caso haja filtros selecionados
+        if (btnFilterComponentDropdown) {
+            if (catList.length < 2) {
+                btnFilterComponentDropdown.classList.add('active');
+            } else {
+                btnFilterComponentDropdown.classList.remove('active');
+            }
+        }
+        if (btnFilterSupplierDropdown) {
+            if (supList.length < 4) {
+                btnFilterSupplierDropdown.classList.add('active');
+            } else {
+                btnFilterSupplierDropdown.classList.remove('active');
+            }
+        }
+
         if (typeof renderInfotainment === 'function') {
             renderInfotainment();
         }
     }
 
-    if (componentFilterBtns) {
-        componentFilterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                handleFilterToggle(btn);
-            });
-        });
-    }
-
-    if (supplierFilterBtns) {
-        supplierFilterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                handleFilterToggle(btn);
-            });
+    if (filterCheckboxes) {
+        filterCheckboxes.forEach(cb => {
+            cb.addEventListener('change', updateDropdownFilters);
         });
     }
 
@@ -4491,8 +4547,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 catNorm = 'conectividade-auxilio';
             }
 
-            const matchesCategory = activeCategories.length === 0 || activeCategories.includes(catNorm);
-            const matchesSupplier = activeSuppliers.length === 0 || activeSuppliers.includes(item.supplier);
+            const matchesCategory = (window.activeCategories || []).length === 0 || (window.activeCategories || []).includes(catNorm);
+            const matchesSupplier = (window.activeSuppliers || []).length === 0 || (window.activeSuppliers || []).includes(item.supplier);
 
             return matchesCategory && matchesSupplier;
         });
