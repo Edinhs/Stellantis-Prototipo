@@ -803,59 +803,18 @@
 
             <!-- SUBABA 3: CANAIS OFICIAIS (Links e portais corporativos de treinamento) -->
             <div id="sub-sec-canais" class="training-sub-section">
-                <div class="sub-section-intro" style="margin-bottom: 24px;">
-                    <h3>Canais & Portais de Treinamento Stellantis</h3>
-                    <p>Acesse as plataformas oficiais de capacitação, documentação técnica e desenvolvimento profissional do grupo.</p>
+                <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Canais & Portais de Treinamento Stellantis</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Acesse as plataformas oficiais de capacitação, documentação técnica e desenvolvimento profissional do grupo. Clique em qualquer canal para ver os detalhes ou adicione um novo portal.</p>
+                    </div>
+                    <button class="btn-primary" id="btnOpenAddChannelModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);">
+                        <i data-lucide="plus-circle"></i> Adicionar Canal Oficial
+                    </button>
                 </div>
 
-                <div class="channels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
-                    <!-- Card 1: Stellantis Academy -->
-                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
-                        <div>
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                                <i data-lucide="graduation-cap" style="color: var(--secondary); width: 20px; height: 20px;"></i>
-                            </div>
-                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Stellantis Academy</h4>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Plataforma global de capacitação que oferece cursos sobre metodologia WCM, liderança, engenharia de produto, qualidade e processos de manufatura.</p>
-                        </div>
-                        <a href="https://academy.stellantis.com" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Stellantis Academy</a>
-                    </div>
-
-                    <!-- Card 2: Cornerstone (Stellantis LXP) -->
-                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
-                        <div>
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                                <i data-lucide="book-open" style="color: var(--accent); width: 20px; height: 20px;"></i>
-                            </div>
-                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Stellantis LXP (Cornerstone)</h4>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Portal de Experiência de Aprendizado corporativo contendo as trilhas obrigatórias de compliance, ESG, proteção de dados (LGPD) e segurança da informação.</p>
-                        </div>
-                        <a href="https://stellantis.csod.com" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Portal LXP</a>
-                    </div>
-
-                    <!-- Card 3: Android Automotive IVI Portal -->
-                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
-                        <div>
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                                <i data-lucide="tablet" style="color: #10b981; width: 20px; height: 20px;"></i>
-                            </div>
-                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Android IVI Documentation</h4>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Documentação oficial e manuais de engenharia de software para o ecossistema Android Automotive OS (AAOS) utilizado nas centrais multimídias do grupo.</p>
-                        </div>
-                        <a href="https://source.android.com/devices/automotive" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Acessar Documentação</a>
-                    </div>
-
-                    <!-- Card 4: Developer Portal & APIs -->
-                    <div class="channel-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
-                        <div>
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                                <i data-lucide="code-2" style="color: #f59e0b; width: 20px; height: 20px;"></i>
-                            </div>
-                            <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Stellantis Developer Portal</h4>
-                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Repositório de APIs, especificações de gateways e arquiteturas de barramento de dados para desenvolvimento de serviços conectados e apps embarcados.</p>
-                        </div>
-                        <a href="https://developer.stellantis.com" target="_blank" class="btn-modal-action primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; height: 38px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i> Portal de Desenvolvedores</a>
-                    </div>
+                <div class="channels-grid" id="channelsGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                    <!-- Injetado dinamicamente via JS -->
                 </div>
             </div>
         </section>
@@ -2387,6 +2346,79 @@
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddKitModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveNewKitItem">Adicionar ao Kit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Canal Oficial -->
+    <div class="modal-overlay" id="channelDetailsModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div id="channelDetailsIconContainer" style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="graduation-cap"></i>
+                    </div>
+                    <h3 id="channelDetailsTitle" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Detalhes do Canal</h3>
+                </div>
+                <button class="btn-close-modal" id="btnCloseChannelDetailsModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 10px 0 20px 0;">
+                <div id="channelDetailsContent" style="font-size: 13.5px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
+                    <!-- Preenchido via JS -->
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;">
+                    <a href="#" id="linkChannelAccess" target="_blank" class="btn-primary" style="width: 100%; text-decoration: none; text-align: center; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; height: 42px;">
+                        <i data-lucide="external-link" style="width: 16px; height: 16px;"></i> Acessar Portal Oficial
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelChannelDetailsModal" style="width: 100%;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Canal Oficial -->
+    <div class="modal-overlay" id="addChannelModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Canal Oficial</h3>
+                <button class="btn-close-modal" id="btnCloseAddChannelModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputChannelTitle" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Nome do Portal / Canal</label>
+                    <input type="text" id="inputChannelTitle" placeholder="Ex: Stellantis Quality Academy" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectChannelIcon" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Ícone Representativo</label>
+                        <select id="selectChannelIcon" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="graduation-cap">🎓 Capacitação & Ensino (Azul-Ciano)</option>
+                            <option value="book-open">📖 Trilhas & Biblioteca (Roxo)</option>
+                            <option value="tablet">📱 Hardware & Mobile/Telas (Verde)</option>
+                            <option value="code-2">💻 Desenvolvimento & APIs (Laranja)</option>
+                            <option value="link">🔗 Link Geral & Portais (Teal)</option>
+                            <option value="help-circle">❓ Suporte & FAQ (Vermelho)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputChannelUrl" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Link de Acesso (URL)</label>
+                        <input type="text" id="inputChannelUrl" placeholder="Ex: https://quality.stellantis.com" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputChannelDesc" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Descrição Curta (Exibida no Card)</label>
+                    <input type="text" id="inputChannelDesc" placeholder="Ex: Acesso a certificações de qualidade WCM." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaChannelContent" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Informações Detalhadas (Conteúdo do Pop-up)</label>
+                    <textarea id="textareaChannelContent" rows="4" placeholder="Descreva os assuntos cobertos pelo canal, horários de treinamento ou público-alvo..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 80px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddChannelModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewChannel">Adicionar Canal</button>
             </div>
         </div>
     </div>

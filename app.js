@@ -3936,4 +3936,268 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicializar renderização do Kit
     renderKitItems();
+
+    // ========================================================
+    // 18. CANAIS OFICIAIS DE TREINAMENTO (DINÂMICO E POPUPS)
+    // ========================================================
+    const defaultChannels = [
+        {
+            id: 'chan-1',
+            title: "Stellantis Academy",
+            icon: "graduation-cap",
+            color: "var(--secondary)",
+            bgColor: "rgba(6, 182, 212, 0.1)",
+            borderColor: "rgba(6, 182, 212, 0.2)",
+            desc: "Plataforma global de capacitação que oferece cursos sobre metodologia WCM, engenharia e qualidade.",
+            content: "A Stellantis Academy é a universidade corporativa global do grupo. Nela, você terá acesso a centenas de cursos técnicos e de liderança, incluindo trilhas focadas em engenharia de produto, qualidade de software, calibração mecânica e gerenciamento de projetos ágeis corporativos.",
+            url: "https://academy.stellantis.com"
+        },
+        {
+            id: 'chan-2',
+            title: "Stellantis LXP (Cornerstone)",
+            icon: "book-open",
+            color: "var(--accent)",
+            bgColor: "rgba(59, 130, 246, 0.1)",
+            borderColor: "rgba(59, 130, 246, 0.2)",
+            desc: "Portal de Experiência de Aprendizado contendo as trilhas obrigatórias e cursos corporativos.",
+            content: "O portal LXP baseia-se na plataforma Cornerstone. É o local onde você realiza as capacitações regulatórias mandatárias do grupo, como as trilhas de Proteção de Dados (LGPD/GDPR), Segurança Cibernética, ESG (Sustentabilidade), e os regulamentos de integridade e conduta ética corporativa.",
+            url: "https://stellantis.csod.com"
+        },
+        {
+            id: 'chan-3',
+            title: "Android IVI Documentation",
+            icon: "tablet",
+            color: "#10b981",
+            bgColor: "rgba(16, 185, 129, 0.1)",
+            borderColor: "rgba(16, 185, 129, 0.2)",
+            desc: "Manuais de engenharia de software para o ecossistema Android Automotive OS (AAOS) das centrais.",
+            content: "Aqui você encontra as especificações de engenharia para desenvolvimento no ecossistema Android Automotive OS (AAOS). É a base teórica de software sobre a qual operam os sistemas de infoentretenimento (IVI) modernos de quase toda a frota global da Stellantis.",
+            url: "https://source.android.com/devices/automotive"
+        },
+        {
+            id: 'chan-4',
+            title: "Stellantis Developer Portal",
+            icon: "code-2",
+            color: "#f59e0b",
+            bgColor: "rgba(245, 158, 11, 0.1)",
+            borderColor: "rgba(245, 158, 11, 0.2)",
+            desc: "Repositório de APIs, especificações de gateways e barramentos para conectividade e apps.",
+            content: "O portal de desenvolvedores centraliza as documentações técnicas de APIs, gateways telemáticos da Stellantis (ex: conectividade veicular via eSIM), protocolos de barramento de dados CAN/Ethernet e ambientes de simulação de hardware para testes automatizados.",
+            url: "https://developer.stellantis.com"
+        }
+    ];
+
+    let channelItems = [];
+    try {
+        channelItems = JSON.parse(localStorage.getItem('stellantis_channels')) || defaultChannels;
+    } catch(e) {
+        channelItems = [...defaultChannels];
+    }
+
+    const channelsGridContainer = document.getElementById('channelsGridContainer');
+    const btnOpenAddChannelModal = document.getElementById('btnOpenAddChannelModal');
+    const addChannelModal = document.getElementById('addChannelModal');
+    const btnCancelAddChannelModal = document.getElementById('btnCancelAddChannelModal');
+    const btnSaveNewChannel = document.getElementById('btnSaveNewChannel');
+    const btnCloseAddChannelModal = document.getElementById('btnCloseAddChannelModal');
+
+    const channelDetailsModal = document.getElementById('channelDetailsModal');
+    const btnCloseChannelDetailsModal = document.getElementById('btnCloseChannelDetailsModal');
+    const btnCancelChannelDetailsModal = document.getElementById('btnCancelChannelDetailsModal');
+    const channelDetailsTitle = document.getElementById('channelDetailsTitle');
+    const channelDetailsContent = document.getElementById('channelDetailsContent');
+    const channelDetailsIconContainer = document.getElementById('channelDetailsIconContainer');
+    const linkChannelAccess = document.getElementById('linkChannelAccess');
+
+    function renderChannels() {
+        if (!channelsGridContainer) return;
+        channelsGridContainer.innerHTML = '';
+
+        channelItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'channel-card';
+            card.setAttribute('data-id', item.id);
+            
+            card.innerHTML = `
+                <div>
+                    <div class="channel-card-icon-container" style="background: ${item.bgColor || 'rgba(6, 182, 212, 0.1)'}; border: 1px solid ${item.borderColor || 'rgba(6, 182, 212, 0.2)'}; color: ${item.color || 'var(--secondary)'};">
+                        <i data-lucide="${item.icon}"></i>
+                    </div>
+                    <h4>${item.title}</h4>
+                    <p>${item.desc}</p>
+                </div>
+                <div class="channel-card-footer-info" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: auto;">
+                    <span><i data-lucide="help-circle" style="width: 12px; height: 12px;"></i> Detalhes do canal</span>
+                    <span style="font-size: 9px; opacity: 0.6;">Stellantis Academy</span>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                openChannelDetailsModal(item);
+            });
+
+            channelsGridContainer.appendChild(card);
+        });
+
+        lucide.createIcons();
+    }
+
+    function openChannelDetailsModal(item) {
+        if (!channelDetailsModal || !channelDetailsTitle || !channelDetailsContent || !channelDetailsIconContainer || !linkChannelAccess) return;
+
+        channelDetailsTitle.textContent = item.title;
+        channelDetailsContent.innerHTML = item.content;
+        
+        let href = item.url;
+        if (!href.startsWith('http://') && !href.startsWith('https://') && href !== '#') {
+            href = 'https://' + href;
+        }
+        linkChannelAccess.href = href;
+
+        // Estilizar ícone
+        channelDetailsIconContainer.style.background = item.bgColor || 'rgba(6, 182, 212, 0.1)';
+        channelDetailsIconContainer.style.borderColor = item.borderColor || 'rgba(6, 182, 212, 0.2)';
+        channelDetailsIconContainer.style.color = item.color || 'var(--secondary)';
+        channelDetailsIconContainer.innerHTML = `<i data-lucide="${item.icon}"></i>`;
+
+        channelDetailsModal.classList.add('open');
+        lucide.createIcons();
+    }
+
+    function closeChannelDetailsModal() {
+        if (channelDetailsModal) channelDetailsModal.classList.remove('open');
+    }
+
+    // Modal de cadastro
+    if (btnOpenAddChannelModal && addChannelModal) {
+        btnOpenAddChannelModal.addEventListener('click', () => {
+            document.getElementById('inputChannelTitle').value = '';
+            document.getElementById('inputChannelDesc').value = '';
+            document.getElementById('inputChannelUrl').value = '';
+            document.getElementById('textareaChannelContent').value = '';
+            document.getElementById('selectChannelIcon').value = 'graduation-cap';
+            addChannelModal.classList.add('open');
+        });
+    }
+
+    function closeAddChannelModal() {
+        if (addChannelModal) addChannelModal.classList.remove('open');
+    }
+
+    if (btnCancelAddChannelModal) btnCancelAddChannelModal.addEventListener('click', closeAddChannelModal);
+    if (btnCloseAddChannelModal) btnCloseAddChannelModal.addEventListener('click', closeAddChannelModal);
+    
+    if (btnCloseChannelDetailsModal) btnCloseChannelDetailsModal.addEventListener('click', closeChannelDetailsModal);
+    if (btnCancelChannelDetailsModal) btnCancelChannelDetailsModal.addEventListener('click', closeChannelDetailsModal);
+
+    // Fechar ao clicar fora
+    if (addChannelModal) {
+        addChannelModal.addEventListener('click', (e) => {
+            if (e.target === addChannelModal) closeAddChannelModal();
+        });
+    }
+    if (channelDetailsModal) {
+        channelDetailsModal.addEventListener('click', (e) => {
+            if (e.target === channelDetailsModal) closeChannelDetailsModal();
+        });
+    }
+
+    // Salvar Novo Canal
+    if (btnSaveNewChannel) {
+        btnSaveNewChannel.addEventListener('click', () => {
+            const title = document.getElementById('inputChannelTitle').value.trim();
+            const desc = document.getElementById('inputChannelDesc').value.trim();
+            const url = document.getElementById('inputChannelUrl').value.trim();
+            const rawContent = document.getElementById('textareaChannelContent').value.trim();
+            const icon = document.getElementById('selectChannelIcon').value;
+
+            if (!title || !desc || !url || !rawContent) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            // Mapear cores para o ícone
+            let color = 'var(--secondary)';
+            let bgColor = 'rgba(6, 182, 212, 0.1)';
+            let borderColor = 'rgba(6, 182, 212, 0.2)';
+
+            if (icon === 'graduation-cap') {
+                color = 'var(--secondary)';
+                bgColor = 'rgba(6, 182, 212, 0.1)';
+                borderColor = 'rgba(6, 182, 212, 0.2)';
+            } else if (icon === 'book-open') {
+                color = 'var(--accent)';
+                bgColor = 'rgba(59, 130, 246, 0.1)';
+                borderColor = 'rgba(59, 130, 246, 0.2)';
+            } else if (icon === 'tablet') {
+                color = '#10b981';
+                bgColor = 'rgba(16, 185, 129, 0.1)';
+                borderColor = 'rgba(16, 185, 129, 0.2)';
+            } else if (icon === 'code-2') {
+                color = '#f59e0b';
+                bgColor = 'rgba(245, 158, 11, 0.1)';
+                borderColor = 'rgba(245, 158, 11, 0.2)';
+            } else if (icon === 'link') {
+                color = '#14b8a6';
+                bgColor = 'rgba(20, 184, 166, 0.1)';
+                borderColor = 'rgba(20, 184, 166, 0.2)';
+            } else if (icon === 'help-circle') {
+                color = '#ef4444';
+                bgColor = 'rgba(239, 68, 68, 0.1)';
+                borderColor = 'rgba(239, 68, 68, 0.2)';
+            }
+
+            // Formatação do conteúdo detalhado
+            let finalContent = rawContent;
+            if (!rawContent.includes('<p>') && !rawContent.includes('<li>')) {
+                finalContent = rawContent.split('\n').filter(line => line.trim() !== '').map(line => `<p style="margin-bottom: 8px;">${line}</p>`).join('');
+            }
+
+            const newItem = {
+                id: `chan-${Date.now()}`,
+                title: title,
+                icon: icon,
+                color: color,
+                bgColor: bgColor,
+                borderColor: borderColor,
+                desc: desc,
+                content: finalContent,
+                url: url
+            };
+
+            // Salvar na lista e persistir
+            channelItems.push(newItem);
+            localStorage.setItem('stellantis_channels', JSON.stringify(channelItems));
+
+            closeAddChannelModal();
+            renderChannels();
+
+            // Adicionar pontos de XP por cocriação (gamificação!)
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Registrar na timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: title,
+                type: 'geral',
+                desc: `Adicionou o portal oficial "${title}" à aba de Canais Oficiais de capacitação técnica.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Canal "${title}" adicionado com sucesso!\nVocê ganhou +50 XP por contribuir com a base de portais da equipe!`);
+        });
+    }
+
+    // Inicializar renderização dos canais
+    renderChannels();
 });
