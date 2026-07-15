@@ -3622,7 +3622,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li style="margin-bottom: 6px;"><strong>Conectar à VPN</strong>: Abra o cliente VPN Zscaler Client Connector instalado na sua máquina para acessar a rede interna.</li>
                     <li style="margin-bottom: 6px;"><strong>Instalar Softwares Base</strong>: Acesse o catálogo da Stellantis Software Center e instale as ferramentas necessárias homologadas (ex: VS Code, Teams, Git).</li>
                 </ul>
-            `
+            `,
+            links: []
         },
         {
             id: 'kit-2',
@@ -3633,13 +3634,13 @@ document.addEventListener('DOMContentLoaded', () => {
             borderColor: "rgba(16, 185, 129, 0.2)",
             desc: "Links rápidos para portais de RH, Service Desk de TI e Gitlab da Engenharia.",
             content: `
-                <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Acesse rapidamente os portais e sistemas corporativos mais utilizados na Stellantis:</p>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                    <a href="#" style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.15); color: var(--secondary); padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: background 0.2s;"><i data-lucide="globe" style="width: 16px; height: 16px;"></i> People Portal (Portal do Colaborador & Benefícios)</a>
-                    <a href="#" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); color: #10b981; padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: background 0.2s;"><i data-lucide="help-circle" style="width: 16px; height: 16px;"></i> Service Desk TI (Abertura de chamados e suporte)</a>
-                    <a href="#" style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15); color: #a855f7; padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: background 0.2s;"><i data-lucide="code" style="width: 16px; height: 16px;"></i> GitLab Engenharia (Repositórios de Software de Infotainment)</a>
-                </div>
-            `
+                <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Acesse rapidamente os portais e sistemas corporativos mais utilizados na engenharia e no RH da Stellantis:</p>
+            `,
+            links: [
+                { text: "People Portal (Portal do Colaborador & Benefícios)", url: "https://people.stellantis.com" },
+                { text: "Service Desk TI (Abertura de chamados e suporte)", url: "https://servicedesk.stellantis.com" },
+                { text: "GitLab Engenharia (Repositórios de Software de Infotainment)", url: "https://gitlab.stellantis.com" }
+            ]
         },
         {
             id: 'kit-3',
@@ -3655,9 +3656,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li style="margin-bottom: 6px;"><strong>Agente de Integração (CIEE)</strong>: Monitore o recebimento de seus termos de compromisso digitais e certifique-se de mantê-los assinados.</li>
                     <li style="margin-bottom: 6px;"><strong>Plano de Atividades (PAE)</strong>: Preencha com o auxílio do seu supervisor técnico nos primeiros 15 dias e envie assinado ao CIEE.</li>
                     <li style="margin-bottom: 6px;"><strong>Relatório de Estágio (RAE)</strong>: Documento semestral obrigatório onde você relata suas atividades e aprendizados práticos na engenharia.</li>
-                    <li style="margin-bottom: 6px;"><strong>Treinamentos de Integração</strong>: Complete obrigatoriamente os cursos de Código de Conduta, LGPD e Segurança da Informação no portal de treinamentos da empresa.</li>
+                    <li style="margin-bottom: 6px;"><strong>Treinamentos de Integração</strong>: Complete de forma mandatória os cursos de LGPD e segurança da informação.</li>
                 </ul>
-            `
+            `,
+            links: [
+                { text: "Acessar Portal CIEE", url: "https://portal.ciee.org.br" }
+            ]
         },
         {
             id: 'kit-4',
@@ -3670,11 +3674,12 @@ document.addEventListener('DOMContentLoaded', () => {
             content: `
                 <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Entre em contato direto com a comunidade de engenharia através dos nossos canais:</p>
                 <ul style="margin: 0; padding-left: 20px; line-height: 2.0; color: var(--text-muted);">
-                    <li style="margin-bottom: 6px;"><strong>Slack & Teams</strong>: Entre nos canais <code>#digital-cockpit</code> e <code>#infotainment-lounge</code>. Estes são os pontos principais de troca técnica diária.</li>
+                    <li style="margin-bottom: 6px;"><strong>Slack & Teams</strong>: Entre nos canais <code>#digital-cockpit</code> and <code>#infotainment-lounge</code>. Estes são os pontos principais de troca técnica diária.</li>
                     <li style="margin-bottom: 6px;"><strong>Suporte de TI Betim</strong>: Disque o ramal <strong>2300</strong> no telefone físico do escritório para chamados emergenciais.</li>
                     <li style="margin-bottom: 6px;"><strong>Buddy de Integração</strong>: Lembre-se que você tem um padrinho (Buddy) do seu time designado para responder qualquer dúvida técnica ou de processos. Não hesite em chamá-lo!</li>
                 </ul>
-            `
+            `,
+            links: []
         }
     ];
 
@@ -3709,7 +3714,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'kit-card';
             card.setAttribute('data-id', item.id);
             
-            // Definir cores das bordas e ícones conforme o item
             card.innerHTML = `
                 <div class="kit-card-header">
                     <div class="kit-card-icon-container" style="background: ${item.bgColor || 'rgba(6, 182, 212, 0.1)'}; border: 1px solid ${item.borderColor || 'rgba(6, 182, 212, 0.2)'}; color: ${item.color || 'var(--secondary)'};">
@@ -3740,7 +3744,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!kitDetailsModal || !kitDetailsTitle || !kitDetailsContent || !kitDetailsIconContainer) return;
         
         kitDetailsTitle.textContent = item.title;
-        kitDetailsContent.innerHTML = item.content;
+        
+        // Injetar conteúdo principal
+        let detailsHtml = item.content;
+
+        // Adicionar botões de links rápidos estruturados caso existam
+        if (item.links && item.links.length > 0) {
+            detailsHtml += `<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 16px;">`;
+            item.links.forEach(link => {
+                // Formatar link caso não possua protocolo completo para evitar bugs
+                let href = link.url;
+                if (!href.startsWith('http://') && !href.startsWith('https://') && href !== '#') {
+                    href = 'https://' + href;
+                }
+                detailsHtml += `
+                    <a href="${href}" target="_blank" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px; justify-content: center; padding: 12px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 700; background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.15); color: var(--secondary); transition: all 0.2s;">
+                        <i data-lucide="external-link" style="width: 14px; height: 14px;"></i> ${link.text}
+                    </a>
+                `;
+            });
+            detailsHtml += `</div>`;
+        }
+
+        kitDetailsContent.innerHTML = detailsHtml;
         
         // Estilizar e aplicar ícone do modal
         kitDetailsIconContainer.style.background = item.bgColor || 'rgba(6, 182, 212, 0.1)';
@@ -3764,6 +3790,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('inputKitDesc').value = '';
             document.getElementById('textareaKitContent').value = '';
             document.getElementById('selectKitIcon').value = 'check-square';
+            
+            // Reset dos links
+            document.getElementById('inputKitLinkText1').value = '';
+            document.getElementById('inputKitLinkUrl1').value = '';
+            document.getElementById('inputKitLinkText2').value = '';
+            document.getElementById('inputKitLinkUrl2').value = '';
+            
             addKitItemModal.classList.add('open');
         });
     }
@@ -3798,8 +3831,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const rawContent = document.getElementById('textareaKitContent').value.trim();
             const icon = document.getElementById('selectKitIcon').value;
 
+            // Coleta dos Links Rápidos
+            const linkText1 = document.getElementById('inputKitLinkText1').value.trim();
+            const linkUrl1 = document.getElementById('inputKitLinkUrl1').value.trim();
+            const linkText2 = document.getElementById('inputKitLinkText2').value.trim();
+            const linkUrl2 = document.getElementById('inputKitLinkUrl2').value.trim();
+
             if (!title || !desc || !rawContent) {
-                alert('Por favor, preencha todos os campos do card!');
+                alert('Por favor, preencha todos os campos obrigatórios (Título, Descrição e Instruções)!');
                 return;
             }
 
@@ -3840,6 +3879,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 finalContent = rawContent.split('\n').filter(line => line.trim() !== '').map(line => `<p style="margin-bottom: 8px;">${line}</p>`).join('');
             }
 
+            // Montar array de links rápidos válidos
+            const links = [];
+            if (linkText1 && linkUrl1) {
+                links.push({ text: linkText1, url: linkUrl1 });
+            }
+            if (linkText2 && linkUrl2) {
+                links.push({ text: linkText2, url: linkUrl2 });
+            }
+
             const newItem = {
                 id: `kit-${Date.now()}`,
                 title: title,
@@ -3848,7 +3896,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgColor: bgColor,
                 borderColor: borderColor,
                 desc: desc,
-                content: finalContent
+                content: finalContent,
+                links: links
             };
 
             // Salvar na lista e persistir

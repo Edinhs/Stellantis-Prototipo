@@ -628,7 +628,7 @@
                             <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700;">Olá, novo colaborador!</h3>
                             <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Preparamos este Kit Colaborador digital para facilitar sua integração no nosso Tech Center. Clique em qualquer card para ver as instruções detalhadas ou adicione novas informações úteis.</p>
                         </div>
-                        <button class="btn-primary" id="btnOpenAddKitModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                        <button class="btn-primary" id="btnOpenAddKitModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);">
                             <i data-lucide="plus-circle"></i> Adicionar Informação
                         </button>
                     </div>
@@ -2370,7 +2370,18 @@
                 </div>
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
                     <label for="textareaKitContent" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Instruções Detalhadas (Conteúdo do Pop-up)</label>
-                    <textarea id="textareaKitContent" rows="6" placeholder="Escreva os passos detalhados. Você pode usar tags HTML básicas como <p>, <li>, <strong>, <a> para links, etc." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 120px;"></textarea>
+                    <textarea id="textareaKitContent" rows="4" placeholder="Escreva os passos detalhados aqui..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 80px;"></textarea>
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: 4px; display: flex; flex-direction: column; gap: 8px;">
+                    <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); display: block; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Links Rápidos (Opcional)</span>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px;">
+                        <input type="text" id="inputKitLinkText1" placeholder="Nome do Link 1 (Ex: People Portal)" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: var(--text-main); font-size: 12px; width: 100%;">
+                        <input type="text" id="inputKitLinkUrl1" placeholder="URL (Ex: https://people.stellantis.com)" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: var(--text-main); font-size: 12px; width: 100%;">
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px;">
+                        <input type="text" id="inputKitLinkText2" placeholder="Nome do Link 2" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: var(--text-main); font-size: 12px; width: 100%;">
+                        <input type="text" id="inputKitLinkUrl2" placeholder="URL 2" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: var(--text-main); font-size: 12px; width: 100%;">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="padding-top: 10px;">
