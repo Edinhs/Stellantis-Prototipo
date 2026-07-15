@@ -2291,20 +2291,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 10. FILTRO DE COMPONENTES DE INFOTAINMENT (2 BOTÕES)
+    // 10. FILTRO DE COMPONENTES DE INFOTAINMENT (MULTISELEÇÃO)
     // ========================================================
     const componentFilterBtns = document.querySelectorAll('#filterBarComponent .infotainment-filter-btn');
-    let activeCategory = 'audio-tela'; // Categoria ativa padrão (primeiro botão)
+    const supplierFilterBtns = document.querySelectorAll('#filterBarSupplier .infotainment-filter-btn');
+
+    // Inicialmente todos começam ativos para mostrar tudo por padrão
+    let activeCategories = ['audio-tela', 'conectividade-auxilio'];
+    let activeSuppliers = ['aptiv', 'marelli', 'harman', 'bosch'];
+
+    function handleFilterToggle(btn) {
+        btn.classList.toggle('active');
+        
+        // Recalcular ativos do grupo de categorias
+        const activeCatBtns = document.querySelectorAll('#filterBarComponent .infotainment-filter-btn.active');
+        activeCategories = Array.from(activeCatBtns).map(b => b.getAttribute('data-infocategory'));
+
+        // Recalcular ativos do grupo de fornecedores
+        const activeSupBtns = document.querySelectorAll('#filterBarSupplier .infotainment-filter-btn.active');
+        activeSuppliers = Array.from(activeSupBtns).map(b => b.getAttribute('data-infosupplier'));
+
+        // Disparar renderização dinâmica
+        if (typeof renderInfotainment === 'function') {
+            renderInfotainment();
+        }
+    }
 
     if (componentFilterBtns) {
         componentFilterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                componentFilterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeCategory = btn.getAttribute('data-infocategory');
-                if (typeof renderInfotainment === 'function') {
-                    renderInfotainment();
-                }
+                handleFilterToggle(btn);
+            });
+        });
+    }
+
+    if (supplierFilterBtns) {
+        supplierFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                handleFilterToggle(btn);
             });
         });
     }
@@ -4460,13 +4484,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!infotainmentGridContainer) return;
         infotainmentGridContainer.innerHTML = '';
 
-        // Filtrar com base no activeCategory (que armazena 'audio-tela' ou 'conectividade-auxilio')
+        // Filtrar com base em múltipla escolha acumulativa
         const filtered = infotainmentComponents.filter(item => {
-            if (activeCategory === 'audio-tela') {
-                return item.category === 'audio-tela';
-            } else {
-                return item.category === 'conectividade-auxilio' || item.category === 'conectividade' || item.category === 'auxilio';
+            let catNorm = item.category;
+            if (catNorm === 'conectividade' || catNorm === 'auxilio') {
+                catNorm = 'conectividade-auxilio';
             }
+
+            const matchesCategory = activeCategories.length === 0 || activeCategories.includes(catNorm);
+            const matchesSupplier = activeSuppliers.length === 0 || activeSuppliers.includes(item.supplier);
+
+            return matchesCategory && matchesSupplier;
         });
 
         filtered.forEach(item => {

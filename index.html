@@ -968,13 +968,25 @@
                     </button>
                 </div>
 
-                <!-- Barra de Filtros de Infotainment (Simplificada para 2 botões) -->
-                <div class="infotainment-filters-container" style="margin-bottom: 24px;">
-                    <div class="filter-group">
-                        <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 8px; letter-spacing: 0.5px;">Filtrar por Categoria:</span>
-                        <div class="infotainment-filter-bar" id="filterBarComponent" style="margin-bottom: 0; display: flex; gap: 10px;">
-                            <button class="infotainment-filter-btn active" data-infocategory="audio-tela" style="flex: 1; justify-content: center;"><i data-lucide="tv"></i> Telas & Áudio</button>
-                            <button class="infotainment-filter-btn" data-infocategory="conectividade-auxilio" style="flex: 1; justify-content: center;"><i data-lucide="wifi"></i> Conectividade & Auxílio</button>
+                <!-- Barra de Filtros de Infotainment (Múltipla Escolha e Botões Menores) -->
+                <div class="infotainment-filters-container" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; backdrop-filter: blur(10px);">
+                    <!-- Grupo 1: Tipo de Componente -->
+                    <div class="filter-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <span style="font-size: 10px; text-transform: uppercase; color: var(--text-dark); font-weight: 800; display: block; letter-spacing: 0.5px;">Tipo de Componente:</span>
+                        <div class="infotainment-filter-bar" id="filterBarComponent" style="margin-bottom: 0; display: flex; flex-wrap: wrap; gap: 8px;">
+                            <button class="infotainment-filter-btn active" data-infocategory="audio-tela" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; height: 30px; font-weight: 700; width: auto; flex: unset;"><i data-lucide="tv" style="width: 12px; height: 12px;"></i> Telas & Áudio</button>
+                            <button class="infotainment-filter-btn active" data-infocategory="conectividade-auxilio" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; height: 30px; font-weight: 700; width: auto; flex: unset;"><i data-lucide="wifi" style="width: 12px; height: 12px;"></i> Conectividade & Auxílio</button>
+                        </div>
+                    </div>
+
+                    <!-- Grupo 2: Fornecedor (Tier 1) -->
+                    <div class="filter-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <span style="font-size: 10px; text-transform: uppercase; color: var(--text-dark); font-weight: 800; display: block; letter-spacing: 0.5px;">Fornecedor (Tier 1):</span>
+                        <div class="infotainment-filter-bar" id="filterBarSupplier" style="margin-bottom: 0; display: flex; flex-wrap: wrap; gap: 8px;">
+                            <button class="infotainment-filter-btn active" data-infosupplier="aptiv" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; height: 30px; font-weight: 700; width: auto; flex: unset;"><i data-lucide="cpu" style="width: 12px; height: 12px;"></i> Aptiv</button>
+                            <button class="infotainment-filter-btn active" data-infosupplier="marelli" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; height: 30px; font-weight: 700; width: auto; flex: unset;"><i data-lucide="settings" style="width: 12px; height: 12px;"></i> Magneti Marelli</button>
+                            <button class="infotainment-filter-btn active" data-infosupplier="harman" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; height: 30px; font-weight: 700; width: auto; flex: unset;"><i data-lucide="music" style="width: 12px; height: 12px;"></i> Harman Kardon</button>
+                            <button class="infotainment-filter-btn active" data-infosupplier="bosch" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; height: 30px; font-weight: 700; width: auto; flex: unset;"><i data-lucide="eye" style="width: 12px; height: 12px;"></i> Bosch</button>
                         </div>
                     </div>
                 </div>
