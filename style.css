@@ -4400,10 +4400,13 @@ body::before {
 }
 
 .stellantis-gpt-brand-text {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--text-main);
     letter-spacing: -0.3px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .stellantis-gpt-brand-text .st-sub {
