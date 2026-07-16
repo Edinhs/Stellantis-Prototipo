@@ -6,15 +6,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar Lucide Icons
     lucide.createIcons();
 
-    // Lógica de Scroll do Header (Cápsula Flutuante)
+    // Lógica de Scroll do Header (Cápsula Flutuante + Ocultação Inteligente)
+    let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
         const header = document.querySelector('.main-header');
         if (header) {
-            if (window.scrollY > 45) {
+            const currentScrollY = window.scrollY;
+            
+            // Adicionar/remover classe scrolled
+            if (currentScrollY > 45) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
+
+            // Ocultar ao rolar para baixo, mostrar ao rolar para cima
+            if (currentScrollY > 120) {
+                if (currentScrollY > lastScrollY) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+            } else {
+                header.classList.remove('header-hidden');
+            }
+            
+            lastScrollY = currentScrollY;
         }
     });
 

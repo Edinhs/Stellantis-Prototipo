@@ -5883,7 +5883,7 @@ body::before {
         flex-direction: column !important;
         align-items: center !important;
         gap: 12px !important;
-        padding: 16px 20px !important;
+        padding: 16px 24px !important;
         background: rgba(5, 10, 24, 0.96) !important;
         backdrop-filter: blur(20px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -5891,6 +5891,7 @@ body::before {
         width: 100% !important;
         top: 0 !important;
         left: 0 !important;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s, padding 0.3s, border 0.3s !important;
     }
 
     .main-header .logo-container {
@@ -5907,6 +5908,7 @@ body::before {
         width: 100% !important;
         opacity: 1 !important;
         transform: none !important;
+        margin-top: 6px !important;
     }
     
     .main-header .main-nav > ul {
@@ -5922,18 +5924,21 @@ body::before {
     }
 
     .main-header .auth-container {
-        max-width: 100% !important;
-        width: 100% !important;
+        position: absolute !important;
+        top: 18px !important;
+        right: 24px !important;
+        max-width: 250px !important;
+        width: auto !important;
         opacity: 1 !important;
         transform: none !important;
         pointer-events: auto !important;
         display: flex !important;
-        justify-content: center !important;
-        margin-top: 4px !important;
+        justify-content: flex-end !important;
+        margin-top: 0 !important;
     }
 
     .main-header.scrolled {
-        padding: 16px 20px !important;
+        padding: 12px 24px !important;
         background: rgba(5, 10, 24, 0.96) !important;
         backdrop-filter: blur(20px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -5948,9 +5953,11 @@ body::before {
 
     .main-header.scrolled .auth-container {
         opacity: 1 !important;
-        max-width: 100% !important;
+        max-width: 250px !important;
         transform: none !important;
         pointer-events: auto !important;
+        top: 12px !important;
+        right: 24px !important;
     }
     
     .main-header.scrolled .main-nav {
@@ -5959,7 +5966,7 @@ body::before {
     }
 
     .content-wrapper {
-        margin-top: 235px !important;
+        margin-top: 165px !important;
         padding-top: 16px !important;
     }
 
@@ -6050,17 +6057,27 @@ body::before {
 /* CELULARES (Até 768px) */
 @media (max-width: 768px) {
     .main-header {
-    .main-header {
         padding: 12px 14px !important;
         gap: 8px 10px !important;
+    }
+
+    .main-header .auth-container {
+        position: absolute !important;
+        top: 12px !important;
+        right: 14px !important;
     }
 
     .main-header.scrolled {
         padding: 12px 14px !important;
     }
 
+    .main-header.scrolled .auth-container {
+        top: 10px !important;
+        right: 14px !important;
+    }
+
     .content-wrapper {
-        margin-top: 255px !important;
+        margin-top: 155px !important;
         padding-top: 12px !important;
     }
 
@@ -6259,4 +6276,9 @@ body::before {
         width: 60px !important;
         height: 60px !important;
     }
+}
+
+/* Ocultação Inteligente do Header no Scroll Down */
+.main-header.header-hidden {
+    transform: translateY(-100%) !important;
 }
