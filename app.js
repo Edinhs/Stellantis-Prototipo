@@ -99,9 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetSection = document.getElementById(`sec-${targetId}`);
         const targetLink = document.querySelector(`.nav-link[data-target="${targetId}"]`);
         
-        if (targetSection && targetLink) {
+        if (targetSection) {
             targetSection.classList.add('active');
-            targetLink.classList.add('active');
+            if (targetLink) {
+                targetLink.classList.add('active');
+            }
             // Scroll suave até o topo
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
