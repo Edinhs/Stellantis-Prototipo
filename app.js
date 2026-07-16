@@ -1541,13 +1541,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // 3. Inputs na Seção Perfil
         const inputName = document.getElementById('inputProfileName');
         const inputRole = document.getElementById('inputProfileRole');
-        const inputAvatar = document.getElementById('inputProfileAvatarUrl');
         const selectArea = document.getElementById('selectProfileArea');
 
         if (inputName) inputName.value = userName;
         if (inputRole) inputRole.value = userRole;
-        if (inputAvatar) inputAvatar.value = userAvatarUrl;
         if (selectArea) selectArea.value = userSector;
+
+        // Sincronizar seleção visual da lista de avatares pré-definidos
+        const avatarItems = document.querySelectorAll('.avatar-select-item');
+        avatarItems.forEach(item => {
+            if (item.getAttribute('data-src') === userAvatarUrl) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
 
         // 4. Insígnias Detalhes na Seção Perfil
         // A) Módulos de Treinamento
@@ -1740,12 +1748,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Configuração de Avatares do Perfil (Seleção & Upload)
+    let selectedAvatarUrl = userAvatarUrl;
+    const avatarSelectionList = document.querySelector('.avatar-selection-list');
+    
+    if (avatarSelectionList) {
+        const items = avatarSelectionList.querySelectorAll('.avatar-select-item');
+        const fileInput = document.getElementById('inputProfileAvatarFile');
+        const previewImg = document.getElementById('editProfileAvatarPreview');
+
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                items.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                const src = item.getAttribute('data-src');
+                selectedAvatarUrl = src;
+                if (previewImg) previewImg.src = src;
+            });
+        });
+
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('Por favor, envie uma foto com menos de 2MB!');
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        const base64 = evt.target.result;
+                        selectedAvatarUrl = base64;
+                        if (previewImg) previewImg.src = base64;
+                        
+                        // Desmarcar todos os outros avatares
+                        items.forEach(i => i.classList.remove('selected'));
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+
     // Salvar Dados Editados no Perfil
     if (btnSaveProfileSettings) {
         btnSaveProfileSettings.addEventListener('click', () => {
             const inputName = document.getElementById('inputProfileName');
             const inputRole = document.getElementById('inputProfileRole');
-            const inputAvatar = document.getElementById('inputProfileAvatarUrl');
             const selectArea = document.getElementById('selectProfileArea');
 
             let updatedSector = false;
@@ -1758,10 +1807,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 userRole = inputRole.value.trim();
                 localStorage.setItem('stellantis_user_role', userRole);
             }
-            if (inputAvatar && inputAvatar.value.trim() !== '') {
-                userAvatarUrl = inputAvatar.value.trim();
-                localStorage.setItem('stellantis_user_avatar_url', userAvatarUrl);
-            }
+            
+            // Persistir o avatar selecionado ou enviado por upload
+            userAvatarUrl = selectedAvatarUrl;
+            localStorage.setItem('stellantis_user_avatar_url', userAvatarUrl);
+
             if (selectArea) {
                 const oldSector = userSector;
                 userSector = selectArea.value;

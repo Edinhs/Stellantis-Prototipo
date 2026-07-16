@@ -5835,3 +5835,33 @@ body::before {
     display: none !important;
 }
 
+/* Seleção de Avatares no Perfil */
+.avatar-select-item {
+    border: 2px solid transparent !important;
+}
+.avatar-select-item:hover {
+    transform: scale(1.1);
+    border-color: rgba(6, 182, 212, 0.4) !important;
+}
+.avatar-select-item.selected {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+    transform: scale(1.05);
+}
+.avatar-selection-list::-webkit-scrollbar {
+    height: 4px;
+}
+.avatar-selection-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+}
+.avatar-selection-list::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 2px;
+}
+.upload-btn:hover {
+    border-color: var(--secondary) !important;
+    background: rgba(6, 182, 212, 0.05) !important;
+}
+.upload-btn:hover i {
+    color: var(--secondary) !important;
+}
