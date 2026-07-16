@@ -1692,31 +1692,13 @@
                 <div class="profile-left-panel">
                     <div class="glass-card profile-details-card">
                         <h3>Editar Perfil</h3>
-                        <div class="profile-edit-avatar-container" style="flex-direction: column; align-items: flex-start; gap: 12px; width: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; width: 100%;">
-                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Foto do Perfil" class="profile-large-img" id="editProfileAvatarPreview" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary); box-shadow: 0 0 10px rgba(6,182,212,0.3);">
-                                <div>
-                                    <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 4px;">Foto de Perfil Atual</span>
-                                    <span style="font-size: 12px; color: var(--text-muted); line-height: 1.4; display: block;">Escolha um avatar de engenheiro ou envie sua própria foto clicando no botão cinza de upload.</span>
-                                </div>
-                            </div>
-                            
-                            <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; margin-top: 8px;">Selecionar Avatar</span>
-                            <div class="avatar-selection-list" style="display: flex; gap: 10px; overflow-x: auto; width: 100%; padding: 6px 2px; scrollbar-width: thin; margin-bottom: 5px;">
-                                <!-- Botão de Upload de Foto -->
-                                <label for="inputProfileAvatarFile" style="width: 48px; height: 48px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; background: rgba(255,255,255,0.02);" class="avatar-select-btn upload-btn" title="Fazer upload de foto">
-                                    <i data-lucide="upload" style="width: 16px; height: 16px; color: var(--text-dark);"></i>
-                                    <input type="file" id="inputProfileAvatarFile" accept="image/*" style="display: none;">
-                                </label>
-                                
-                                <!-- Lista de avatares padrão -->
-                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80">
-                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&q=80">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80">
-                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80">
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80">
-                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" class="avatar-select-item" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; object-fit: cover; transition: all 0.3s ease; flex-shrink: 0;" data-src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80">
+                        <div class="profile-edit-avatar-container" style="display: flex; align-items: center; gap: 20px; width: 100%; margin-bottom: 15px;">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Foto do Perfil" class="profile-large-img" id="editProfileAvatarPreview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary); box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);">
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; letter-spacing: 0.5px;">Foto do Perfil</span>
+                                <button class="btn-primary" id="btnOpenAvatarModal" style="padding: 10px 18px; font-size: 12px; font-weight: 700; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; cursor: pointer;">
+                                    <i data-lucide="image"></i> Alterar Avatar
+                                </button>
                             </div>
                         </div>
                         
@@ -2481,6 +2463,57 @@
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddAutomationModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveNewAutomation">Adicionar Automação</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pop-up para Seleção de Avatares Ilustrados & Upload -->
+    <div class="modal-overlay" id="modalAvatarPicker">
+        <div class="modal-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="smile"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Escolher Avatar</h3>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Ilustrações & Diversidade</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseAvatarModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 18px; padding: 15px 0 20px 0;">
+                
+                <!-- Área de Upload de Foto Própria -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center;">
+                    <span style="font-size: 13px; color: var(--text-main); font-weight: 600;">Quer enviar sua própria foto?</span>
+                    <label for="inputProfileAvatarFile" style="padding: 10px 20px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); cursor: pointer; transition: all 0.3s ease;" class="upload-btn">
+                        <i data-lucide="upload" style="width: 14px; height: 14px;"></i> Selecionar Arquivo do Computador
+                        <input type="file" id="inputProfileAvatarFile" accept="image/*" style="display: none;">
+                    </label>
+                    <span style="font-size: 10px; color: var(--text-muted);">Formatos aceitos: JPG, PNG. Tamanho máximo: 2MB.</span>
+                </div>
+
+                <!-- Grid de Desenhos de Avatares (Etnia e Cor) -->
+                <div>
+                    <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; display: block; margin-bottom: 12px;">Ilustrações de Engenheiros</span>
+                    <div class="avatar-selection-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; justify-items: center;">
+                        <!-- Avatares representativos (DiceBear OpenPeeps com sementes diversas) -->
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Ana" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Ana" title="Ana">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Jordan" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Jordan" title="Jordan">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Destiny" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Destiny" title="Destiny">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Christian" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Christian" title="Christian">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Yuki" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Yuki" title="Yuki">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Sarah" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Sarah" title="Sarah">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Gabriel" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Gabriel" title="Gabriel">
+                        <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Tasha" class="avatar-select-item" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.04); object-fit: contain; padding: 4px; transition: all 0.3s ease;" data-src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Tasha" title="Tasha">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAvatarModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnConfirmAvatarChoice">Confirmar Escolha</button>
             </div>
         </div>
     </div>

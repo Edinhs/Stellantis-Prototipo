@@ -1748,46 +1748,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Configuração de Avatares do Perfil (Seleção & Upload)
+    // Configuração de Avatares do Perfil (Seleção & Upload via Modal Pop-up)
     let selectedAvatarUrl = userAvatarUrl;
-    const avatarSelectionList = document.querySelector('.avatar-selection-list');
-    
-    if (avatarSelectionList) {
-        const items = avatarSelectionList.querySelectorAll('.avatar-select-item');
-        const fileInput = document.getElementById('inputProfileAvatarFile');
-        const previewImg = document.getElementById('editProfileAvatarPreview');
+    let tempAvatarChoice = userAvatarUrl;
 
+    const btnOpenAvatarModal = document.getElementById('btnOpenAvatarModal');
+    const modalAvatarPicker = document.getElementById('modalAvatarPicker');
+    const btnCloseAvatarModal = document.getElementById('btnCloseAvatarModal');
+    const btnCancelAvatarModal = document.getElementById('btnCancelAvatarModal');
+    const btnConfirmAvatarChoice = document.getElementById('btnConfirmAvatarChoice');
+    const inputAvatarFile = document.getElementById('inputProfileAvatarFile');
+    const editPreviewImg = document.getElementById('editProfileAvatarPreview');
+
+    // Inicializar marcação da classe selected nos avatares ilustrados no modal
+    function syncAvatarModalSelection() {
+        const items = document.querySelectorAll('#modalAvatarPicker .avatar-select-item');
         items.forEach(item => {
-            item.addEventListener('click', () => {
-                items.forEach(i => i.classList.remove('selected'));
+            if (item.getAttribute('data-src') === tempAvatarChoice) {
                 item.classList.add('selected');
-                const src = item.getAttribute('data-src');
-                selectedAvatarUrl = src;
-                if (previewImg) previewImg.src = src;
-            });
+            } else {
+                item.classList.remove('selected');
+            }
         });
+    }
 
-        if (fileInput) {
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    if (file.size > 2 * 1024 * 1024) {
-                        alert('Por favor, envie uma foto com menos de 2MB!');
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        const base64 = evt.target.result;
-                        selectedAvatarUrl = base64;
-                        if (previewImg) previewImg.src = base64;
-                        
-                        // Desmarcar todos os outros avatares
-                        items.forEach(i => i.classList.remove('selected'));
-                    };
-                    reader.readAsDataURL(file);
+    if (btnOpenAvatarModal && modalAvatarPicker) {
+        btnOpenAvatarModal.addEventListener('click', () => {
+            tempAvatarChoice = selectedAvatarUrl;
+            syncAvatarModalSelection();
+            modalAvatarPicker.classList.add('open');
+        });
+    }
+
+    function closeAvatarModal() {
+        if (modalAvatarPicker) modalAvatarPicker.classList.remove('open');
+    }
+
+    if (btnCloseAvatarModal) btnCloseAvatarModal.addEventListener('click', closeAvatarModal);
+    if (btnCancelAvatarModal) btnCancelAvatarModal.addEventListener('click', closeAvatarModal);
+
+    if (modalAvatarPicker) {
+        modalAvatarPicker.addEventListener('click', (e) => {
+            if (e.target === modalAvatarPicker) closeAvatarModal();
+        });
+    }
+
+    // Gerenciar cliques nos avatares ilustrados dentro do modal
+    const modalAvatarItems = document.querySelectorAll('#modalAvatarPicker .avatar-select-item');
+    modalAvatarItems.forEach(item => {
+        item.addEventListener('click', () => {
+            modalAvatarItems.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            tempAvatarChoice = item.getAttribute('data-src');
+        });
+    });
+
+    // Upload de arquivo local dentro do modal
+    if (inputAvatarFile) {
+        inputAvatarFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Por favor, envie uma foto com menos de 2MB!');
+                    return;
                 }
-            });
-        }
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    tempAvatarChoice = evt.target.result;
+                    // Desmarcar todos os avatares do grid para indicar a escolha do arquivo
+                    modalAvatarItems.forEach(i => i.classList.remove('selected'));
+                    alert('Foto carregada com sucesso! Clique em "Confirmar Escolha" para aplicar.');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Confirmar escolha do modal
+    if (btnConfirmAvatarChoice) {
+        btnConfirmAvatarChoice.addEventListener('click', () => {
+            selectedAvatarUrl = tempAvatarChoice;
+            if (editPreviewImg) editPreviewImg.src = selectedAvatarUrl;
+            closeAvatarModal();
+        });
     }
 
     // Salvar Dados Editados no Perfil
