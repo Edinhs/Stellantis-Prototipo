@@ -870,89 +870,18 @@
 
             <!-- SUBABA 2: PROJETOS (CÓDIGOS E FOTOS REALISTAS) -->
             <div id="info-sec-projetos" class="info-sub-section">
-                <div class="sub-section-intro">
-                    <h3>Projetos Ativos Stellantis</h3>
-                    <p>Consulte os códigos internos de desenvolvimento e a imagem correspondente do modelo do ano.</p>
+                <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Projetos Ativos Stellantis</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Consulte os códigos internos de desenvolvimento, as tecnologias embarcadas e a imagem de engenharia do modelo veicular.</p>
+                    </div>
+                    <button class="btn-primary" id="btnOpenAddProjectModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);">
+                        <i data-lucide="plus-circle"></i> Adicionar Projeto
+                    </button>
                 </div>
 
-                <div class="projects-grid">
-                    <!-- Projeto 1: J3U (Compass) -->
-                    <div class="project-card">
-                        <div class="project-image-container">
-                            <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=600&q=80" alt="Jeep Compass J3U" class="project-image">
-                            <span class="project-code-badge">J3U</span>
-                        </div>
-                        <div class="project-card-info">
-                            <h4>Jeep Compass 2026/2027</h4>
-                            <p class="project-desc">SUV líder de categoria, agora com propulsão híbrida flex Bio-Hybrid integrada.</p>
-                            <table class="project-info-table">
-                                <tr>
-                                    <td><strong>Plataforma:</strong></td>
-                                    <td>Small Wide LWB</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Motorização:</strong></td>
-                                    <td>T270 / Hurricane 4</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Status:</strong></td>
-                                    <td><span class="status-indicator active">Produção</span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Projeto 2: T90 (Rampage) -->
-                    <div class="project-card">
-                        <div class="project-image-container">
-                            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Ram Rampage T90" class="project-image">
-                            <span class="project-code-badge">T90</span>
-                        </div>
-                        <div class="project-card-info">
-                            <h4>Ram Rampage 2026</h4>
-                            <p class="project-desc">Picape intermediária premium projetada e desenvolvida no Brasil.</p>
-                            <table class="project-info-table">
-                                <tr>
-                                    <td><strong>Plataforma:</strong></td>
-                                    <td>Small Wide LWB</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Motorização:</strong></td>
-                                    <td>Hurricane 4 / TD380</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Status:</strong></td>
-                                    <td><span class="status-indicator active">Produção</span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Projeto 3: J4U (Commander) -->
-                    <div class="project-card">
-                        <div class="project-image-container">
-                            <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80" alt="Jeep Commander J4U" class="project-image">
-                            <span class="project-code-badge">J4U</span>
-                        </div>
-                        <div class="project-card-info">
-                            <h4>Jeep Commander 2026</h4>
-                            <p class="project-desc">D-SUV de 7 lugares desenvolvido sob a arquitetura alongada LWB.</p>
-                            <table class="project-info-table">
-                                <tr>
-                                    <td><strong>Plataforma:</strong></td>
-                                    <td>Small Wide LWB</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Motorização:</strong></td>
-                                    <td>T270 / Hurricane 4</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Status:</strong></td>
-                                    <td><span class="status-indicator active">Produção</span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                <div class="projects-grid" id="projectsGridContainer">
+                    <!-- Gerado dinamicamente via JS -->
                 </div>
             </div>
 
@@ -2566,6 +2495,68 @@
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddOrgNodeModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveAddOrgNode">Adicionar Integrante</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Novo Projeto -->
+    <div class="modal-overlay" id="addProjectModal">
+        <div class="modal-card" style="max-width: 600px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="folder-git-2"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Novo Projeto</h3>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Base Técnica Stellantis</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseAddProjectModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputProjectCode" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Código do Projeto (badge)</label>
+                        <input type="text" id="inputProjectCode" placeholder="Ex: J3U" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputProjectName" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Nome do Carro / Ano</label>
+                        <input type="text" id="inputProjectName" placeholder="Ex: Jeep Compass 2026/2027" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputProjectPlatform" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Plataforma</label>
+                        <input type="text" id="inputProjectPlatform" placeholder="Ex: Small Wide LWB ou STLA Medium" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputProjectPowertrain" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Motorização</label>
+                        <input type="text" id="inputProjectPowertrain" placeholder="Ex: T270 / Hurricane 4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectProjectStatus" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Status do Projeto</label>
+                        <select id="selectProjectStatus" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="Produção">Em Produção</option>
+                            <option value="Desenvolvimento">Em Desenvolvimento</option>
+                            <option value="Homologado">Homologado</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputProjectImageUrl" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">URL da Imagem do Veículo</label>
+                        <input type="text" id="inputProjectImageUrl" placeholder="Ex: https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaProjectDesc" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Descrição Curta do Projeto</label>
+                    <textarea id="textareaProjectDesc" rows="3" placeholder="Descreva os objetivos do projeto, tecnologias embarcadas ou marcas aplicadas..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 60px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddProjectModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewProject">Adicionar Projeto</button>
             </div>
         </div>
     </div>

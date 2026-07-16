@@ -5047,4 +5047,176 @@ document.addEventListener('DOMContentLoaded', () => {
 
         alert(`🗑️ Integrante "${node.name}" e seus subordinados foram removidos da hierarquia!\nVocê ganhou +50 XP.`);
     };
+
+    // ========================================================
+    // 22. PROJETOS ATIVOS STELLANTIS (DINÂMICO)
+    // ========================================================
+    const defaultProjects = [
+        {
+            id: 'proj-1',
+            code: 'J3U',
+            name: "Jeep Compass 2026/2027",
+            desc: "SUV líder de categoria, agora com propulsão híbrida flex Bio-Hybrid integrada.",
+            platform: "Small Wide LWB",
+            powertrain: "T270 / Hurricane 4",
+            status: "Produção",
+            imageUrl: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+            id: 'proj-2',
+            code: 'T90',
+            name: "Ram Rampage 2026",
+            desc: "Picape intermediária premium projetada e desenvolvida no Brasil.",
+            platform: "Small Wide LWB",
+            powertrain: "Hurricane 4 / TD380",
+            status: "Produção",
+            imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+            id: 'proj-3',
+            code: 'J4U',
+            name: "Jeep Commander 2026",
+            desc: "D-SUV de 7 lugares desenvolvido sob a arquitetura alongada LWB.",
+            platform: "Small Wide LWB",
+            powertrain: "T270 / Hurricane 4",
+            status: "Produção",
+            imageUrl: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80"
+        }
+    ];
+
+    let projects = [];
+    try {
+        projects = JSON.parse(localStorage.getItem('stellantis_projects')) || defaultProjects;
+    } catch(e) {
+        projects = [...defaultProjects];
+    }
+
+    const projectsGridContainer = document.getElementById('projectsGridContainer');
+    const btnOpenAddProjectModal = document.getElementById('btnOpenAddProjectModal');
+    const addProjectModal = document.getElementById('addProjectModal');
+    const btnCancelAddProjectModal = document.getElementById('btnCancelAddProjectModal');
+    const btnSaveNewProject = document.getElementById('btnSaveNewProject');
+    const btnCloseAddProjectModal = document.getElementById('btnCloseAddProjectModal');
+
+    function renderProjects() {
+        if (!projectsGridContainer) return;
+        projectsGridContainer.innerHTML = '';
+
+        projects.forEach(proj => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.setAttribute('data-id', proj.id);
+
+            // Determinar classe de status
+            let statusClass = 'active';
+            if (proj.status === 'Desenvolvimento') statusClass = 'pending';
+            else if (proj.status === 'Homologado') statusClass = 'homologated';
+
+            card.innerHTML = `
+                <div class="project-image-container">
+                    <img src="${proj.imageUrl || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600'}" alt="${proj.name} ${proj.code}" class="project-image" onerror="this.src='https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600'">
+                    <span class="project-code-badge">${proj.code}</span>
+                </div>
+                <div class="project-card-info">
+                    <h4>${proj.name}</h4>
+                    <p class="project-desc">${proj.desc}</p>
+                    <table class="project-info-table">
+                        <tr>
+                            <td><strong>Plataforma:</strong></td>
+                            <td>${proj.platform}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motorização:</strong></td>
+                            <td>${proj.powertrain}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            <td><span class="status-indicator ${statusClass}">${proj.status}</span></td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+            projectsGridContainer.appendChild(card);
+        });
+    }
+
+    // Modal de Projetos
+    function openAddProjectModal() {
+        if (addProjectModal) addProjectModal.classList.add('open');
+    }
+
+    function closeAddProjectModal() {
+        if (addProjectModal) addProjectModal.classList.remove('open');
+    }
+
+    if (btnOpenAddProjectModal) btnOpenAddProjectModal.addEventListener('click', openAddProjectModal);
+    if (btnCancelAddProjectModal) btnCancelAddProjectModal.addEventListener('click', closeAddProjectModal);
+    if (btnCloseAddProjectModal) btnCloseAddProjectModal.addEventListener('click', closeAddProjectModal);
+
+    if (addProjectModal) {
+        addProjectModal.addEventListener('click', (e) => {
+            if (e.target === addProjectModal) closeAddProjectModal();
+        });
+    }
+
+    if (btnSaveNewProject) {
+        btnSaveNewProject.addEventListener('click', () => {
+            const code = document.getElementById('inputProjectCode').value.trim();
+            const name = document.getElementById('inputProjectName').value.trim();
+            const platform = document.getElementById('inputProjectPlatform').value.trim();
+            const powertrain = document.getElementById('inputProjectPowertrain').value.trim();
+            const status = document.getElementById('selectProjectStatus').value;
+            const imageUrl = document.getElementById('inputProjectImageUrl').value.trim();
+            const desc = document.getElementById('textareaProjectDesc').value.trim();
+
+            if (!code || !name || !platform || !powertrain || !desc) {
+                alert('Por favor, preencha todos os campos do projeto!');
+                return;
+            }
+
+            const newProj = {
+                id: `proj-${Date.now()}`,
+                code: code.toUpperCase(),
+                name: name,
+                platform: platform,
+                powertrain: powertrain,
+                status: status,
+                imageUrl: imageUrl || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600',
+                desc: desc
+            };
+
+            projects.push(newProj);
+            localStorage.setItem('stellantis_projects', JSON.stringify(projects));
+
+            closeAddProjectModal();
+            renderProjects();
+
+            // Gamificação de XP
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: name,
+                type: 'geral',
+                desc: `Adicionou o projeto veicular "${name}" (Código: ${code.toUpperCase()}) na base ativa de engenharia.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Projeto "${name}" adicionado com sucesso!\nVocê ganhou +50 XP por cadastrar o novo projeto!`);
+        });
+    }
+
+    // Inicializar renderizações dinâmicas
+    renderProjects();
 });
