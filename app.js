@@ -5219,4 +5219,228 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicializar renderizações dinâmicas
     renderProjects();
+
+    // ========================================================
+    // 23. AUTOMAÇÕES & INTELIGÊNCIA ARTIFICIAL (DINÂMICO)
+    // ========================================================
+    const defaultAutomations = [
+        {
+            id: 'auto-1',
+            projId: 'stellantisgpt',
+            name: 'StellantisGPT',
+            category: 'bot',
+            categoryText: 'IA Conversacional',
+            icon: 'bot',
+            iconStyle: 'color: var(--secondary); width: 18px; height: 18px;',
+            badgeStyle: 'background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);',
+            desc: 'Assistente técnico baseado em LLM corporativa para apoio ao time de engenharia de infotainment.',
+            responsible: 'Engª Ana Martins'
+        },
+        {
+            id: 'auto-2',
+            projId: 'testgenai',
+            name: 'TestGen-AI',
+            category: 'code',
+            categoryText: 'Automação de QA',
+            icon: 'code',
+            iconStyle: 'color: var(--accent); width: 18px; height: 18px;',
+            badgeStyle: 'background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--accent);',
+            desc: 'Geração automática de scripts de teste para Android Automotive OS a partir de requisitos do Confluence.',
+            responsible: 'Breno Teixeira'
+        },
+        {
+            id: 'auto-3',
+            projId: 'cananalyzer',
+            name: 'CAN-Analyzer AI',
+            category: 'cpu',
+            categoryText: 'Análise de Hardware',
+            icon: 'cpu',
+            iconStyle: 'color: var(--accent-red); width: 18px; height: 18px;',
+            badgeStyle: 'background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--accent-red);',
+            desc: 'Detecção inteligente de anomalias e erros de comunicação em tempo real na rede CAN dos protótipos.',
+            responsible: 'Dr. Enzo Nogueira'
+        },
+        {
+            id: 'auto-4',
+            projId: 'poweroptai',
+            name: 'PowerOpt-AI',
+            category: 'zap',
+            categoryText: 'Otimização Preditiva',
+            icon: 'zap',
+            iconStyle: 'color: #a855f7; width: 18px; height: 18px;',
+            badgeStyle: 'background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7;',
+            desc: 'Modelo de aprendizado por reforço para otimizar os fluxos de consumo e regeneração do Bio-Hybrid 48V.',
+            responsible: 'Engª Ana Martins'
+        }
+    ];
+
+    let automations = [];
+    try {
+        automations = JSON.parse(localStorage.getItem('stellantis_automations')) || defaultAutomations;
+    } catch(e) {
+        automations = [...defaultAutomations];
+    }
+
+    const automationsGridContainer = document.getElementById('automationsGridContainer');
+    const btnOpenAddAutomationModal = document.getElementById('btnOpenAddAutomationModal');
+    const addAutomationModal = document.getElementById('addAutomationModal');
+    const btnCancelAddAutomationModal = document.getElementById('btnCancelAddAutomationModal');
+    const btnSaveNewAutomation = document.getElementById('btnSaveNewAutomation');
+    const btnCloseAddAutomationModal = document.getElementById('btnCloseAddAutomationModal');
+
+    function renderAutomations() {
+        if (!automationsGridContainer) return;
+        automationsGridContainer.innerHTML = '';
+
+        automations.forEach(auto => {
+            const card = document.createElement('div');
+            card.className = 'automation-card';
+            card.setAttribute('data-projid', auto.projId);
+            card.style.background = 'var(--glass-bg)';
+            card.style.border = '1px solid var(--glass-border)';
+            card.style.backdropFilter = 'blur(12px)';
+            card.style.borderRadius = '16px';
+            card.style.padding = '24px';
+            card.style.cursor = 'pointer';
+            card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.justifyContent = 'space-between';
+            card.style.height = '100%';
+
+            card.innerHTML = `
+                <div>
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
+                        <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; ${auto.badgeStyle} padding: 4px 10px; border-radius: 6px;">
+                            <i data-lucide="${auto.icon}" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> ${auto.categoryText}
+                        </span>
+                        <i data-lucide="sparkles" style="color: var(--secondary); width: 18px; height: 18px;"></i>
+                    </div>
+                    <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">${auto.name}</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">${auto.desc}</p>
+                </div>
+                <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
+                    <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                    <span>Responsável: ${auto.responsible}</span>
+                </div>
+            `;
+
+            // Clique do card para abrir detalhes no chat IA ou pop-up
+            card.addEventListener('click', () => {
+                const chatMenuBtn = document.querySelector('.nav-btn[data-target="chat"]');
+                if (chatMenuBtn) chatMenuBtn.click();
+                const chatInput = document.getElementById('chatInput');
+                if (chatInput) {
+                    chatInput.value = `Como funciona o projeto de IA/Automação "${auto.name}" e quem é ${auto.responsible}?`;
+                    chatInput.focus();
+                }
+            });
+
+            automationsGridContainer.appendChild(card);
+        });
+        lucide.createIcons();
+    }
+
+    // Modal de Automação
+    function openAddAutomationModal() {
+        if (addAutomationModal) addAutomationModal.classList.add('open');
+    }
+
+    function closeAddAutomationModal() {
+        if (addAutomationModal) addAutomationModal.classList.remove('open');
+    }
+
+    if (btnOpenAddAutomationModal) btnOpenAddAutomationModal.addEventListener('click', openAddAutomationModal);
+    if (btnCancelAddAutomationModal) btnCancelAddAutomationModal.addEventListener('click', closeAddAutomationModal);
+    if (btnCloseAddAutomationModal) btnCloseAddAutomationModal.addEventListener('click', closeAddAutomationModal);
+
+    if (addAutomationModal) {
+        addAutomationModal.addEventListener('click', (e) => {
+            if (e.target === addAutomationModal) closeAddAutomationModal();
+        });
+    }
+
+    if (btnSaveNewAutomation) {
+        btnSaveNewAutomation.addEventListener('click', () => {
+            const name = document.getElementById('inputAutoName').value.trim();
+            const category = document.getElementById('selectAutoCategory').value;
+            const responsible = document.getElementById('inputAutoResponsible').value.trim();
+            const desc = document.getElementById('textareaAutoDesc').value.trim();
+
+            if (!name || !responsible || !desc) {
+                alert('Por favor, preencha todos os campos da automação!');
+                return;
+            }
+
+            // Definir ícone, categoria em texto e badges com base no tipo
+            let categoryText = 'IA Conversacional';
+            let icon = 'bot';
+            let badgeStyle = 'background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);';
+            let iconStyle = 'color: var(--secondary); width: 18px; height: 18px;';
+
+            if (category === 'code') {
+                categoryText = 'Automação de QA';
+                icon = 'code';
+                badgeStyle = 'background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--accent);';
+                iconStyle = 'color: var(--accent); width: 18px; height: 18px;';
+            } else if (category === 'cpu') {
+                categoryText = 'Análise de Hardware';
+                icon = 'cpu';
+                badgeStyle = 'background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--accent-red);';
+                iconStyle = 'color: var(--accent-red); width: 18px; height: 18px;';
+            } else if (category === 'zap') {
+                categoryText = 'Otimização Preditiva';
+                icon = 'zap';
+                badgeStyle = 'background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7;';
+                iconStyle = 'color: #a855f7; width: 18px; height: 18px;';
+            }
+
+            const newAuto = {
+                id: `auto-${Date.now()}`,
+                projId: name.toLowerCase().replace(/[^a-z0-9]/g, ''),
+                name: name,
+                category: category,
+                categoryText: categoryText,
+                icon: icon,
+                iconStyle: iconStyle,
+                badgeStyle: badgeStyle,
+                desc: desc,
+                responsible: responsible
+            };
+
+            automations.push(newAuto);
+            localStorage.setItem('stellantis_automations', JSON.stringify(automations));
+
+            closeAddAutomationModal();
+            renderAutomations();
+
+            // Gamificação de XP
+            if (typeof userXp !== 'undefined') {
+                userXp += 50;
+                localStorage.setItem('stellantis_user_xp', userXp);
+                if (typeof updateProfileUI === 'function') updateProfileUI();
+            }
+
+            // Timeline do Perfil
+            let currentIdeas = [];
+            try {
+                currentIdeas = JSON.parse(localStorage.getItem('stellantis_ideas')) || [];
+            } catch(e) { currentIdeas = []; }
+
+            const nowStr = new Date().toLocaleString('pt-BR');
+            currentIdeas.push({
+                title: name,
+                type: 'geral',
+                desc: `Criou a ferramenta de IA/Automação "${name}" na base técnica.`,
+                date: nowStr
+            });
+            localStorage.setItem('stellantis_ideas', JSON.stringify(currentIdeas));
+
+            alert(`🎉 Automação "${name}" adicionada com sucesso!\nVocê ganhou +50 XP por cocriar uma ferramenta técnica!`);
+        });
+    }
+
+    // Inicializar renderizações dinâmicas
+    renderProjects();
+    renderAutomations();
 });

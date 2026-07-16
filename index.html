@@ -1625,77 +1625,18 @@
 
         <!-- ================= SEÇÃO AUTOMAÇÕES & IA ================= -->
         <section id="sec-automacoes" class="app-section">
-            <div class="section-header-row">
-                <div class="section-header">
-                    <h2 class="section-title">Automações & Inteligência Artificial</h2>
-                    <p class="section-subtitle">Conheça as soluções de inteligência computacional e automação em desenvolvimento no nosso setor.</p>
+            <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 280px;">
+                    <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Automações & Inteligência Artificial</h3>
+                    <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Conheça e colabore com as soluções de inteligência computacional e automações ativas de engenharia do nosso setor.</p>
                 </div>
+                <button class="btn-primary" id="btnOpenAddAutomationModal" style="padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); border: 1px solid #22d3ee; color: #08121e; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);">
+                    <i data-lucide="plus-circle"></i> Adicionar Automação / IA
+                </button>
             </div>
 
-            <div class="automations-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
-                <!-- Card 1: StellantisGPT -->
-                <div class="automation-card" data-projid="stellantisgpt" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                    <div>
-                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
-                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary); padding: 4px 10px; border-radius: 6px;"><i data-lucide="bot" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> IA Conversacional</span>
-                            <i data-lucide="sparkles" style="color: var(--secondary); width: 18px; height: 18px;"></i>
-                        </div>
-                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">StellantisGPT</h4>
-                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Assistente técnico baseado em LLM corporativa para apoio ao time de engenharia de infotainment.</p>
-                    </div>
-                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
-                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-                        <span>Responsável: Engª Ana Martins</span>
-                    </div>
-                </div>
-
-                <!-- Card 2: TestGen-AI -->
-                <div class="automation-card" data-projid="testgenai" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                    <div>
-                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
-                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--accent); padding: 4px 10px; border-radius: 6px;"><i data-lucide="code" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Automação de QA</span>
-                            <i data-lucide="check-circle-2" style="color: var(--accent); width: 18px; height: 18px;"></i>
-                        </div>
-                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">TestGen-AI</h4>
-                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Geração automática de scripts de teste para Android Automotive OS a partir de requisitos do Confluence.</p>
-                    </div>
-                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
-                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-                        <span>Responsável: Breno Teixeira</span>
-                    </div>
-                </div>
-
-                <!-- Card 3: CAN-Analyzer AI -->
-                <div class="automation-card" data-projid="cananalyzer" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                    <div>
-                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
-                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--accent-red); padding: 4px 10px; border-radius: 6px;"><i data-lucide="cpu" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Análise de Hardware</span>
-                            <i data-lucide="activity" style="color: var(--accent-red); width: 18px; height: 18px;"></i>
-                        </div>
-                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">CAN-Analyzer AI</h4>
-                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Detecção inteligente de anomalias e erros de comunicação em tempo real na rede CAN dos protótipos.</p>
-                    </div>
-                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
-                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-                        <span>Responsável: Dr. Enzo Nogueira</span>
-                    </div>
-                </div>
-
-                <!-- Card 4: PowerOpt-AI -->
-                <div class="automation-card" data-projid="poweroptai" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                    <div>
-                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; background: transparent; border: none; padding: 0;">
-                            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; padding: 4px 10px; border-radius: 6px;"><i data-lucide="zap" style="width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Otimização Preditiva</span>
-                            <i data-lucide="battery" style="color: #a855f7; width: 18px; height: 18px;"></i>
-                        </div>
-                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-heading);">PowerOpt-AI</h4>
-                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Modelo de aprendizado por reforço para otimizar os fluxos de consumo e regeneração do Bio-Hybrid 48V.</p>
-                    </div>
-                    <div style="font-size: 11px; color: var(--text-dark); display: flex; align-items: center; gap: 6px;">
-                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-                        <span>Responsável: Engª Ana Martins</span>
-                    </div>
-                </div>
+            <div class="automations-grid" id="automationsGridContainer">
+                <!-- Gerado dinamicamente via JS -->
             </div>
         </section>
 
@@ -2557,6 +2498,53 @@
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddProjectModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveNewProject">Adicionar Projeto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Nova Automação / IA -->
+    <div class="modal-overlay" id="addAutomationModal">
+        <div class="modal-card" style="max-width: 550px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Cadastrar Nova Automação</h3>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Tecnologia & Inovação</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseAddAutomationModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputAutoName" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Nome da Automação / IA</label>
+                    <input type="text" id="inputAutoName" placeholder="Ex: CAN-Analyzer AI" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="selectAutoCategory" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Categoria / Tipo</label>
+                        <select id="selectAutoCategory" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
+                            <option value="bot">IA Conversacional</option>
+                            <option value="code">Automação de QA</option>
+                            <option value="cpu">Análise de Hardware</option>
+                            <option value="zap">Otimização Preditiva</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label for="inputAutoResponsible" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Responsável Técnico</label>
+                        <input type="text" id="inputAutoResponsible" placeholder="Ex: Engª Ana Martins" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaAutoDesc" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Descrição Curta</label>
+                    <textarea id="textareaAutoDesc" rows="3" placeholder="Descreva o propósito da automação e como ela impacta as atividades..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 60px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddAutomationModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewAutomation">Adicionar Automação</button>
             </div>
         </div>
     </div>
