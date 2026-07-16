@@ -5879,13 +5879,11 @@ body::before {
 /* TABLETS (Até 1024px) */
 @media (max-width: 1024px) {
     .main-header {
-        display: grid !important;
-        grid-template-columns: 1fr auto !important;
-        grid-template-areas: 
-            "logo logo"
-            "nav auth" !important;
-        gap: 12px 16px !important;
-        padding: 12px 24px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+        padding: 16px 20px !important;
         background: rgba(5, 10, 24, 0.96) !important;
         backdrop-filter: blur(20px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -5896,48 +5894,46 @@ body::before {
     }
 
     .main-header .logo-container {
-        grid-area: logo !important;
-        justify-self: center !important;
         max-width: 100% !important;
         width: auto !important;
         opacity: 1 !important;
         transform: none !important;
         pointer-events: auto !important;
-        margin-bottom: 4px !important;
+        justify-content: center !important;
+        margin-bottom: 2px !important;
     }
 
     .main-header .main-nav {
-        grid-area: nav !important;
         width: 100% !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
-        padding-bottom: 4px !important;
         opacity: 1 !important;
         transform: none !important;
     }
     
     .main-header .main-nav > ul {
         display: flex !important;
-        gap: 8px !important;
-        justify-content: flex-start !important;
-        scrollbar-width: none !important;
+        flex-wrap: wrap !important;
+        gap: 8px 10px !important;
+        justify-content: center !important;
+        list-style: none !important;
     }
     
-    .main-header .main-nav > ul::-webkit-scrollbar {
-        display: none !important;
+    .main-header .main-nav > ul > li {
+        display: inline-block !important;
     }
 
     .main-header .auth-container {
-        grid-area: auth !important;
-        justify-self: end !important;
-        max-width: 250px !important;
+        max-width: 100% !important;
+        width: 100% !important;
         opacity: 1 !important;
         transform: none !important;
         pointer-events: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: 4px !important;
     }
 
     .main-header.scrolled {
-        padding: 12px 24px !important;
+        padding: 16px 20px !important;
         background: rgba(5, 10, 24, 0.96) !important;
         backdrop-filter: blur(20px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -5952,7 +5948,7 @@ body::before {
 
     .main-header.scrolled .auth-container {
         opacity: 1 !important;
-        max-width: 250px !important;
+        max-width: 100% !important;
         transform: none !important;
         pointer-events: auto !important;
     }
@@ -5963,8 +5959,31 @@ body::before {
     }
 
     .content-wrapper {
-        margin-top: 155px !important;
+        margin-top: 235px !important;
         padding-top: 16px !important;
+    }
+
+    /* Transformar o dropdown de perfil em um modal pop-up centralizado */
+    #profileDropdownCard {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -45%) !important;
+        width: 90% !important;
+        max-width: 380px !important;
+        max-height: 85vh !important;
+        overflow-y: auto !important;
+        box-shadow: var(--shadow-premium), 0 25px 60px rgba(0, 0, 0, 0.95) !important;
+        z-index: 200 !important;
+        white-space: normal !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    #profileDropdownCard.open {
+        transform: translate(-50%, -50%) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
     }
 
     /* Grids */
@@ -6028,54 +6047,51 @@ body::before {
 /* CELULARES (Até 768px) */
 @media (max-width: 768px) {
     .main-header {
-        padding: 10px 16px !important;
-        gap: 8px 12px !important;
+    .main-header {
+        padding: 12px 14px !important;
+        gap: 8px 10px !important;
     }
 
     .main-header.scrolled {
-        padding: 10px 16px !important;
+        padding: 12px 14px !important;
     }
 
     .content-wrapper {
-        margin-top: 145px !important;
+        margin-top: 255px !important;
         padding-top: 12px !important;
     }
 
     .logo-container h1 {
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
 
     .logo-container .logo-sub {
-        font-size: 9px !important;
+        font-size: 8.5px !important;
     }
 
-    /* Menu de Abas em Scroll Horizontal (Super Moderno) */
-    .nav-tabs {
-        display: flex;
-        gap: 8px;
-        padding: 4px 8px 10px 8px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    .main-header .main-nav > ul {
+        gap: 6px 8px !important;
     }
 
     .nav-link {
-        padding: 8px 14px !important;
-        font-size: 12px !important;
-        border-radius: 8px !important;
+        padding: 6px 12px !important;
+        font-size: 11px !important;
+        border-radius: 6px !important;
     }
 
     /* Usuário e Dropdown */
     .user-profile-btn {
-        padding: 4px 8px;
+        padding: 4px 6px;
     }
     
     .profile-name {
-        display: none; /* Esconder nome longo do cabeçalho no celular para economizar espaço */
+        display: none;
     }
 
-    .profile-dropdown-card {
-        width: 290px;
-        right: -10px;
-        padding: 16px;
+    #profileDropdownCard {
+        width: 92% !important;
+        max-width: 320px !important;
+        padding: 16px !important;
     }
 
     /* Grids de Cards em 1 Coluna */
