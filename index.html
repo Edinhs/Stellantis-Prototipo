@@ -2518,6 +2518,154 @@
         </div>
     </div>
 
+    <!-- Modal Pop-up Submenu Treinamento & Integração (Tablet/Mobile) -->
+    <div class="modal-overlay" id="modalSubmenuTreinamento">
+        <div class="modal-card" style="max-width: 450px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Treinamento & Integração</h3>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Selecione uma Área</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseSubmenuTreinamento"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px; padding: 15px 0 20px 0;">
+                <button class="mobile-submenu-btn" data-target="treinamento" data-sub="boas-vindas" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(6,182,212,0.1); color: var(--secondary);">
+                        <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">Kit Colaborador</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Instruções e boas-vindas do time</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="treinamento" data-sub="cards" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(37,99,235,0.1); color: var(--primary);">
+                        <i data-lucide="layers" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">Flashcards</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Estudo interativo com termos técnicos</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="treinamento" data-sub="conteudo" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(16,185,129,0.1); color: #10b981;">
+                        <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">Conteúdo Técnico</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Manuais, guias e cursos técnicos</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="treinamento" data-sub="canais" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(168,85,247,0.1); color: #a855f7;">
+                        <i data-lucide="link" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">Canais Oficiais</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Portais e plataformas corporativas</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pop-up Submenu Informações (Tablet/Mobile) -->
+    <div class="modal-overlay" id="modalSubmenuInformacoes">
+        <div class="modal-card" style="max-width: 450px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: var(--secondary);">
+                        <i data-lucide="info"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Informações</h3>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Selecione uma Subseção</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseSubmenuInformacoes"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 10px; padding: 15px 0 20px 0; max-height: 400px; overflow-y: auto;">
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="especialistas" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(6,182,212,0.1); color: var(--secondary);">
+                        <i data-lucide="users" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Especialistas</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">Corpo técnico da engenharia</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="projetos" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(37,99,235,0.1); color: var(--primary);">
+                        <i data-lucide="car" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Projetos</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">Desenvolvimentos ativos e modelos</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="infotainment" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(16,185,129,0.1); color: #10b981;">
+                        <i data-lucide="cpu" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Infotainment</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">Módulos e tecnologias de conectividade</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="estrutura" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(168,85,247,0.1); color: #a855f7;">
+                        <i data-lucide="git-branch" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Estrutura & Equipe</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">Organograma e hierarquias de líderes</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="diretrizes" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(249,115,22,0.1); color: #f97316;">
+                        <i data-lucide="globe" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Diretrizes Globais</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">FaSTLAne 2030, ESG e valores</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="timeline" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(239,68,68,0.1); color: #ef4444;">
+                        <i data-lucide="award" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Marcos & Conquistas</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">História e evolução da marca</div>
+                    </div>
+                </button>
+
+                <button class="mobile-submenu-btn" data-target="informacoes" data-sub="veiculos" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: left; cursor: pointer; transition: all 0.2s;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(236,72,153,0.1); color: #ec4899;">
+                        <i data-lucide="rocket" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main);">Lançamento de Veículos</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted);">Planejamento de lançamentos</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- JS Principal -->
     <script src="app.js"></script>
     <script src="car-interactivity.js"></script>
