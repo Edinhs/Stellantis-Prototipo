@@ -113,10 +113,30 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             if (link.classList.contains('dropdown-toggle')) {
                 e.preventDefault();
+                e.stopPropagation();
+                const parent = link.closest('.nav-item-dropdown');
+                if (parent) {
+                    const isOpen = parent.classList.contains('open');
+                    // Fechar todos os outros dropdowns
+                    document.querySelectorAll('.nav-item-dropdown').forEach(item => {
+                        item.classList.remove('open');
+                    });
+                    // Alternar o atual
+                    if (!isOpen) {
+                        parent.classList.add('open');
+                    }
+                }
                 return;
             }
             const targetId = link.getAttribute('data-target');
             switchSection(targetId);
+        });
+    });
+
+    // Fechar os dropdowns de abas ao clicar fora
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
+            item.classList.remove('open');
         });
     });
 
@@ -1367,6 +1387,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const subBtn = document.querySelector(`.sub-nav-btn[data-infosub="${subtarget}"]`);
                     if (subBtn) subBtn.click();
                 }
+
+                // Fechar o dropdown de abas no clique
+                const parent = link.closest('.nav-item-dropdown');
+                if (parent) parent.classList.remove('open');
             });
         });
     }
