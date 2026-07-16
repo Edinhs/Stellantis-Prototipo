@@ -5963,24 +5963,27 @@ body::before {
         padding-top: 16px !important;
     }
 
-    /* Transformar o dropdown de perfil em um modal pop-up centralizado */
+    /* Dropdown de perfil flutuante e centralizado abaixo do botão */
     #profileDropdownCard {
-        position: fixed !important;
-        top: 50% !important;
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
         left: 50% !important;
-        transform: translate(-50%, -45%) !important;
-        width: 90% !important;
-        max-width: 380px !important;
+        right: auto !important;
+        transform: translateX(-50%) translateY(10px) !important;
+        width: 320px !important;
         max-height: 85vh !important;
         overflow-y: auto !important;
-        box-shadow: var(--shadow-premium), 0 25px 60px rgba(0, 0, 0, 0.95) !important;
-        z-index: 200 !important;
+        box-shadow: var(--shadow-premium), 0 10px 40px rgba(0, 0, 0, 0.8) !important;
+        z-index: 120 !important;
         white-space: normal !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     
     #profileDropdownCard.open {
-        transform: translate(-50%, -50%) !important;
+        transform: translateX(-50%) translateY(0) !important;
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
@@ -6255,11 +6258,5 @@ body::before {
     .avatar-select-item {
         width: 60px !important;
         height: 60px !important;
-    }
-
-    .mobile-submenu-btn:hover {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border-color: var(--secondary) !important;
-        transform: translateY(-2px);
     }
 }

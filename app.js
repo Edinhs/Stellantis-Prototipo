@@ -115,28 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const targetId = link.getAttribute('data-target');
-                
-                if (window.innerWidth <= 1024) {
-                    // Mobile/Tablet: Abrir o modal pop-up de submenu correspondente
-                    if (targetId === 'treinamento') {
-                        const modal = document.getElementById('modalSubmenuTreinamento');
-                        if (modal) modal.classList.add('open');
-                    } else if (targetId === 'informacoes') {
-                        const modal = document.getElementById('modalSubmenuInformacoes');
-                        if (modal) modal.classList.add('open');
-                    }
-                } else {
-                    // Desktop: Alternar dropdown inline normal
-                    const parent = link.closest('.nav-item-dropdown');
-                    if (parent) {
-                        const isOpen = parent.classList.contains('open');
-                        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-                            item.classList.remove('open');
-                        });
-                        if (!isOpen) {
-                            parent.classList.add('open');
-                        }
+                const parent = link.closest('.nav-item-dropdown');
+                if (parent) {
+                    const isOpen = parent.classList.contains('open');
+                    // Fechar todos os outros dropdowns de abas
+                    document.querySelectorAll('.nav-item-dropdown').forEach(item => {
+                        item.classList.remove('open');
+                    });
+                    // Alternar o atual
+                    if (!isOpen) {
+                        parent.classList.add('open');
                     }
                 }
                 return;
@@ -152,57 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.remove('open');
         });
     });
-
-    // Fechamento dos Modais de Submenu Mobile
-    const btnCloseSubmenuTreinamento = document.getElementById('btnCloseSubmenuTreinamento');
-    const modalSubmenuTreinamento = document.getElementById('modalSubmenuTreinamento');
-    const btnCloseSubmenuInformacoes = document.getElementById('btnCloseSubmenuInformacoes');
-    const modalSubmenuInformacoes = document.getElementById('modalSubmenuInformacoes');
-
-    if (btnCloseSubmenuTreinamento && modalSubmenuTreinamento) {
-        btnCloseSubmenuTreinamento.addEventListener('click', () => {
-            modalSubmenuTreinamento.classList.remove('open');
-        });
-        modalSubmenuTreinamento.addEventListener('click', (e) => {
-            if (e.target === modalSubmenuTreinamento) modalSubmenuTreinamento.classList.remove('open');
-        });
-    }
-
-    if (btnCloseSubmenuInformacoes && modalSubmenuInformacoes) {
-        btnCloseSubmenuInformacoes.addEventListener('click', () => {
-            modalSubmenuInformacoes.classList.remove('open');
-        });
-        modalSubmenuInformacoes.addEventListener('click', (e) => {
-            if (e.target === modalSubmenuInformacoes) modalSubmenuInformacoes.classList.remove('open');
-        });
-    }
-
-    // Lógica dos cliques nos botões do submenu mobile
-    const mobileSubmenuBtns = document.querySelectorAll('.mobile-submenu-btn');
-    if (mobileSubmenuBtns) {
-        mobileSubmenuBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = btn.getAttribute('data-target');
-                const sub = btn.getAttribute('data-sub');
-
-                // Mudar seção principal
-                switchSection(target);
-
-                // Mudar subaba correspondente
-                if (target === 'treinamento' && sub) {
-                    const subBtn = document.querySelector(`.sub-nav-btn[data-subtarget="${sub}"]`);
-                    if (subBtn) subBtn.click();
-                } else if (target === 'informacoes' && sub) {
-                    const subBtn = document.querySelector(`.sub-nav-btn[data-infosub="${sub}"]`);
-                    if (subBtn) subBtn.click();
-                }
-
-                // Fechar os modais
-                if (modalSubmenuTreinamento) modalSubmenuTreinamento.classList.remove('open');
-                if (modalSubmenuInformacoes) modalSubmenuInformacoes.classList.remove('open');
-            });
-        });
-    }
 
     // Botão de chamada para ação na Home direciona para o Dicionário
     const btnExploreDict = document.getElementById('btn-explore-dict');
